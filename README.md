@@ -9,3 +9,7 @@ This is the repository created while following the instructions in Part 1 of the
 The group consists of:
 1. Dylan Frendo
 2. Miguel Dingli
+
+## Jenkins Project
+
+The group's project on the University's Jenkins server is named "*CPS2002 Assignment - DFMD*" and can be accessed from [here](https://jenkins-ict.research.um.edu.mt/job/CPS2002%20Assignment%20-%20DFMD).
