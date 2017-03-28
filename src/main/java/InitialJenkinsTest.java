@@ -3,11 +3,11 @@
  */
 public class InitialJenkinsTest {
 
-    public int maximum(int a, int b) {
-        return a >= b ? a : b;
+    public int maximum(int x, int y) {
+        return x >= y ? x : y;
     }
     
     public int minimum(int a, int b) {
-        return a <= b ? a : b;
+        return x <= y ? x : y;
     }
 }
