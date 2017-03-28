@@ -3,7 +3,7 @@
  */
 public class InitialJenkinsTest {
 
-    public int addFunction(int x, int y) {
-        return x + y;
+    public int maximum(int x, int y) {
+        return x >= y ? x : y;
     }
 }
