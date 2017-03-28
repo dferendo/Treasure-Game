@@ -7,7 +7,7 @@ public class InitialJenkinsTest {
         return x >= y ? x : y;
     }
     
-    public int minimum(int a, int b) {
+    public int minimum(int x, int y) {
         return x <= y ? x : y;
     }
 }
