@@ -22,4 +22,9 @@ public class InitialJenkinsTestTest {
         Assert.assertTrue(initialJenkinsTest.maximum(x, y) == x);
     }
 
+    @Test
+    public void minimum_firstArgumentIsMin() {
+        final int x = 10, y = 20;
+        Assert.assertTrue(initialJenkinsTest.minimum(x, y) == x);
+    }
 }
