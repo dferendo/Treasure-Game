@@ -27,4 +27,12 @@ public class InitialJenkinsTestTest {
         final int x = 10, y = 20;
         Assert.assertTrue(initialJenkinsTest.minimum(x, y) == x);
     }
+
+    @Test
+    public void mean_twiceMeanIsGreaterOrEqualToArguments() {
+        final int x = 10, y = 20;
+        final float twiceMean = 2 * initialJenkinsTest.mean(x, y);
+        Assert.assertTrue(twiceMean >= x);
+        Assert.assertTrue(twiceMean >= y);
+    }
 }
