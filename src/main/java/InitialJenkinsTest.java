@@ -10,4 +10,6 @@ public class InitialJenkinsTest {
     public int minimum(int x, int y) {
         return x <= y ? x : y;
     }
+
+    public float mean(int x, int y) { return (x + y) / 2; }
 }
