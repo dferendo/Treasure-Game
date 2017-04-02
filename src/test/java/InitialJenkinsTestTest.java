@@ -10,6 +10,7 @@ import static org.junit.Assert.*;
  * automatically.
  * Test 1 - 1 unit Test, should trigger build #15 in Jenkins.
  * Test 2 - 2 unit Tests, should trigger build #16 in Jenkins.
+ * Test 3 - 3 unit Tests, should trigger build #17 in Jenkins.
  */
 public class InitialJenkinsTestTest {
 
@@ -31,12 +32,12 @@ public class InitialJenkinsTestTest {
         final int x = 10, y = 20;
         Assert.assertTrue(initialJenkinsTest.minimum(x, y) == x);
     }
-//
-//    @Test
-//    public void mean_twiceMeanIsGreaterOrEqualToArguments() {
-//        final int x = 10, y = 20;
-//        final float twiceMean = 2 * initialJenkinsTest.mean(x, y);
-//        Assert.assertTrue(twiceMean >= x);
-//        Assert.assertTrue(twiceMean >= y);
-//    }
+
+    @Test
+    public void mean_twiceMeanIsGreaterOrEqualToArguments() {
+        final int x = 10, y = 20;
+        final float twiceMean = 2 * initialJenkinsTest.mean(x, y);
+        Assert.assertTrue(twiceMean >= x);
+        Assert.assertTrue(twiceMean >= y);
+    }
 }
