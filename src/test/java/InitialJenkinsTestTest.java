@@ -9,6 +9,7 @@ import static org.junit.Assert.*;
  * Code will be pushed 3 times to check if Jenkins pulls, compiles and tests the code
  * automatically.
  * Test 1 - 1 unit Test, should trigger build #15 in Jenkins.
+ * Test 2 - 2 unit Tests, should trigger build #16 in Jenkins.
  */
 public class InitialJenkinsTestTest {
 
@@ -25,11 +26,11 @@ public class InitialJenkinsTestTest {
         Assert.assertTrue(initialJenkinsTest.maximum(x, y) == x);
     }
 
-//    @Test
-//    public void minimum_firstArgumentIsMin() {
-//        final int x = 10, y = 20;
-//        Assert.assertTrue(initialJenkinsTest.minimum(x, y) == x);
-//    }
+    @Test
+    public void minimum_firstArgumentIsMin() {
+        final int x = 10, y = 20;
+        Assert.assertTrue(initialJenkinsTest.minimum(x, y) == x);
+    }
 //
 //    @Test
 //    public void mean_twiceMeanIsGreaterOrEqualToArguments() {
