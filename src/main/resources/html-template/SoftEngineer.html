@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>CPS2002 Assignment</title>
+    <style>
+        .gameWrapper {
+            display: table;
+            margin-right: auto;
+            margin-left: auto;
+            padding-top: 30px;
+        }
+
+        .gameBoard {
+            border-spacing: 0;
+        }
+
+        .playerNumber {
+            height: 50px;
+            text-align: center;
+            vertical-align: middle;
+            line-height: 50px;
+            color: white;
+            background-color: #355E91;
+        }
+
+        .playerIcon {
+            width: 36px;
+            height: 36px;
+            vertical-align: middle;
+        }
+
+        td {
+            width: 50px;
+            height: 50px;
+            border: 1px solid #3B3B3B;
+            text-align: center;
+        }
+
+        .notDiscoveredCell {
+            background-color: #BEBEBE;
+        }
+
+        .grassCell {
+            background-color: #21BE1D;
+        }
+
+        .waterCell {
+            background-color: #548DD4;
+        }
+
+        .treasureCell {
+            background-color: #FFFF00;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="gameWrapper">
+        <table class="gameBoard">
+            <caption class="playerNumber">Player 1</caption>
+            <tr>
+                <td class="notDiscoveredCell"></td>
+                <td class="notDiscoveredCell"></td>
+                <td class="grassCell"></td>
+                <td class="notDiscoveredCell"></td>
+                <td class="notDiscoveredCell"></td>
+            </tr>
+            <tr>
+                <td class="notDiscoveredCell"></td>
+                <td class="notDiscoveredCell"></td>
+                <td class="grassCell"></td>
+                <td class="waterCell"></td>
+                <td class="notDiscoveredCell"></td>
+            </tr>
+            <tr>
+                <td class="notDiscoveredCell"></td>
+                <td class="notDiscoveredCell"></td>
+                <td class="notDiscoveredCell"></td>
+                <td class="grassCell"></td>
+                <td class="notDiscoveredCell"></td>
+            </tr>
+            <tr>
+                <td class="notDiscoveredCell"></td>
+                <td class="notDiscoveredCell"></td>
+                <td class="notDiscoveredCell"></td>
+                <td class="treasureCell">
+                    <img class="playerIcon" src="../images/ic_person_pin_black_24px.svg">
+                </td>
+                <td class="notDiscoveredCell"></td>
+            </tr>
+            <tr>
+                <td class="notDiscoveredCell"></td>
+                <td class="notDiscoveredCell"></td>
+                <td class="notDiscoveredCell"></td>
+                <td class="notDiscoveredCell"></td>
+                <td class="notDiscoveredCell"></td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>
