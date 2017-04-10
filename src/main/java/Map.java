@@ -68,4 +68,9 @@ public class Map {
             }
         }
     }
+
+    public TILE_TYPE getTileType(int x, int y) throws Exception {
+        return TILE_TYPE.GRASS;
+    }
+
 }

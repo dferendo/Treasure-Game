@@ -71,4 +71,55 @@ public class MapTest {
         mapInstance.generate();
     }
 
+    @Test(expected = Exception.class)
+    public void getTileType_xIsLessThan0YIsCorrect() throws Exception {
+        int size = 10, x = -1, y = 2;
+        generateMap(size);
+
+        mapInstance.getTileType(x, y);
+    }
+
+    @Test(expected = Exception.class)
+    public void getTileType_xIsGreaterThanSizeYIsCorrect() throws Exception {
+        int size = 10, y = 2;
+        generateMap(size);
+
+        mapInstance.getTileType(size, y);
+    }
+
+    @Test(expected = Exception.class)
+    public void getTileType_xIsCorrectYIsLessThan0() throws Exception {
+        int size = 10, x = 2, y = -1;
+        generateMap(size);
+
+        mapInstance.getTileType(x, y);
+    }
+
+    @Test(expected = Exception.class)
+    public void getTileType_xIsCorrectYIsGreaterThanSize() throws Exception {
+        int size = 10, x = 2;
+        generateMap(size);
+
+        mapInstance.getTileType(x, size);
+    }
+
+    @Test
+    public void getTileType_correctInput() throws Exception {
+        int size = 10, x = 2, y = 2;
+        generateMap(size);
+
+        Assert.assertTrue(mapInstance.getTileType(x, y) == Map.TILE_TYPE.GRASS
+                || mapInstance.getTileType(x, y) == Map.TILE_TYPE.TREASURE
+                || mapInstance.getTileType(x, y) == Map.TILE_TYPE.WATER);
+    }
+
+    private void generateMap(int size) {
+        int numberOfPlayers = 4;
+        mapInstance.setMapSize(size, numberOfPlayers);
+        try {
+            mapInstance.generate();
+        } catch (Exception e) {
+            fail("Map size inserted was incorrect.");
+        }
+    }
 }
