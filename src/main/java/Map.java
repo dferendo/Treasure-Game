@@ -1,9 +1,30 @@
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+
 /**
  * @author Dylan Frendo.
  */
 public class Map {
 
+    public enum TILE_TYPE {
+        GRASS,
+        WATER,
+        TREASURE;
+
+        // Put the result of values() inside a list so it is cached instead of
+        // copying an array with each values call.
+        private static final List<TILE_TYPE> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
+        private static final Random rand = new Random();
+
+        public static TILE_TYPE getRandomTile(){
+            return VALUES.get(rand.nextInt(VALUES.size()));
+        }
+    }
+
     private int size;
+    private TILE_TYPE[][] map;
 
     public Map() {
         size = 0;
@@ -34,5 +55,17 @@ public class Map {
     }
 
     public void generate() throws Exception {
+        if (size == 0) {
+            throw new Exception("Size was not set.");
+        }
+        map = new TILE_TYPE[size][size];
+        // TODO: check if there needs to be a path
+        // TODO: check if there can be multiple treasures.
+        // TODO: Add an Custom Exception?
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                map[i][j] = TILE_TYPE.getRandomTile();
+            }
+        }
     }
 }
