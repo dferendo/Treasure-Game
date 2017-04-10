@@ -1,5 +1,5 @@
 /**
- * Created by dylan on 25/03/2017.
+ * @author Dylan Frendo.
  */
 public class InitialJenkinsTest {
 
