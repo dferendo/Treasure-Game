@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,6 +19,7 @@ public class Player {
 
     public Player(int ID) {
         this.ID = ID;
+        this.visited = new ArrayList<Position>();
     }
 
     public int getID() {
@@ -56,6 +58,7 @@ public class Player {
             return false;
         } else {
             position = p;
+            visited.add(position);
             return true;
         }
     }
@@ -65,6 +68,17 @@ public class Player {
     }
 
     public boolean wasVisited(final int x, final int y) {
-        return true;
+
+        if (x < 0 || y < 0) {
+            throw new IllegalArgumentException("Negative coordinate/s.");
+        } else {
+            final Position toCheck = new Position(x, y);
+            for (final Position position : visited) {
+                if (position.equals(toCheck)) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }
