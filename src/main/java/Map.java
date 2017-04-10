@@ -70,7 +70,11 @@ public class Map {
     }
 
     public TILE_TYPE getTileType(int x, int y) throws Exception {
-        return TILE_TYPE.GRASS;
+        // X and y was agreed that it will start from 0.
+        if ((x < 0 || x >= size) || (y < 0 || y >= size)) {
+            throw new Exception("Position inputs were incorrect.");
+        }
+        return map[x][y];
     }
 
 }
