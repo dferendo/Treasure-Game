@@ -69,7 +69,7 @@ public class Player {
 
     public boolean wasVisited(final int x, final int y) {
 
-        // todo: check that x and y do not exceed map's maximum size
+        // todo: check that x and y do not exceed map's size
         if (x < 0 || y < 0) {
             throw new IllegalArgumentException("Negative coordinate/s.");
         } else {
