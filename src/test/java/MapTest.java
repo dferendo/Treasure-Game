@@ -113,6 +113,18 @@ public class MapTest {
                 || mapInstance.getTileType(x, y) == Map.TILE_TYPE.WATER);
     }
 
+    @Test
+    public void setInitialPlayerPosition_checkIfTileIsChange() throws Exception {
+        int size = 10, x = 2, y = 2;
+        Player player = new Player();
+
+        player.setPosition(new Position(x, y));
+        generateMap(size);
+
+        mapInstance.setInitialPlayerPosition(player);
+        Assert.assertTrue(mapInstance.getTileType(x, y) == Map.TILE_TYPE.GRASS);
+    }
+
     private void generateMap(int size) {
         int numberOfPlayers = 4;
         mapInstance.setMapSize(size, numberOfPlayers);

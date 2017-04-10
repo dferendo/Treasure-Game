@@ -77,4 +77,8 @@ public class Map {
         return map[x][y];
     }
 
+    public void setInitialPlayerPosition(Player player) throws Exception {
+        
+    }
+
 }
