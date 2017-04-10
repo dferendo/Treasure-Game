@@ -1,3 +1,5 @@
+import java.util.List;
+
 /**
  * @author Miguel Dingli
  */
@@ -12,6 +14,7 @@ public class Player {
 
     private int ID;
     private Position position;
+    private List<Position> visited;
 
     public Player(int ID) {
         this.ID = ID;
@@ -59,5 +62,9 @@ public class Player {
 
     public Position getPosition() {
         return position;
+    }
+
+    public boolean wasVisited(final int x, final int y) {
+        return true;
     }
 }
