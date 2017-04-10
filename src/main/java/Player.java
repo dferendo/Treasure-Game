@@ -10,7 +10,16 @@ public class Player {
         RIGHT;
     }
 
+    private int ID;
     private Position position;
+
+    public Player(int ID) {
+        this.ID = ID;
+    }
+
+    public int getID() {
+        return ID;
+    }
 
     public void move(final MOVE_DIRECTION direction) {
 

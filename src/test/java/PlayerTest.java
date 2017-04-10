@@ -9,11 +9,11 @@ import org.junit.Test;
 public class PlayerTest {
 
     private Player player;
-    private final int x = 5, y = 10;
+    private final int x = 5, y = 10, id = 1;
 
     @Before
     public void init() {
-        player = new Player();
+        player = new Player(id);
         Assume.assumeTrue(player.setPosition(new Position(x, y)));
     }
 
@@ -54,5 +54,10 @@ public class PlayerTest {
         player.move(Player.MOVE_DIRECTION.RIGHT);
         Assert.assertTrue(player.getPosition().getX() == x + 1);
         Assert.assertTrue(player.getPosition().getY() == y);
+    }
+
+    @Test
+    public void getId_constructorValueMatchesGetterValue() {
+        Assert.assertTrue(player.getID() == id);
     }
 }
