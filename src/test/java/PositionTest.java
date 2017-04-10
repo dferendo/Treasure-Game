@@ -24,4 +24,21 @@ public class PositionTest {
     public void getY_constructorValueMatchesGetterValue() {
         Assert.assertTrue(y == position.getY());
     }
+
+    @Test
+    public void equals_equalPositions() {
+        final Position newPos = new Position(x, y);
+        Assert.assertTrue(position.equals(newPos));
+    }
+
+    @Test
+    public void equals_unequalPositions() {
+        final Position newPos = new Position(x + 1, y + 1);
+        Assert.assertFalse(position.equals(newPos));
+    }
+
+    @Test
+    public void equals_nullPosition() {
+        Assert.assertFalse(position.equals(null));
+    }
 }
