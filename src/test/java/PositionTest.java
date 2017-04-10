@@ -36,4 +36,9 @@ public class PositionTest {
         final Position newPos = new Position(x + 1, y + 1);
         Assert.assertFalse(position.equals(newPos));
     }
+
+    @Test
+    public void equals_nullPosition() {
+        Assert.assertFalse(position.equals(null));
+    }
 }
