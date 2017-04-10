@@ -59,8 +59,8 @@ public class Map {
             throw new Exception("Size was not set.");
         }
         map = new TILE_TYPE[size][size];
-        // TODO: check if there needs to be a path
-        // TODO: check if there can be multiple treasures.
+        // TODO: check with the lecturer if there needs to be a path
+        // TODO: check with the lecturer if there can be multiple treasures.
         // TODO: Add an Custom Exception?
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
