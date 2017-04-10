@@ -17,4 +17,8 @@ public class Position {
     public int getY() {
         return y;
     }
+
+    public boolean equals(final Position pos) {
+        return true;
+    }
 }
