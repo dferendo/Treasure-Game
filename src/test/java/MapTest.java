@@ -115,8 +115,8 @@ public class MapTest {
 
     @Test
     public void setInitialPlayerPosition_checkIfTileIsChange() throws Exception {
-        int size = 10, x = 2, y = 2;
-        Player player = new Player();
+        int size = 10, x = 2, y = 2, playerID = 1;
+        Player player = new Player(playerID);
 
         player.setPosition(new Position(x, y));
         generateMap(size);
