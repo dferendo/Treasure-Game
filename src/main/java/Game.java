@@ -88,7 +88,7 @@ public class Game {
             System.out.println("What will be the size of the map? " + MAP_SIZE_RANGE);
             mapSize = getValidInt();
 
-            if (!map.setMapSize(players.length, mapSize)) {
+            if (!map.setMapSize(mapSize, players.length)) {
                 System.out.println("The input value was out of the range " + MAP_SIZE_RANGE + ".");
             } else {
                 break;
@@ -125,6 +125,25 @@ public class Game {
 
     private Player.MOVE_DIRECTION getValidDirection() {
 
-        return Player.MOVE_DIRECTION.DOWN;
+        final String ERROR_MESSAGE = "The input was not a valid direction! Valid directions: U, D, L, R.";
+        do {
+            final String input = scanner.nextLine();
+            if (input.length() != 1) {
+                System.out.println(ERROR_MESSAGE);
+            } else {
+                switch (input.charAt(0)) {
+                    case 'U':
+                        return Player.MOVE_DIRECTION.UP;
+                    case 'D':
+                        return Player.MOVE_DIRECTION.DOWN;
+                    case 'L':
+                        return Player.MOVE_DIRECTION.LEFT;
+                    case 'R':
+                        return Player.MOVE_DIRECTION.RIGHT;
+                    default:
+                        System.out.println(ERROR_MESSAGE);
+                }
+            }
+        } while (true);
     }
 }
