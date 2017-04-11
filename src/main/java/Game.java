@@ -1,4 +1,8 @@
+import org.apache.commons.io.FileUtils;
+
 import java.awt.image.DirectColorModel;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -6,6 +10,7 @@ import java.util.Scanner;
 
 /**
  * @author Miguel Dingli
+ * @author Dylan Frendo
  */
 public class Game {
 
@@ -17,6 +22,9 @@ public class Game {
     private Map map = null;
     private List<Player> winners = new ArrayList<Player>();
 
+    File HTMLTemplateLocation = new File("src/main/resources/html-template/SoftEngineer.html");
+    String playersMapLocation = "src/main/resources/players-maps/";
+
     private Game() {}
 
     public static Game getGameInstance() {
@@ -24,7 +32,7 @@ public class Game {
     }
 
     public void setup() {
-        
+
         map = new Map();
         setNumPlayers();
         setMapSize();
@@ -151,7 +159,20 @@ public class Game {
         }
     }
 
-    private void generateHTMLFiles() { }
+    private void generateHTMLFiles() {
+        try {
+            FileUtils.cleanDirectory(new File(playersMapLocation));
+            for (final Player player : players) {
+                File playerFile = new File(playersMapLocation + "map_player_" + player.getID() + ".html");
+                FileUtils.copyFile(HTMLTemplateLocation, playerFile);
+                new HTMLGenerator(playerFile, map, player);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private int getValidInt() {
 
