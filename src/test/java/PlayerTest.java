@@ -75,4 +75,19 @@ public class PlayerTest {
     public void wasVisited_negativeCoordinates() {
         player.wasVisited(-1, -1);
     }
+
+    @Test
+    public void backToStartPosition_positionAfterCallEqualToStartPosition() {
+
+        player.backToStartPosition();
+        Assert.assertTrue(player.getPosition().equals(new Position(startX, startY)));
+    }
+
+    @Test
+    public void backToStartPosition_positionAfterCallUnequalToNonStartPosition() {
+
+        Assume.assumeTrue(player.setPosition(new Position(startX + 1, startY + 1)));
+        player.backToStartPosition();
+        Assert.assertTrue(player.getPosition().equals(new Position(startX, startY)));
+    }
 }
