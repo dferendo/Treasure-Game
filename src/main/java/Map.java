@@ -77,8 +77,7 @@ public class Map {
         return map[x][y];
     }
 
-    public void setInitialPlayerPosition(Player player) throws Exception {
-        Position position = player.getPosition();
+    public void setInitialPlayerPosition(Position position) throws Exception {
         int x = position.getX(), y = position.getY();
 
         if (getTileType(x, y) != TILE_TYPE.GRASS) {

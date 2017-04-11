@@ -121,7 +121,7 @@ public class MapTest {
         player.setPosition(new Position(x, y));
         generateMap(size);
 
-        mapInstance.setInitialPlayerPosition(player);
+        mapInstance.setInitialPlayerPosition(player.getPosition());
         Assert.assertTrue(mapInstance.getTileType(x, y) == Map.TILE_TYPE.GRASS);
     }
 

@@ -11,11 +11,11 @@ import java.io.IOException;
  */
 public class HTMLGeneratorTest {
 
-    HTMLGenerator htmlGeneratorInstance;
-    File file = new File("src/test/resources/html-test-template/SoftEngineer.html");
-    Player player;
-    Map map;
-    int size = 10;
+    private HTMLGenerator htmlGeneratorInstance;
+    private File file = new File("src/test/resources/html-test-template/SoftEngineer.html");
+    private Player player;
+    private Map map;
+    private int size = 10;
 
     @Before
     public void setUp() throws Exception {
