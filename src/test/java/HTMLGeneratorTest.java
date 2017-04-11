@@ -1,3 +1,4 @@
+import exceptions.PositionIsOutOfRange;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -42,9 +43,9 @@ public class HTMLGeneratorTest {
         htmlGeneratorInstance = new HTMLGenerator(new File("ThisFileDoesNotExist"), map, player);
     }
 
-    @Test(expected = Exception.class)
-    public void HTMLGenerator_fileTemplateFound_badPosition() throws Exception {
-        player.setPosition(new Position(size + 1, size + 1));
+    @Test
+    public void HTMLGenerator_fileTemplateFound_badPosition() throws IOException, PositionIsOutOfRange {
+        player.setPosition(new Position(2, 2));
         htmlGeneratorInstance = new HTMLGenerator(file, map, player);
     }
 

@@ -1,3 +1,4 @@
+import exceptions.PositionIsOutOfRange;
 import org.apache.commons.io.FileUtils;
 
 import java.awt.image.DirectColorModel;
@@ -169,8 +170,8 @@ public class Game {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (PositionIsOutOfRange positionIsOutOfRange) {
+            positionIsOutOfRange.printStackTrace();
         }
     }
 

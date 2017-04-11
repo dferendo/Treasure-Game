@@ -1,3 +1,4 @@
+import exceptions.PositionIsOutOfRange;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -32,7 +33,7 @@ public class HTMLGenerator {
                     TAB_FOR_CELL + "</td>\n";
     private final String TREASURE_CELL = TAB_FOR_CELL + "<td class=\"treasureCell\"></td>\n";
 
-    HTMLGenerator(File fileLocation, Map map, Player player) throws IOException, Exception {
+    HTMLGenerator(File fileLocation, Map map, Player player) throws IOException, PositionIsOutOfRange {
         writeOnFile(fileLocation, createTable(map, player));
     }
 
@@ -42,7 +43,7 @@ public class HTMLGenerator {
         FileUtils.writeStringToFile(fileLocation, htmlTemplate);
     }
 
-    private String createTable(Map map, Player player) throws Exception {
+    private String createTable(Map map, Player player) throws PositionIsOutOfRange {
         int mapSize = map.getMapSize(), x, y;
         StringBuilder table = new StringBuilder();
         table.append(createCaption(player));
