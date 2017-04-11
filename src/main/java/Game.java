@@ -26,6 +26,9 @@ public class Game {
         setNumPlayers();
         setMapSize();
 
+        // Clear input
+        scanner.nextLine();
+
         // Attempt to generate map
         try {
             map.generate();
@@ -39,6 +42,7 @@ public class Game {
 
     public void startGame() throws Exception {
 
+        // Throw errors setup was not called beforehand
         if (players == null) {
             throw new Exception("Players array was not initialized.");
         } else if (map == null) {
@@ -50,12 +54,11 @@ public class Game {
             for (final Player p : players) {
 
                 System.out.println("It's Player " + p.getID() + "'s turn.");
-
+                Player.MOVE_DIRECTION dir;
                 do {
                     System.out.println("Insert a direction to move: (U)p, (D)own, (L)eft, or (R)ight");
-                    final Player.MOVE_DIRECTION dir = getValidDirection();
-                    verifyDirection(p.getPosition(), dir);
-                } while (true);
+                    dir = getValidDirection();
+                } while (!verifyDirectionAndMove(p, dir));
             }
             break;
         } while (true);
@@ -153,18 +156,33 @@ public class Game {
         } while (true);
     }
 
-    private boolean verifyDirection(final Position pos, final Player.MOVE_DIRECTION dir) {
+    private boolean verifyDirectionAndMove(final Player player, final Player.MOVE_DIRECTION dir) {
 
+        final Position pos = player.getPosition();
         switch (dir) {
             case UP:
-                return pos.getY() > 0;
+                if (pos.getY() > 0) {
+                    player.setPosition(new Position(pos.getX(), pos.getY() - 1));
+                    return true;
+                } break;
             case DOWN:
-                return pos.getY() < map.getMapSize() - 1;
+                if (pos.getY() < map.getMapSize() - 1) {
+                    player.setPosition(new Position(pos.getX(), pos.getY() + 1));
+                    return true;
+                } break;
             case LEFT:
-                return pos.getX() > 0;
+                if (pos.getX() > 0) {
+                    player.setPosition(new Position(pos.getX() - 1, pos.getY()));
+                    return true;
+                } break;
             case RIGHT:
-                return pos.getX() < map.getMapSize() - 1;
+                if (pos.getX() < map.getMapSize() - 1) {
+                    player.setPosition(new Position(pos.getX() + 1, pos.getY()));
+                    return true;
+                } break;
         }
-        return true;
+
+        System.out.println("Cannot go outside the map!");
+        return false;
     }
 }
