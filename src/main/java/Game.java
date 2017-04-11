@@ -1,4 +1,6 @@
 import java.awt.image.DirectColorModel;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -13,6 +15,7 @@ public class Game {
     private int turns = 0;
     private Player[] players = null;
     private Map map = null;
+    private List<Player> winners = new ArrayList<Player>();
 
     private Game() {}
 
@@ -60,8 +63,33 @@ public class Game {
                     dir = getValidDirection();
                 } while (!verifyDirectionAndMove(p, dir));
             }
-            break;
-        } while (true);
+
+            generateHTMLFiles();
+            for (final Player p : players) {
+                final Position pos = p.getPosition();
+
+                switch (map.getTileType(pos.getX(), pos.getY())) {
+                    case TREASURE:
+                        System.out.println("Player " + p.getID() + " landed on a treasure!");
+                        winners.add(p);
+                        break;
+                    case GRASS:
+                        System.out.println("Player " + p.getID() + " landed on grass!");
+                        break;
+                    case WATER:
+                        System.out.println("Player " + p.getID() + " landed on water!");
+                        p.backToStartPosition();
+                        break;
+                }
+            }
+        } while (winners.size() == 0);
+
+        System.out.println("WINNERS");
+        System.out.println("-------");
+        for (Player p : winners) {
+            System.out.println("Player " + p.getID());
+        }
+        winners.clear();
 
         // End game
         players = null;
