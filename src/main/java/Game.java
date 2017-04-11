@@ -27,7 +27,26 @@ public class Game {
         setPlayers();
     }
 
-    public void startGame() throws Exception { }
+    public void startGame() throws Exception {
+
+        if (players == null) {
+            throw new Exception("Players array was not initialized.");
+        } else if (map == null) {
+            throw new Exception("Map was not initialized.");
+        }
+
+        // Attempt to generate map
+        try {
+            map.generate();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+
+        // End game
+        players = null;
+        map = null;
+    }
 
     private void setNumPlayers() {
         players = new Player[10];
