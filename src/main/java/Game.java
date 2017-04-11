@@ -24,6 +24,15 @@ public class Game {
         map = new Map();
         setNumPlayers();
         setMapSize();
+
+        // Attempt to generate map
+        try {
+            map.generate();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+
         setPlayers();
     }
 
@@ -33,14 +42,6 @@ public class Game {
             throw new Exception("Players array was not initialized.");
         } else if (map == null) {
             throw new Exception("Map was not initialized.");
-        }
-
-        // Attempt to generate map
-        try {
-            map.generate();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
         }
 
         do {
