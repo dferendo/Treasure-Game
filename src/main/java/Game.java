@@ -29,12 +29,12 @@ public class Game {
 
     public void startGame() throws Exception { }
 
-    private int setNumPlayers() {
-        return 0;
+    private void setNumPlayers() {
+        players = new Player[10];
     }
 
-    private int setMapSize () {
-        return 0;
+    private void setMapSize () {
+        map.setMapSize(20, 10);
     }
 
     private void setPlayers() { }
