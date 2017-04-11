@@ -9,7 +9,7 @@ public class Game {
     private static Game game = new Game();
     private final Scanner scanner = new Scanner(System.in);
 
-    private int turns;
+    private int turns = 0;
     private Player[] players = null;
     private Map map = null;
 
@@ -42,6 +42,17 @@ public class Game {
             e.printStackTrace();
             return;
         }
+
+        do {
+            generateHTMLFiles();
+            for (final Player p : players) {
+
+                System.out.println("It's Player " + p.getID() + "'s turn.");
+                System.out.println("Insert a direction to move: (U)p, (D)own, (L)eft, or (R)ight");
+                final Player.MOVE_DIRECTION dir = getValidDirection();
+            }
+            break;
+        } while (true);
 
         // End game
         players = null;
@@ -86,7 +97,7 @@ public class Game {
     }
 
     private void setPlayers() {
-        
+
         final Random rand = new Random();
         for (int i = 0; i < players.length; i++) {
             final Position startPos = new Position(rand.nextInt(map.getMapSize()), rand.nextInt(map.getMapSize()));
@@ -110,5 +121,10 @@ public class Game {
             scanner.next();
         }
         return scanner.nextInt();
+    }
+
+    private Player.MOVE_DIRECTION getValidDirection() {
+
+        return Player.MOVE_DIRECTION.DOWN;
     }
 }
