@@ -23,12 +23,8 @@ public class Map {
         }
     }
 
-    private int size;
+    public int size;
     private TILE_TYPE[][] map;
-
-    public Map() {
-        size = 0;
-    }
 
     public boolean setMapSize(int mapSize, int numberOfPlayers) {
         int MIN_MAP_SIZE_FOR_2_TO_4_PLAYERS = 5;
@@ -52,6 +48,10 @@ public class Map {
         } else {
             return false;
         }
+    }
+
+    public Map() {
+        size = 0;
     }
 
     public void generate() throws Exception {
