@@ -50,7 +50,7 @@ public class HTMLGenerator {
                 } else if (player.wasVisited(x, y)) {
                     table.append(determineCellType(map.getTileType(x, y), false));
                 } else {
-                    table.append(createIdleCell());
+                    table.append(IDLE_CELL);
                 }
             }
             table.append("</tr>\n");
@@ -65,29 +65,13 @@ public class HTMLGenerator {
     private String determineCellType(Map.TILE_TYPE cellType, boolean playerIsOnTile) {
         switch (cellType) {
             case GRASS:
-                return createGrassCell(playerIsOnTile);
+                return playerIsOnTile ? GRASS_CELL_WITH_PLAYER : GRASS_CELL;
             case WATER:
-                return createWaterCell(playerIsOnTile);
+                return playerIsOnTile ? WATER_CELL_WITH_PLAYER : WATER_CELL;
             case TREASURE:
-                return createTreasureCell(playerIsOnTile);
+                return playerIsOnTile ? TREASURE_CELL_WITH_PLAYER : TREASURE_CELL;
             default:
                 return "";
         }
-    }
-
-    private String createIdleCell() {
-        return IDLE_CELL;
-    }
-
-    private String createGrassCell(boolean playerIsOnTile) {
-        return playerIsOnTile ? GRASS_CELL_WITH_PLAYER : GRASS_CELL;
-    }
-
-    private String createWaterCell(boolean playerIsOnTile) {
-        return playerIsOnTile ? WATER_CELL_WITH_PLAYER : WATER_CELL;
-    }
-
-    private String createTreasureCell(boolean playerIsOnTile) {
-        return playerIsOnTile ? TREASURE_CELL_WITH_PLAYER : TREASURE_CELL;
     }
 }
