@@ -1,3 +1,4 @@
+import java.awt.image.DirectColorModel;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -49,8 +50,12 @@ public class Game {
             for (final Player p : players) {
 
                 System.out.println("It's Player " + p.getID() + "'s turn.");
-                System.out.println("Insert a direction to move: (U)p, (D)own, (L)eft, or (R)ight");
-                final Player.MOVE_DIRECTION dir = getValidDirection();
+
+                do {
+                    System.out.println("Insert a direction to move: (U)p, (D)own, (L)eft, or (R)ight");
+                    final Player.MOVE_DIRECTION dir = getValidDirection();
+                    verifyDirection(p.getPosition(), dir);
+                } while (true);
             }
             break;
         } while (true);
@@ -146,5 +151,20 @@ public class Game {
                 }
             }
         } while (true);
+    }
+
+    private boolean verifyDirection(final Position pos, final Player.MOVE_DIRECTION dir) {
+
+        switch (dir) {
+            case UP:
+                return pos.getY() > 0;
+            case DOWN:
+                return pos.getY() < map.getMapSize() - 1;
+            case LEFT:
+                return pos.getX() > 0;
+            case RIGHT:
+                return pos.getX() < map.getMapSize() - 1;
+        }
+        return true;
     }
 }
