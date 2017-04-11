@@ -50,6 +50,10 @@ public class Map {
         }
     }
 
+    public int getMapSize() {
+        return size;
+    }
+
     public Map() {
         size = 0;
     }

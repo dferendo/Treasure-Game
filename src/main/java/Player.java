@@ -82,4 +82,8 @@ public class Player {
             return false;
         }
     }
+
+    public void backToStartPosition() {
+        setPosition(visited.get(0));
+    }
 }
