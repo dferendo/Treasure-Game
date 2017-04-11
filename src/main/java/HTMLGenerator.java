@@ -12,12 +12,12 @@ public class HTMLGenerator {
     private final String TAB_FOR_CELL = TAB_FOR_ROW + "\t";
     private final String TAB_FOR_IMAGE = TAB_FOR_CELL + "\t";
 
-    private final String IDLE_CELL = TAB_FOR_CELL + "<td class=\"notDiscoveredCell\"></td>\n";
     private final String GRASS_CELL_WITH_PLAYER =
             TAB_FOR_CELL +
-            "<td class=\"grassCell\">\n" +
+                    "<td class=\"grassCell\">\n" +
                     TAB_FOR_IMAGE + "<img class=\"playerIcon\" src=\"../images/ic_person_pin_black_24px.svg\">\n" +
                     TAB_FOR_CELL + "</td>\n";
+    private final String IDLE_CELL = TAB_FOR_CELL + "<td class=\"notDiscoveredCell\"></td>\n";
     private final String GRASS_CELL = TAB_FOR_CELL + "<td class=\"grassCell\"></td>\n";
     private final String WATER_CELL_WITH_PLAYER =
             TAB_FOR_CELL +
@@ -32,7 +32,7 @@ public class HTMLGenerator {
                     TAB_FOR_CELL + "</td>\n";
     private final String TREASURE_CELL = TAB_FOR_CELL + "<td class=\"treasureCell\"></td>\n";
 
-    public HTMLGenerator(File fileLocation, Map map, Player player) throws IOException, Exception {
+    HTMLGenerator(File fileLocation, Map map, Player player) throws IOException, Exception {
         writeOnFile(fileLocation, createTable(map, player));
     }
 
@@ -43,7 +43,7 @@ public class HTMLGenerator {
     }
 
     private String createTable(Map map, Player player) throws Exception {
-        int mapSize = map.size, x, y;
+        int mapSize = map.getMapSize(), x, y;
         StringBuilder table = new StringBuilder();
         table.append(createCaption(player));
 

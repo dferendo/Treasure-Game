@@ -1,3 +1,4 @@
+import exceptions.PositionIsOutOfRange;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
@@ -62,18 +63,43 @@ public class PlayerTest {
     }
 
     @Test
-    public void wasVisited_startPositionShouldBeVisited() {
+    public void wasVisited_startPositionShouldBeVisited() throws PositionIsOutOfRange {
+        int mapSize = 20;
+
+        generateMap(mapSize);
         Assert.assertTrue(player.wasVisited(startX, startY));
     }
 
     @Test
-    public void wasVisited_nonStartPositionShouldNotBeVisited() {
+    public void wasVisited_nonStartPositionShouldNotBeVisited() throws PositionIsOutOfRange {
+        int mapSize = 20;
+
+        generateMap(mapSize);
         Assert.assertFalse(player.wasVisited(startX + 1, startY + 1));
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void wasVisited_negativeCoordinates() {
+    @Test (expected = PositionIsOutOfRange.class)
+    public void wasVisited_negativeCoordinates() throws PositionIsOutOfRange {
+        int mapSize = 20;
+
+        generateMap(mapSize);
         player.wasVisited(-1, -1);
+    }
+
+    @Test (expected = PositionIsOutOfRange.class)
+    public void wasVisited_xPositionGreaterThanMapSize() throws PositionIsOutOfRange {
+        int mapSize = 20;
+
+        generateMap(mapSize);
+        player.wasVisited(mapSize + 1, 1);
+    }
+
+    @Test (expected = PositionIsOutOfRange.class)
+    public void wasVisited_yPositionGreaterThanMapSize() throws PositionIsOutOfRange {
+        int mapSize = 20;
+
+        generateMap(mapSize);
+        player.wasVisited(1, mapSize + 1);
     }
 
     @Test
@@ -89,5 +115,12 @@ public class PlayerTest {
         Assume.assumeTrue(player.setPosition(new Position(startX + 1, startY + 1)));
         player.backToStartPosition();
         Assert.assertTrue(player.getPosition().equals(new Position(startX, startY)));
+    }
+
+    private void generateMap(int mapSize) {
+        int numberOfPlayers = 3;
+        // Map is needed to set the size of the map used by was visited.
+        Map map = new Map();
+        map.setMapSize(mapSize, numberOfPlayers);
     }
 }

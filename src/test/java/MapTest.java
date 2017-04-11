@@ -1,3 +1,5 @@
+import exceptions.PositionIsOutOfRange;
+import exceptions.SizeOfMapWasNotSet;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
@@ -67,37 +69,37 @@ public class MapTest {
                 mapInstance.setMapSize(mapSize, players));
     }
 
-    @Test(expected = Exception.class)
-    public void generate_sizeWasNotSetBeforeHand() throws Exception {
+    @Test(expected = SizeOfMapWasNotSet.class)
+    public void generate_sizeWasNotSetBeforeHand() throws SizeOfMapWasNotSet {
         mapInstance.generate();
     }
 
-    @Test(expected = Exception.class)
-    public void getTileType_xIsLessThan0YIsCorrect() throws Exception {
+    @Test(expected = PositionIsOutOfRange.class)
+    public void getTileType_xIsLessThan0YIsCorrect() throws PositionIsOutOfRange {
         int size = 10, x = -1, y = 2;
         generateMap(size);
 
         mapInstance.getTileType(x, y);
     }
 
-    @Test(expected = Exception.class)
-    public void getTileType_xIsGreaterThanSizeYIsCorrect() throws Exception {
+    @Test(expected = PositionIsOutOfRange.class)
+    public void getTileType_xIsGreaterThanSizeYIsCorrect() throws PositionIsOutOfRange {
         int size = 10, y = 2;
         generateMap(size);
 
         mapInstance.getTileType(size, y);
     }
 
-    @Test(expected = Exception.class)
-    public void getTileType_xIsCorrectYIsLessThan0() throws Exception {
+    @Test(expected = PositionIsOutOfRange.class)
+    public void getTileType_xIsCorrectYIsLessThan0() throws PositionIsOutOfRange {
         int size = 10, x = 2, y = -1;
         generateMap(size);
 
         mapInstance.getTileType(x, y);
     }
 
-    @Test(expected = Exception.class)
-    public void getTileType_xIsCorrectYIsGreaterThanSize() throws Exception {
+    @Test(expected = PositionIsOutOfRange.class)
+    public void getTileType_xIsCorrectYIsGreaterThanSize() throws PositionIsOutOfRange {
         int size = 10, x = 2;
         generateMap(size);
 
@@ -105,7 +107,7 @@ public class MapTest {
     }
 
     @Test
-    public void getTileType_correctInput() throws Exception {
+    public void getTileType_correctInput() throws PositionIsOutOfRange {
         int size = 10, x = 2, y = 2;
         generateMap(size);
 
@@ -115,7 +117,7 @@ public class MapTest {
     }
 
     @Test
-    public void setInitialPlayerPosition_checkIfTileIsChange() throws Exception {
+    public void setInitialPlayerPosition_checkIfTileIsChange() throws PositionIsOutOfRange {
         int size = 10, x = 2, y = 2, playerID = 1;
         Player player = new Player(playerID);
 
@@ -126,20 +128,20 @@ public class MapTest {
         Assert.assertTrue(mapInstance.getTileType(x, y) == Map.TILE_TYPE.GRASS);
     }
 
-    private void generateMap(int size) {
-        int numberOfPlayers = 4;
-        mapInstance.setMapSize(size, numberOfPlayers);
-        try {
-            mapInstance.generate();
-        } catch (Exception e) {
-            fail("Map size inserted was incorrect.");
-        }
-    }
-
     @Test
     public void getMapSize_getterValueMatchesSetterValue() {
         int size = 30, players = 8;
         Assume.assumeTrue(mapInstance.setMapSize(size, players));
         Assert.assertTrue(mapInstance.getMapSize() == size);
+    }
+
+    private void generateMap(int size) {
+        int numberOfPlayers = 4;
+        mapInstance.setMapSize(size, numberOfPlayers);
+        try {
+            mapInstance.generate();
+        } catch (SizeOfMapWasNotSet e) {
+            fail("Map size inserted was incorrect.");
+        }
     }
 }

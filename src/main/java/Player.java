@@ -1,3 +1,5 @@
+import exceptions.PositionIsOutOfRange;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +12,7 @@ public class Player {
         UP,
         DOWN,
         LEFT,
-        RIGHT;
+        RIGHT
     }
 
     private int ID;
@@ -67,11 +69,10 @@ public class Player {
         return position;
     }
 
-    public boolean wasVisited(final int x, final int y) {
+    public boolean wasVisited(final int x, final int y) throws PositionIsOutOfRange {
 
-        // todo: check that x and y do not exceed map's size
-        if (x < 0 || y < 0) {
-            throw new IllegalArgumentException("Negative coordinate/s.");
+        if (x < 0 || y < 0 || x >= Map.getSize() || y >= Map.getSize()) {
+            throw new PositionIsOutOfRange(x, y);
         } else {
             final Position toCheck = new Position(x, y);
             for (final Position position : visited) {

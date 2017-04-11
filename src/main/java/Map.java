@@ -1,3 +1,6 @@
+import exceptions.PositionIsOutOfRange;
+import exceptions.SizeOfMapWasNotSet;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -23,7 +26,7 @@ public class Map {
         }
     }
 
-    public int size;
+    private static int size;
     private TILE_TYPE[][] map;
 
     public boolean setMapSize(int mapSize, int numberOfPlayers) {
@@ -58,14 +61,13 @@ public class Map {
         size = 0;
     }
 
-    public void generate() throws Exception {
+    public void generate() throws SizeOfMapWasNotSet {
         if (size == 0) {
-            throw new Exception("Size was not set.");
+            throw new SizeOfMapWasNotSet();
         }
         map = new TILE_TYPE[size][size];
         // TODO: check with the lecturer if there needs to be a path
         // TODO: check with the lecturer if there can be multiple treasures.
-        // TODO: Add an Custom Exception?
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 map[i][j] = TILE_TYPE.getRandomTile();
@@ -73,15 +75,15 @@ public class Map {
         }
     }
 
-    public TILE_TYPE getTileType(int x, int y) throws Exception {
+    public TILE_TYPE getTileType(int x, int y) throws PositionIsOutOfRange {
         // X and y was agreed that it will start from 0.
         if ((x < 0 || x >= size) || (y < 0 || y >= size)) {
-            throw new Exception("Position inputs were incorrect.");
+            throw new PositionIsOutOfRange(x, y);
         }
         return map[x][y];
     }
 
-    public void setInitialPlayerPosition(Position position) throws Exception {
+    public void setInitialPlayerPosition(Position position) throws PositionIsOutOfRange {
         int x = position.getX(), y = position.getY();
 
         if (getTileType(x, y) != TILE_TYPE.GRASS) {
@@ -89,4 +91,7 @@ public class Map {
         }
     }
 
+    public static int getSize() {
+        return size;
+    }
 }
