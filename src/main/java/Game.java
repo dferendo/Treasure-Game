@@ -85,7 +85,7 @@ public class Game {
                 }
             }
         } while (winners.size() == 0);
-        
+
         System.out.println("\nWINNERS");
         System.out.println("-------");
         for (Player p : winners) {
@@ -155,7 +155,7 @@ public class Game {
 
     private int getValidInt() {
 
-        while(!scanner.hasNext()) {
+        while(!scanner.hasNextInt()) {
             System.out.println("The input was not a valid integer!");
             scanner.next();
         }
