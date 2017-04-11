@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 /**
  * @author Miguel Dingli
  */
