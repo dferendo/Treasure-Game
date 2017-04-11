@@ -64,6 +64,8 @@ public class Game {
                 } while (!verifyDirectionAndMove(p, dir));
             }
 
+            System.out.println();
+
             generateHTMLFiles();
             for (final Player p : players) {
                 final Position pos = p.getPosition();
@@ -83,8 +85,8 @@ public class Game {
                 }
             }
         } while (winners.size() == 0);
-
-        System.out.println("WINNERS");
+        
+        System.out.println("\nWINNERS");
         System.out.println("-------");
         for (Player p : winners) {
             System.out.println("Player " + p.getID());
