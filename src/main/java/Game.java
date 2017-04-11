@@ -56,7 +56,24 @@ public class Game {
         map.setMapSize(20, 10);
     }
 
-    private void setPlayers() { }
+    private void setPlayers() {
+
+        final int MIN_PLAYERS = 2, MAX_PLAYERS = 8;
+        final String NUM_PLAYERS_RANGE = "(" + MIN_PLAYERS + "-" + MAX_PLAYERS + ")";
+
+        int numPlayers;
+        while (true) {
+            System.out.println("How many players will be playing? " + NUM_PLAYERS_RANGE);
+            numPlayers = getValidInt();
+
+            if (numPlayers < MIN_PLAYERS || numPlayers > MAX_PLAYERS) {
+                System.out.println("The input value was out of the range " + NUM_PLAYERS_RANGE + ".");
+            } else {
+                players = new Player[numPlayers];
+                break;
+            }
+        }
+    }
 
     private void generateHTMLFiles() { }
 
