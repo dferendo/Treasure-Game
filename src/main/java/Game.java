@@ -19,7 +19,13 @@ public class Game {
         return game;
     }
 
-    public void setup() { }
+    public void setup() {
+        
+        map = new Map();
+        setNumPlayers();
+        setMapSize();
+        setPlayers();
+    }
 
     public void startGame() throws Exception { }
 
@@ -36,7 +42,7 @@ public class Game {
     private void generateHTMLFiles() { }
 
     private int getValidInt() {
-        
+
         while(!scanner.hasNext()) {
             System.out.println("The input was not a valid integer!");
             scanner.next();
