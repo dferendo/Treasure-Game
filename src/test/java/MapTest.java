@@ -1,4 +1,5 @@
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -133,5 +134,12 @@ public class MapTest {
         } catch (Exception e) {
             fail("Map size inserted was incorrect.");
         }
+    }
+
+    @Test
+    private void getMapSize_getterValueMatchesSetterValue() {
+        int size = 30, players = 8;
+        Assume.assumeTrue(mapInstance.setMapSize(size, players));
+        Assert.assertTrue(mapInstance.getMapSize() == size);
     }
 }
