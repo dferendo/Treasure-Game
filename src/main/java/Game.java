@@ -36,6 +36,11 @@ public class Game {
     private void generateHTMLFiles() { }
 
     private int getValidInt() {
-        return 0;
+        
+        while(!scanner.hasNext()) {
+            System.out.println("The input was not a valid integer!");
+            scanner.next();
+        }
+        return scanner.nextInt();
     }
 }
