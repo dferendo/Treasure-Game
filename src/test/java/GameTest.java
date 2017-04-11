@@ -29,7 +29,8 @@ public class GameTest {
         try {
             game.startGame();
         } catch (Exception e) {
-            fail("Game was started before setup.");
+            return;
         }
+        fail("Game was started before setup.");
     }
 }
