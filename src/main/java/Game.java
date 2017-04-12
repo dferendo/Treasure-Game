@@ -136,7 +136,7 @@ public class Game {
             System.out.println("What will be the size of the map? " + MAP_SIZE_RANGE);
             mapSize = getValidInt();
 
-            if (!map.setMapSize(mapSize, players.length)) {
+            if (!map.setMapSize(mapSize, mapSize, players.length)) {
                 System.out.println("The input value was out of the range " + MAP_SIZE_RANGE + ".");
             } else {
                 break;

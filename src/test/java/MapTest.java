@@ -18,7 +18,7 @@ public class MapTest {
     public void setUp() {
         mapInstance = new Map();
     }
-    
+
     @Test
     public void setMapSize_xAndYAreNotEqual() {
         int x = 5, y = 6, players = 3;
@@ -138,13 +138,13 @@ public class MapTest {
     @Test
     public void getMapSize_getterValueMatchesSetterValue() {
         int size = 30, players = 8;
-        Assume.assumeTrue(mapInstance.setMapSize(size, players));
+        Assume.assumeTrue(mapInstance.setMapSize(size, size, players));
         Assert.assertTrue(mapInstance.getMapSize() == size);
     }
 
     private void generateMap(int size) {
         int numberOfPlayers = 4;
-        mapInstance.setMapSize(size, numberOfPlayers);
+        mapInstance.setMapSize(size, size, numberOfPlayers);
         try {
             mapInstance.generate();
         } catch (SizeOfMapWasNotSet e) {

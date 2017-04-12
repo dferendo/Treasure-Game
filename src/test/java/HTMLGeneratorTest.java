@@ -25,7 +25,7 @@ public class HTMLGeneratorTest {
         player = new Player(1);
         File HTMLTemplateLocation = new File("src/main/resources/html-template/SoftEngineer.html");
 
-        map.setMapSize(size, numberOfPlayers);
+        map.setMapSize(size, size, numberOfPlayers);
         map.generate();
         FileUtils.copyFile(HTMLTemplateLocation, file);
     }

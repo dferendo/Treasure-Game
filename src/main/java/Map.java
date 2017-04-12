@@ -34,19 +34,22 @@ public class Map {
         int MIN_MAP_SIZE_FOR_5_TO_8_PLAYERS = 8;
         int MAX_MAP_SIZE = 50;
 
-        // Size can only be changed once since once the game is played, it will exits.
-        if (size != 0) {
+        // Map should be squared.
+        if (x != y) {
             return false;
-        } else if (mapSize < MIN_MAP_SIZE_FOR_2_TO_4_PLAYERS || mapSize > MAX_MAP_SIZE) {
+        } else if (size != 0) {
+            // Size can only be changed once since once the game is played, it will exits.
+            return false;
+        } else if (x < MIN_MAP_SIZE_FOR_2_TO_4_PLAYERS || x > MAX_MAP_SIZE) {
             return false;
         } else if (numberOfPlayers >= 2 && numberOfPlayers <= 4) {
-            size = mapSize;
+            size = x;
             return true;
         } else if (numberOfPlayers >= 5 && numberOfPlayers <= 8) {
-            if (mapSize < MIN_MAP_SIZE_FOR_5_TO_8_PLAYERS) {
+            if (x < MIN_MAP_SIZE_FOR_5_TO_8_PLAYERS) {
                 return false;
             }
-            size = mapSize;
+            size = x;
             return true;
         } else {
             return false;
