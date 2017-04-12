@@ -18,12 +18,19 @@ public class MapTest {
     public void setUp() {
         mapInstance = new Map();
     }
+    
+    @Test
+    public void setMapSize_xAndYAreNotEqual() {
+        int x = 5, y = 6, players = 3;
+
+        Assert.assertFalse("(x, y) of Map should be equal", mapInstance.setMapSize(x, y, players));
+    }
 
     @Test
     public void setMapSize_sizeWasAlreadySet() {
-        int mapSize = 5, players = 4, mapSize2 = 8, players2 = 4;
-        if (mapInstance.setMapSize(mapSize, players)) {
-            Assert.assertTrue("Size of map was already set.", !mapInstance.setMapSize(mapSize2, players2));
+        int x = 5, y = 5, players = 4, mapSize2 = 8, players2 = 4;
+        if (mapInstance.setMapSize(x, y, players)) {
+            Assert.assertTrue("Size of map was already set.", !mapInstance.setMapSize(x, y, players2));
         } else {
             fail("setMapSize was not set before hand.");
         }
@@ -31,42 +38,42 @@ public class MapTest {
 
     @Test
     public void setMapSize_mapSizeIsLessThenMinimumFor2To4Players() {
-        int mapSize = 3, players = 3;
+        int x = 3, y = 3, players = 3;
 
-        Assert.assertFalse("Map size " + mapSize + " must be greater than or equal than 5 for " + players + " players",
-                mapInstance.setMapSize(mapSize, players));
+        Assert.assertFalse("Map size " + 3 + " must be greater than or equal than 5 for " + players + " players",
+                mapInstance.setMapSize(x, y, players));
     }
 
     @Test
     public void setMapSize_mapSizeIsGreaterThanMaximumSize() {
-        int mapSize = 51, players = 4;
+        int x = 51, y = 5, players = 4;
 
-        Assert.assertFalse("Map size " + mapSize + " is greater than the maximum map size.",
-                mapInstance.setMapSize(mapSize, players));
+        Assert.assertFalse("Map size " + x + " is greater than the maximum map size.",
+                mapInstance.setMapSize(x, y, players));
     }
 
     @Test
     public void setMapSize_mapSizeIsCorrectFor2To4Players() {
-        int mapSize = 5, players = 2;
+        int x = 5, y = 5, players = 2;
 
-        Assert.assertTrue("Map size " + mapSize + " is correct for " + players + " players",
-                mapInstance.setMapSize(mapSize, players));
+        Assert.assertTrue("Map size " + x + " is correct for " + players + " players",
+                mapInstance.setMapSize(x, y, players));
     }
 
     @Test
     public void setMapSize_mapSizeIsLessThenMinimumFor5To8Players() {
-        int mapSize = 6, players = 8;
+        int x = 6, y = 6, players = 8;
 
-        Assert.assertFalse("Map size " + mapSize + " must be greater then 8 for " + players + " players",
-                mapInstance.setMapSize(mapSize, players));
+        Assert.assertFalse("Map size " + x + " must be greater then 8 for " + players + " players",
+                mapInstance.setMapSize(x, y, players));
     }
 
     @Test
     public void setMapSize_mapSizeIsCorrectFor5To8Players() {
-        int mapSize = 10, players = 6;
+        int x = 10, y = 10, players = 6;
 
-        Assert.assertTrue("Map size " + mapSize + "is correct for " + players + "players.",
-                mapInstance.setMapSize(mapSize, players));
+        Assert.assertTrue("Map size " + x + "is correct for " + players + "players.",
+                mapInstance.setMapSize(x, y, players));
     }
 
     @Test(expected = SizeOfMapWasNotSet.class)

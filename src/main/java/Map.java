@@ -29,12 +29,12 @@ public class Map {
     private static int size;
     private TILE_TYPE[][] map;
 
-    public boolean setMapSize(int mapSize, int numberOfPlayers) {
+    public boolean setMapSize(int x, int y, int numberOfPlayers) {
         int MIN_MAP_SIZE_FOR_2_TO_4_PLAYERS = 5;
         int MIN_MAP_SIZE_FOR_5_TO_8_PLAYERS = 8;
         int MAX_MAP_SIZE = 50;
-        // TODO: check if size can be changed.
 
+        // Size can only be changed once since once the game is played, it will exits.
         if (size != 0) {
             return false;
         } else if (mapSize < MIN_MAP_SIZE_FOR_2_TO_4_PLAYERS || mapSize > MAX_MAP_SIZE) {
