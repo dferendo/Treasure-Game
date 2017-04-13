@@ -1,9 +1,6 @@
 import exceptions.PositionIsOutOfRange;
 import exceptions.SizeOfMapWasNotSet;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -14,16 +11,7 @@ public class Map {
     public enum TILE_TYPE {
         GRASS,
         WATER,
-        TREASURE;
-
-        // Put the result of values() inside a list so it is cached instead of
-        // copying an array with each values call.
-        private static final List<TILE_TYPE> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
-        private static final Random rand = new Random();
-
-        public static TILE_TYPE getRandomTile(){
-            return VALUES.get(rand.nextInt(VALUES.size()));
-        }
+        TREASURE
     }
 
     private static int size;
@@ -56,26 +44,42 @@ public class Map {
         }
     }
 
-    public int getMapSize() {
-        return size;
-    }
-
-    public Map() {
-        size = 0;
-    }
-
     public void generate() throws SizeOfMapWasNotSet {
+        int x, y, counter = 0, totalAmountOfWaterTiles;
+        Random rand;
+
         if (size == 0) {
             throw new SizeOfMapWasNotSet();
         }
         map = new TILE_TYPE[size][size];
-        // TODO: check with the lecturer if there needs to be a path
-        // TODO: check with the lecturer if there can be multiple treasures.
+        rand = new Random();
+
+        // Fill the whole map with Grass Tile.
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                map[i][j] = TILE_TYPE.getRandomTile();
+                map[i][j] = TILE_TYPE.GRASS;
             }
         }
+        // Generate random points, size is exclusive but 0 is inclusive.
+        x = rand.nextInt(size);
+        y = rand.nextInt(size);
+
+        // Generate random tile location.
+        map[x][y] = TILE_TYPE.TREASURE;
+
+        // There will be only around 10% water Tiles (rounded to the next Integer)
+        totalAmountOfWaterTiles = (int) Math.ceil((double) (size * size) / 10);
+        while (counter++ < totalAmountOfWaterTiles) {
+            x = rand.nextInt(size);
+            y = rand.nextInt(size);
+            // If the location is already water or treasure, it does not count as a new water Tile.
+            if (map[x][y] == TILE_TYPE.TREASURE || map[x][y] == TILE_TYPE.WATER) {
+                counter--;
+                continue;
+            }
+            map[x][y] = TILE_TYPE.WATER;
+        }
+
     }
 
     public TILE_TYPE getTileType(int x, int y) throws PositionIsOutOfRange {
@@ -96,5 +100,13 @@ public class Map {
 
     public static int getSize() {
         return size;
+    }
+
+    public int getMapSize() {
+        return size;
+    }
+
+    public Map() {
+        size = 0;
     }
 }
