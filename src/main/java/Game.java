@@ -25,6 +25,7 @@ public class Game {
 
     File HTMLTemplateLocation = new File("src/main/resources/html-template/SoftEngineer.html");
     String playersMapLocation = "src/main/resources/players-maps/";
+    File GitIgnoreLocation = new File("src/main/resources/players-maps/.gitignore");
 
     private Game() {}
 
@@ -159,7 +160,11 @@ public class Game {
 
     private void generateHTMLFiles() {
         try {
+            // .gitignore is still needed in the directory, thus re-write it after
+            // cleaning the directory
+            String gitIgnore = FileUtils.readFileToString(GitIgnoreLocation);
             FileUtils.cleanDirectory(new File(playersMapLocation));
+            FileUtils.writeStringToFile(GitIgnoreLocation, gitIgnore);
             for (final Player player : players) {
                 File playerFile = new File(playersMapLocation + "map_player_" + player.getID() + ".html");
                 FileUtils.copyFile(HTMLTemplateLocation, playerFile);
