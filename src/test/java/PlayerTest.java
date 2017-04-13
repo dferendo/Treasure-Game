@@ -121,6 +121,6 @@ public class PlayerTest {
         int numberOfPlayers = 3;
         // Map is needed to set the size of the map used by was visited.
         Map map = new Map();
-        map.setMapSize(mapSize, numberOfPlayers);
+        map.setMapSize(mapSize, mapSize, numberOfPlayers);
     }
 }

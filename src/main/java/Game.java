@@ -136,7 +136,7 @@ public class Game {
             System.out.println("What will be the size of the map? " + MAP_SIZE_RANGE);
             mapSize = getValidInt();
 
-            if (!map.setMapSize(mapSize, players.length)) {
+            if (!map.setMapSize(mapSize, mapSize, players.length)) {
                 System.out.println("The input value was out of the range " + MAP_SIZE_RANGE + ".");
             } else {
                 break;
@@ -146,13 +146,10 @@ public class Game {
 
     private void setPlayers() {
 
-        final Random rand = new Random();
         for (int i = 0; i < players.length; i++) {
-            final Position startPos = new Position(rand.nextInt(map.getMapSize()), rand.nextInt(map.getMapSize()));
             players[i] = new Player(i+1);
-            players[i].setPosition(startPos);
             try {
-                map.setInitialPlayerPosition(startPos);
+                map.setInitialPlayerPosition(players[i]);
             } catch(Exception e) {
                 e.printStackTrace();
                 return;
