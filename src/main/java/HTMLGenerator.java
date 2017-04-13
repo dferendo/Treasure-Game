@@ -54,10 +54,10 @@ public class HTMLGenerator {
             for (int j = 0; j < mapSize; j++) {
                 x = player.getPosition().getX();
                 y = player.getPosition().getY();
-                if (x == i && y == j) {
-                    table.append(determineCellType(map.getTileType(i, j), true));
-                } else if (player.wasVisited(i, j)) {
-                    table.append(determineCellType(map.getTileType(i, j), false));
+                if (x == j && y == i) {
+                    table.append(determineCellType(map.getTileType(j, i), true));
+                } else if (player.wasVisited(j, i)) {
+                    table.append(determineCellType(map.getTileType(j, i), false));
                 } else {
                     table.append(IDLE_CELL);
                 }
