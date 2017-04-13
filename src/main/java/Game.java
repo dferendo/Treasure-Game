@@ -31,30 +31,37 @@ public class Game {
         setMapSize();
     }
 
-    public void startGame() throws GameWasNotInitialized, SizeOfMapWasNotSet, PositionIsOutOfRange {
+    private void preStart() throws GameWasNotInitialized, SizeOfMapWasNotSet, PositionIsOutOfRange {
 
+        // Check if either map or players array were not initialized
         if (map == null) {
-            // Map was not initialized
             throw new GameWasNotInitialized("Map");
         } else if (players == null) {
-            // Players array was not initialized
             throw new GameWasNotInitialized("Players array");
         }
 
-        // Generate map and set initial player positions
-        try {
-            map.generate();
-        } catch (SizeOfMapWasNotSet e) {
-            e.printStackTrace();
-            throw e;
-        }
-        setPlayers(); // Set initial player positions
+        // Generate map
+        map.generate();
 
+        // Initialize players and set their initial position
+        for (int i = 0; i < players.length; i++) {
+            players[i] = new Player(i+1);
+            map.setInitialPlayerPosition(players[i]);
+        }
+    }
+
+    public void startGame() throws GameWasNotInitialized, SizeOfMapWasNotSet, PositionIsOutOfRange {
+
+        // Some checks, map generation, and setting of players
+        preStart();
+
+        // Main game loop
         do {
             System.out.println("-----------------");
             System.out.println("Turn " + (turns++));
             System.out.println("-----------------");
 
+            // Generate files and ask users for direction to move
             generateHTMLFiles();
             for (final Player p : players) {
 
@@ -68,13 +75,14 @@ public class Game {
 
             System.out.println();
 
+            // Generate files and check where the players landed
             generateHTMLFiles();
             for (final Player p : players) {
                 final Position pos = p.getPosition();
 
                 switch (map.getTileType(pos.getX(), pos.getY())) {
                     case TREASURE:
-                        System.out.println("Player " + p.getID() + " landed on a treasure!");
+                        System.out.println("Player " + p.getID() + " landed on the treasure!");
                         winners.add(p);
                         break;
                     case GRASS:
@@ -88,14 +96,15 @@ public class Game {
             }
         } while (winners.size() == 0);
 
+        // At least one player landed on the treasure
         System.out.println("\nWINNERS");
         System.out.println("-------");
         for (Player p : winners) {
             System.out.println("Player " + p.getID());
         }
-        winners.clear();
 
         // End game
+        winners.clear();
         players = null;
         map = null;
     }
@@ -138,20 +147,8 @@ public class Game {
         }
     }
 
-    private void setPlayers() {
-
-        for (int i = 0; i < players.length; i++) {
-            players[i] = new Player(i+1);
-            try {
-                map.setInitialPlayerPosition(players[i]);
-            } catch(Exception e) {
-                e.printStackTrace();
-                return;
-            }
-        }
-    }
-
     private void generateHTMLFiles() {
+
         try {
             // .gitignore is still needed in the directory, thus re-write it after
             // cleaning the directory
@@ -225,7 +222,6 @@ public class Game {
                     return player.setPosition(new Position(pos.getX() + 1, pos.getY()));
                 } break;
         }
-
         System.out.println("Cannot go outside the map!");
         return false;
     }
