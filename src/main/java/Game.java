@@ -26,10 +26,6 @@ public class Game {
     private final String playersMapLocation = "src/main/resources/players-maps/";
     private final File GitIgnoreLocation = new File("src/main/resources/players-maps/.gitignore");
 
-    public Game() {
-        map = new Map();
-    }
-
     public void setup() throws SizeOfMapWasNotSet {
         setNumPlayers();
         setMapSize();
@@ -43,13 +39,6 @@ public class Game {
         } else if (players == null) {
             // Players array was not initialized
             throw new GameWasNotInitialized("Players array");
-        } else {
-            // At least one initial position was not set
-            for (final Player p : players) {
-                if (p.getPosition() == null) {
-                    throw new GameWasNotInitialized("Player " + p.getID() + " initial position");
-                }
-            }
         }
 
         // Generate map and set initial player positions
@@ -59,7 +48,7 @@ public class Game {
             e.printStackTrace();
             throw e;
         }
-        setPlayers();
+        setPlayers(); // Set initial player positions
 
         do {
             System.out.println("-----------------");
