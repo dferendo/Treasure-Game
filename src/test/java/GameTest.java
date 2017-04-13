@@ -19,9 +19,7 @@ import static junit.framework.TestCase.fail;
 public class GameTest {
 
     private Game game;
-
     private final InputStream stdin = System.in;
-    private InputStream customIn;
 
     @Test(expected = GameWasNotInitialized.class)
     public void startGame_startBeforeSetupCausesException() throws GameWasNotInitialized, PositionIsOutOfRange {
