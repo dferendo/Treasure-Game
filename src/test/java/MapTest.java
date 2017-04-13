@@ -171,15 +171,15 @@ public class MapTest {
     }
 
     @Test
-    public void setInitialPlayerPosition_checkIfTileIsChange() throws PositionIsOutOfRange {
-        int size = 10, x = 2, y = 2, playerID = 1;
+    public void setInitialPlayerPosition_checkIfTileIsGrassTile() throws PositionIsOutOfRange {
+        int size = 10, playerID = 1;
         Player player = new Player(playerID);
 
-        player.setPosition(new Position(x, y));
         generateMap(size);
 
-        mapInstance.setInitialPlayerPosition(player.getPosition());
-        Assert.assertTrue(mapInstance.getTileType(x, y) == Map.TILE_TYPE.GRASS);
+        mapInstance.setInitialPlayerPosition(player);
+        Assert.assertTrue(mapInstance.getTileType(player.getPosition().getX(),
+                player.getPosition().getY()) == Map.TILE_TYPE.GRASS);
     }
 
     @Test

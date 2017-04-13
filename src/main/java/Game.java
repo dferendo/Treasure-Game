@@ -146,13 +146,10 @@ public class Game {
 
     private void setPlayers() {
 
-        final Random rand = new Random();
         for (int i = 0; i < players.length; i++) {
-            final Position startPos = new Position(rand.nextInt(map.getMapSize()), rand.nextInt(map.getMapSize()));
             players[i] = new Player(i+1);
-            players[i].setPosition(startPos);
             try {
-                map.setInitialPlayerPosition(startPos);
+                map.setInitialPlayerPosition(players[i]);
             } catch(Exception e) {
                 e.printStackTrace();
                 return;

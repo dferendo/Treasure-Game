@@ -90,11 +90,18 @@ public class Map {
         return map[x][y];
     }
 
-    public void setInitialPlayerPosition(Position position) throws PositionIsOutOfRange {
-        int x = position.getX(), y = position.getY();
+    public void setInitialPlayerPosition(Player player) throws PositionIsOutOfRange {
+        int x, y;
+        Random rand = new Random();
 
-        if (getTileType(x, y) != TILE_TYPE.GRASS) {
-            map[x][y] = TILE_TYPE.GRASS;
+        while (true) {
+            x = rand.nextInt(size);
+            y = rand.nextInt(size);
+
+            if (getTileType(x, y) == TILE_TYPE.GRASS) {
+                player.setPosition(new Position(x, y));
+                break;
+            }
         }
     }
 
