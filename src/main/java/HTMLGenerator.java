@@ -44,16 +44,16 @@ public class HTMLGenerator {
     }
 
     private String createTable(final Map map, final Player player) throws PositionIsOutOfRange {
-        int mapSize = map.getMapSize(), x, y;
-        StringBuilder table = new StringBuilder();
+        final int mapSize = map.getMapSize();
+        final StringBuilder table = new StringBuilder();
         table.append(createCaption(player));
 
         for (int i = 0; i < mapSize; i++) {
             table.append(TAB_FOR_ROW);
             table.append("<tr>\n");
             for (int j = 0; j < mapSize; j++) {
-                x = player.getPosition().getX();
-                y = player.getPosition().getY();
+                final int x = player.getPosition().getX();
+                final int y = player.getPosition().getY();
                 if (x == j && y == i) {
                     table.append(determineCellType(map.getTileType(j, i), true));
                 } else if (player.wasVisited(j, i)) {
