@@ -5,6 +5,7 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -15,16 +16,23 @@ import java.util.Scanner;
  */
 public class Game {
 
-    private final Scanner scanner = new Scanner(System.in);
+    private final File HTMLTemplateLocation = new File("src/main/resources/html-template/SoftEngineer.html");
+    private final String playersMapLocation = "src/main/resources/players-maps/";
+    private final File GitIgnoreLocation = new File("src/main/resources/players-maps/.gitignore");
+    private final Scanner scanner;
 
     private int turns = 1;
     private Player[] players = null;
     private Map map = null;
     private List<Player> winners = new ArrayList<Player>();
 
-    private final File HTMLTemplateLocation = new File("src/main/resources/html-template/SoftEngineer.html");
-    private final String playersMapLocation = "src/main/resources/players-maps/";
-    private final File GitIgnoreLocation = new File("src/main/resources/players-maps/.gitignore");
+    public Game() {
+        this(System.in);
+    }
+
+    public Game(final InputStream in) {
+        scanner = new Scanner(in);
+    }
 
     public void setup() throws SizeOfMapWasNotSet {
         setNumPlayers();
