@@ -196,9 +196,9 @@ public class MapTest {
         Assert.assertTrue(mapInstance.getMapSize() == size);
     }
 
-    private void generateMap(int size) {
+    private void generateMap(final int mapSize) {
         int numberOfPlayers = 4;
-        mapInstance.setMapSize(size, size, numberOfPlayers);
+        mapInstance.setMapSize(mapSize, mapSize, numberOfPlayers);
         try {
             mapInstance.generate();
         } catch (SizeOfMapWasNotSet e) {
