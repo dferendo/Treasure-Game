@@ -5,7 +5,7 @@ package exceptions;
  */
 public class PositionIsOutOfRange extends Exception {
 
-    public PositionIsOutOfRange(int x, int y) {
+    public PositionIsOutOfRange(final int x, final int y) {
         super("Position(" + x + ", " + y + ") is not accepted.");
     }
 

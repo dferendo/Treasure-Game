@@ -33,27 +33,27 @@ public class HTMLGenerator {
                     TAB_FOR_CELL + "</td>\n";
     private final String TREASURE_CELL = TAB_FOR_CELL + "<td class=\"treasureCell\"></td>\n";
 
-    HTMLGenerator(File fileLocation, Map map, Player player) throws IOException, PositionIsOutOfRange {
+    HTMLGenerator(final File fileLocation, final Map map, final Player player) throws IOException, PositionIsOutOfRange {
         writeOnFile(fileLocation, createTable(map, player));
     }
 
-    private void writeOnFile(File fileLocation, String table) throws IOException {
+    private void writeOnFile(final File fileLocation, final String table) throws IOException {
         String htmlTemplate = FileUtils.readFileToString(fileLocation);
         htmlTemplate = htmlTemplate.replace("$Table", table);
         FileUtils.writeStringToFile(fileLocation, htmlTemplate);
     }
 
-    private String createTable(Map map, Player player) throws PositionIsOutOfRange {
-        int mapSize = map.getMapSize(), x, y;
-        StringBuilder table = new StringBuilder();
+    private String createTable(final Map map, final Player player) throws PositionIsOutOfRange {
+        final int mapSize = map.getMapSize();
+        final StringBuilder table = new StringBuilder();
         table.append(createCaption(player));
 
         for (int i = 0; i < mapSize; i++) {
             table.append(TAB_FOR_ROW);
             table.append("<tr>\n");
             for (int j = 0; j < mapSize; j++) {
-                x = player.getPosition().getX();
-                y = player.getPosition().getY();
+                final int x = player.getPosition().getX();
+                final int y = player.getPosition().getY();
                 if (x == j && y == i) {
                     table.append(determineCellType(map.getTileType(j, i), true));
                 } else if (player.wasVisited(j, i)) {
@@ -68,11 +68,11 @@ public class HTMLGenerator {
         return table.toString();
     }
 
-    private String createCaption(Player player) {
+    private String createCaption(final Player player) {
         return "<caption class=\"playerNumber\">Player " + player.getID() + "</caption>\n";
     }
 
-    private String determineCellType(Map.TILE_TYPE cellType, boolean playerIsOnTile) {
+    private String determineCellType(final Map.TILE_TYPE cellType, final boolean playerIsOnTile) {
         switch (cellType) {
             case GRASS:
                 return playerIsOnTile ? GRASS_CELL_WITH_PLAYER : GRASS_CELL;
