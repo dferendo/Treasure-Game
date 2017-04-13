@@ -196,6 +196,13 @@ public class MapTest {
         Assert.assertTrue(mapInstance.getMapSize() == size);
     }
 
+    @Test
+    public void enum_Testing() {
+        Assert.assertTrue(Map.TILE_TYPE.valueOf("GRASS") == Map.TILE_TYPE.GRASS);
+        Assert.assertTrue(Map.TILE_TYPE.valueOf("WATER") == Map.TILE_TYPE.WATER);
+        Assert.assertTrue(Map.TILE_TYPE.valueOf("TREASURE") == Map.TILE_TYPE.TREASURE);
+    }
+
     private void generateMap(final int mapSize) {
         int numberOfPlayers = 4;
         mapInstance.setMapSize(mapSize, mapSize, numberOfPlayers);
