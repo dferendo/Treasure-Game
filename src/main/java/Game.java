@@ -1,4 +1,6 @@
+import exceptions.GameWasNotInitialized;
 import exceptions.PositionIsOutOfRange;
+import exceptions.SizeOfMapWasNotSet;
 import org.apache.commons.io.FileUtils;
 
 import java.awt.image.DirectColorModel;
@@ -33,7 +35,7 @@ public class Game {
         return game;
     }
 
-    public void setup() {
+    public void setup() throws SizeOfMapWasNotSet {
 
         map = new Map();
         setNumPlayers();
@@ -42,21 +44,29 @@ public class Game {
         // Attempt to generate map
         try {
             map.generate();
-        } catch (Exception e) {
+        } catch (SizeOfMapWasNotSet e) {
             e.printStackTrace();
-            return;
+            throw e;
         }
 
         setPlayers();
     }
 
-    public void startGame() throws Exception {
+    public void startGame() throws GameWasNotInitialized, PositionIsOutOfRange {
 
-        // Throw errors setup was not called beforehand
-        if (players == null) {
-            throw new Exception("Players array was not initialized.");
-        } else if (map == null) {
-            throw new Exception("Map was not initialized.");
+        if (map == null) {
+            // Map was not initialized
+            throw new GameWasNotInitialized("Map");
+        } else if (players == null) {
+            // Players array was not initialized
+            throw new GameWasNotInitialized("Players array");
+        } else {
+            // At least one initial position was not set
+            for (final Player p : players) {
+                if (p.getPosition() == null) {
+                    throw new GameWasNotInitialized("Player " + p.getID() + " initial position");
+                }
+            }
         }
 
         do {
@@ -218,23 +228,19 @@ public class Game {
         switch (dir) {
             case UP:
                 if (pos.getY() > 0) {
-                    player.setPosition(new Position(pos.getX(), pos.getY() - 1));
-                    return true;
+                    return player.setPosition(new Position(pos.getX(), pos.getY() - 1));
                 } break;
             case DOWN:
                 if (pos.getY() < map.getMapSize() - 1) {
-                    player.setPosition(new Position(pos.getX(), pos.getY() + 1));
-                    return true;
+                    return player.setPosition(new Position(pos.getX(), pos.getY() + 1));
                 } break;
             case LEFT:
                 if (pos.getX() > 0) {
-                    player.setPosition(new Position(pos.getX() - 1, pos.getY()));
-                    return true;
+                    return player.setPosition(new Position(pos.getX() - 1, pos.getY()));
                 } break;
             case RIGHT:
                 if (pos.getX() < map.getMapSize() - 1) {
-                    player.setPosition(new Position(pos.getX() + 1, pos.getY()));
-                    return true;
+                    return player.setPosition(new Position(pos.getX() + 1, pos.getY()));
                 } break;
         }
 

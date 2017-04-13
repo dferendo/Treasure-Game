@@ -1,3 +1,5 @@
+import exceptions.GameWasNotInitialized;
+import exceptions.PositionIsOutOfRange;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,14 +25,14 @@ public class GameTest {
         Assert.assertTrue(Game.getGameInstance() != null);
     }
 
-    @Test
-    public void startGame_startBeforeSetupCausesException() {
+    @Test(expected = GameWasNotInitialized.class)
+    public void startGame_startBeforeSetupCausesException() throws GameWasNotInitialized, PositionIsOutOfRange {
 
         try {
             game.startGame();
-        } catch (Exception e) {
-            return;
+            fail("Game was successfully started before setup.");
+        } catch (GameWasNotInitialized e) {
+            throw e;
         }
-        fail("Game was started before setup.");
     }
 }
