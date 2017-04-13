@@ -5,6 +5,7 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -15,18 +16,25 @@ import java.util.Scanner;
  */
 public class Game {
 
-    private final Scanner scanner = new Scanner(System.in);
+    private final File HTMLTemplateLocation = new File("src/main/resources/html-template/SoftEngineer.html");
+    private final String playersMapLocation = "src/main/resources/players-maps/";
+    private final File GitIgnoreLocation = new File("src/main/resources/players-maps/.gitignore");
+    private final Scanner scanner;
 
     private int turns = 1;
     private Player[] players = null;
     private Map map = null;
     private List<Player> winners = new ArrayList<Player>();
 
-    private final File HTMLTemplateLocation = new File("src/main/resources/html-template/SoftEngineer.html");
-    private final String playersMapLocation = "src/main/resources/players-maps/";
-    private final File GitIgnoreLocation = new File("src/main/resources/players-maps/.gitignore");
+    public Game() {
+        this(System.in);
+    }
 
-    public void setup() throws SizeOfMapWasNotSet {
+    public Game(final InputStream in) {
+        scanner = new Scanner(in);
+    }
+
+    public void setup() throws GameWasNotInitialized {
         setNumPlayers();
         setMapSize();
     }
@@ -114,10 +122,9 @@ public class Game {
         final int MIN_PLAYERS = 2, MAX_PLAYERS = 8;
         final String NUM_PLAYERS_RANGE = "(" + MIN_PLAYERS + "-" + MAX_PLAYERS + ")";
 
-        int numPlayers;
         while (true) {
             System.out.println("How many players will be playing? " + NUM_PLAYERS_RANGE);
-            numPlayers = getValidInt();
+            final int numPlayers = getValidInt();
 
             if (numPlayers < MIN_PLAYERS || numPlayers > MAX_PLAYERS) {
                 System.out.println("The input value was out of the range " + NUM_PLAYERS_RANGE + ".");
@@ -128,16 +135,20 @@ public class Game {
         }
     }
 
-    private void setMapSize () {
+    private void setMapSize () throws GameWasNotInitialized {
 
         final int MIN_MAP_SIZE = (players.length <= 4 ? 5 : 8), MAX_MAP_SIZE = 50;
         final String MAP_SIZE_RANGE = "(" + MIN_MAP_SIZE + "-" + MAX_MAP_SIZE + ")";
         map = new Map();
 
-        int mapSize;
+        // Check if players array was initialized
+        if (players == null) {
+            throw new GameWasNotInitialized("Players array");
+        }
+
         while (true) {
             System.out.println("What will be the size of the map? " + MAP_SIZE_RANGE);
-            mapSize = getValidInt();
+            final int mapSize = getValidInt();
 
             if (!map.setMapSize(mapSize, mapSize, players.length)) {
                 System.out.println("The input value was out of the range " + MAP_SIZE_RANGE + ".");
@@ -171,10 +182,10 @@ public class Game {
 
         while(!scanner.hasNextInt()) {
             System.out.println("The input was not a valid integer!");
-            scanner.next();
+            scanner.nextLine();
         }
         // nextLine() instead of nextInt() so that the '\n' gets read
-        return Integer.parseInt(scanner.nextLine());
+        return Integer.parseInt(scanner.nextLine().trim());
     }
 
     private Player.MOVE_DIRECTION getValidDirection() {
