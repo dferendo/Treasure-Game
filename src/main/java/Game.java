@@ -18,13 +18,13 @@ public class Game {
     private static Game game = new Game();
     private final Scanner scanner = new Scanner(System.in);
 
-    private int turns = 0;
+    private int turns = 1;
     private Player[] players = null;
     private Map map = null;
     private List<Player> winners = new ArrayList<Player>();
 
-    File HTMLTemplateLocation = new File("src/main/resources/html-template/SoftEngineer.html");
-    String playersMapLocation = "src/main/resources/players-maps/";
+    private final File HTMLTemplateLocation = new File("src/main/resources/html-template/SoftEngineer.html");
+    private final String playersMapLocation = "src/main/resources/players-maps/";
 
     private Game() {}
 
@@ -62,6 +62,10 @@ public class Game {
         }
 
         do {
+            System.out.println("-----------------");
+            System.out.println("Turn " + (turns++));
+            System.out.println("-----------------");
+
             generateHTMLFiles();
             for (final Player p : players) {
 
