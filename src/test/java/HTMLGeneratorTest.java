@@ -85,12 +85,11 @@ public class HTMLGeneratorTest {
     }
 
     @Test
-    public void HTMLGenerator_checkPlayerMovementMovesTheIcon() throws IOException, PositionIsOutOfRange {
+    public void HTMLGenerator_checkPlayerMovementRemovesUnDiscoveredCell() throws IOException, PositionIsOutOfRange {
         int newX = 0, newY = 1;
-        Map.TILE_TYPE tile;
         // Set 2 position of the player.
-        player.setPosition(new Position(0, 0));
-        player.setPosition(new Position(0, 1));
+        map.setInitialPlayerPosition(player);
+        player.setPosition(new Position(newX, newY));
         htmlGeneratorInstance = new HTMLGenerator(file, map, player);
         // The file generated will be available after constructor
         String html = FileUtils.readFileToString(file);
@@ -98,27 +97,132 @@ public class HTMLGeneratorTest {
         // Two Unknown tiles are removed from being unknown regardless of tiles type.
         Assert.assertTrue(StringUtils.countMatches(html,
                 htmlGeneratorInstance.IDLE_CELL) == (map.getMapSize() * map.getMapSize()) - 2);
+    }
+
+    @Test
+    public void HTMLGenerator_checkPlayerMovementHas1GreenTile() throws IOException, PositionIsOutOfRange {
+        int newX = 0, newY = 1;
+        // Set 2 position of the player.
+        map.setInitialPlayerPosition(player);
+        player.setPosition(new Position(newX, newY));
+        htmlGeneratorInstance = new HTMLGenerator(file, map, player);
+        // The file generated will be available after constructor
+        String html = FileUtils.readFileToString(file);
 
         // Regardless of the Tile Type, there is the initial tile which is Grass.
         Assert.assertTrue(StringUtils.countMatches(html,
                 htmlGeneratorInstance.GRASS_CELL) == 1);
-        
-        tile = map.getTileType(newX, newY);
+    }
 
-        if (tile == Map.TILE_TYPE.GRASS) {
+    @Test
+    public void HTMLGenerator_checkPlayerMovementMovesToNextTile_nextTileIsGreen()
+            throws IOException, PositionIsOutOfRange {
+        // Set 2 position of the player.
+        map.setInitialPlayerPosition(player);
+        // Find position of Type.
+        findTilePosition(player, Map.TILE_TYPE.GRASS);
+        htmlGeneratorInstance = new HTMLGenerator(file, map, player);
+        // The file generated will be available after constructor
+        String html = FileUtils.readFileToString(file);
+
+        if (map.getTileType(player.getPosition().getX(), player.getPosition().getY()) == Map.TILE_TYPE.GRASS) {
             // Assert that there is 1 green tile with the player on it.
             Assert.assertTrue(StringUtils.countMatches(html,
                     htmlGeneratorInstance.GRASS_CELL_WITH_PLAYER) == 1);
-        } else if (tile == Map.TILE_TYPE.WATER) {
-            // Assert that there is 1 water tile with the player on it.
-            Assert.assertTrue(StringUtils.countMatches(html,
-                    htmlGeneratorInstance.WATER_CELL_WITH_PLAYER) == 1);
-        } else if (tile == Map.TILE_TYPE.TREASURE) {
-            // Assert that there is 1 treasure tile with the player on it.
+        } else {
+            fail("There are no Grass Tiles in the game, error.");
+        }
+    }
+
+    @Test
+    public void HTMLGenerator_checkPlayerMovementMovesToNextTile_nextTileIsTreasure()
+            throws IOException, PositionIsOutOfRange {
+        // Set 2 position of the player.
+        map.setInitialPlayerPosition(player);
+        // Find position of Type.
+        findTilePosition(player, Map.TILE_TYPE.TREASURE);
+        htmlGeneratorInstance = new HTMLGenerator(file, map, player);
+        // The file generated will be available after constructor
+        String html = FileUtils.readFileToString(file);
+
+        if (map.getTileType(player.getPosition().getX(), player.getPosition().getY()) == Map.TILE_TYPE.TREASURE) {
+            // Assert that there is 1 green tile with the player on it.
             Assert.assertTrue(StringUtils.countMatches(html,
                     htmlGeneratorInstance.TREASURE_CELL_WITH_PLAYER) == 1);
         } else {
-            fail("Enum was not found.");
+            fail("There is no Treasure Tile in the game, there should be 1.");
+        }
+    }
+
+    @Test
+    public void HTMLGenerator_checkPlayerMovementMovesToNextTile_nextTileIsWaterTile()
+            throws IOException, PositionIsOutOfRange {
+        // Set 2 position of the player.
+        map.setInitialPlayerPosition(player);
+        // Find position of Type.
+        findTilePosition(player, Map.TILE_TYPE.WATER);
+        htmlGeneratorInstance = new HTMLGenerator(file, map, player);
+        // The file generated will be available after constructor
+        String html = FileUtils.readFileToString(file);
+
+        if (map.getTileType(player.getPosition().getX(), player.getPosition().getY()) == Map.TILE_TYPE.WATER) {
+            // Assert that there is 1 green tile with the player on it.
+            Assert.assertTrue(StringUtils.countMatches(html,
+                    htmlGeneratorInstance.WATER_CELL_WITH_PLAYER) == 1);
+        } else {
+            fail("There are no Water Tiles in the game, error there should be at least 10%.");
+        }
+    }
+
+    @Test
+    public void HTMLGenerator_checkPlayerMovementMovesToNextTile_thereIsAWaterTileAfterMovingAwayFromTheWaterTile()
+            throws IOException, PositionIsOutOfRange {
+        // Set 2 position of the player.
+        map.setInitialPlayerPosition(player);
+        // The player will go to the starting point to guarantee
+        // that the player does not land on the same water tile again.
+        int x = player.getPosition().getX(), y = player.getPosition().getY();
+        // Find position of Type.
+        findTilePosition(player, Map.TILE_TYPE.WATER);
+        // Move to the starting location again
+        player.setPosition(new Position(x, y));
+        htmlGeneratorInstance = new HTMLGenerator(file, map, player);
+        // The file generated will be available after constructor
+        String html = FileUtils.readFileToString(file);
+
+        Assert.assertTrue(StringUtils.countMatches(html, htmlGeneratorInstance.WATER_CELL) == 1);
+    }
+
+    @Test
+    public void HTMLGenerator_checkPlayerMovementMovesToNextTile_thereIsAWaterTreasureTileAfterMovingAwayFromTheTreasureTile()
+            throws IOException, PositionIsOutOfRange {
+        // Set 2 position of the player.
+        map.setInitialPlayerPosition(player);
+        // The player will go to the starting point to guarantee
+        // that the player does not land on the same water tile again.
+        int x = player.getPosition().getX(), y = player.getPosition().getY();
+        // Find position of Type.
+        findTilePosition(player, Map.TILE_TYPE.TREASURE);
+        // Move to the starting location again
+        player.setPosition(new Position(x, y));
+        htmlGeneratorInstance = new HTMLGenerator(file, map, player);
+        // The file generated will be available after constructor
+        String html = FileUtils.readFileToString(file);
+
+        Assert.assertTrue(StringUtils.countMatches(html, htmlGeneratorInstance.TREASURE_CELL) == 1);
+    }
+
+    private void findTilePosition(Player player, Map.TILE_TYPE tileType) throws PositionIsOutOfRange {
+        for (int y = 0; y < size; y++) {
+            for (int x = 0; x < size; x++) {
+                if (map.getTileType(x, y) == tileType) {
+                    // This is to guarantee that the initial Grass tile will not be visited twice.
+                    if (!player.wasVisited(x, y)) {
+                        player.setPosition(new Position(x, y));
+                        return;
+                    }
+                }
+            }
         }
     }
 
