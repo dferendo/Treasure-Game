@@ -1,3 +1,4 @@
+import exceptions.InitialPlayerPositionWasNotSet;
 import exceptions.PositionIsOutOfRange;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class Player {
     }
 
     private int ID;
-    private Position position;
+    private Position position = null;
     private List<Position> visited;
 
     public Player(int ID) {
@@ -65,8 +66,13 @@ public class Player {
         }
     }
 
-    public Position getPosition() {
-        return position;
+    public Position getPosition() throws InitialPlayerPositionWasNotSet {
+
+        if (position == null) {
+            throw new InitialPlayerPositionWasNotSet();
+        } else {
+            return position;
+        }
     }
 
     public boolean wasVisited(final int x, final int y) throws PositionIsOutOfRange {
