@@ -179,10 +179,10 @@ public class Game {
 
         while(!scanner.hasNextInt()) {
             System.out.println("The input was not a valid integer!");
-            scanner.next();
+            scanner.nextLine();
         }
         // nextLine() instead of nextInt() so that the '\n' gets read
-        return Integer.parseInt(scanner.nextLine());
+        return Integer.parseInt(scanner.nextLine().trim());
     }
 
     private Player.MOVE_DIRECTION getValidDirection() {
