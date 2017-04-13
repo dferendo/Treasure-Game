@@ -76,6 +76,13 @@ public class MapTest {
                 mapInstance.setMapSize(x, y, players));
     }
 
+    @Test
+    public void setMapSize_incorrectNumberOfPlayersGiven() {
+        int x = 10, y = 10, players = 12;
+
+        Assert.assertFalse("More players are given then allowed.", mapInstance.setMapSize(x, y, players));
+    }
+
     @Test(expected = SizeOfMapWasNotSet.class)
     public void generate_sizeWasNotSetBeforeHand() throws SizeOfMapWasNotSet {
         mapInstance.generate();
