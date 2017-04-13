@@ -1,5 +1,6 @@
 import exceptions.GameWasNotInitialized;
 import exceptions.PositionIsOutOfRange;
+import exceptions.SizeOfMapWasNotSet;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,14 +16,7 @@ public class GameTest {
 
     @Before
     public void init() {
-        game = Game.getGameInstance();
-    }
-
-    @Test
-    public void getGameInstance_notNull() {
-
-        Assert.assertTrue(game != null);
-        Assert.assertTrue(Game.getGameInstance() != null);
+        game = new Game();
     }
 
     @Test(expected = GameWasNotInitialized.class)
@@ -31,8 +25,10 @@ public class GameTest {
         try {
             game.startGame();
             fail("Game was successfully started before setup.");
-        } catch (GameWasNotInitialized e) {
-            throw e;
+        } catch (GameWasNotInitialized e1) {
+            throw e1;
+        } catch (SizeOfMapWasNotSet e2) {
+            fail("Expected GameWasNotInitialized, not SizeOfMapWasNotSet.");
         }
     }
 }

@@ -3,12 +3,10 @@ import exceptions.PositionIsOutOfRange;
 import exceptions.SizeOfMapWasNotSet;
 import org.apache.commons.io.FileUtils;
 
-import java.awt.image.DirectColorModel;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -17,7 +15,6 @@ import java.util.Scanner;
  */
 public class Game {
 
-    private static Game game = new Game();
     private final Scanner scanner = new Scanner(System.in);
 
     private int turns = 1;
@@ -29,30 +26,16 @@ public class Game {
     private final String playersMapLocation = "src/main/resources/players-maps/";
     private final File GitIgnoreLocation = new File("src/main/resources/players-maps/.gitignore");
 
-    private Game() {}
-
-    public static Game getGameInstance() {
-        return game;
+    public Game() {
+        map = new Map();
     }
 
     public void setup() throws SizeOfMapWasNotSet {
-
-        map = new Map();
         setNumPlayers();
         setMapSize();
-
-        // Attempt to generate map
-        try {
-            map.generate();
-        } catch (SizeOfMapWasNotSet e) {
-            e.printStackTrace();
-            throw e;
-        }
-
-        setPlayers();
     }
 
-    public void startGame() throws GameWasNotInitialized, PositionIsOutOfRange {
+    public void startGame() throws GameWasNotInitialized, SizeOfMapWasNotSet, PositionIsOutOfRange {
 
         if (map == null) {
             // Map was not initialized
@@ -68,6 +51,15 @@ public class Game {
                 }
             }
         }
+
+        // Generate map and set initial player positions
+        try {
+            map.generate();
+        } catch (SizeOfMapWasNotSet e) {
+            e.printStackTrace();
+            throw e;
+        }
+        setPlayers();
 
         do {
             System.out.println("-----------------");
@@ -142,6 +134,7 @@ public class Game {
 
         final int MIN_MAP_SIZE = (players.length <= 4 ? 5 : 8), MAX_MAP_SIZE = 50;
         final String MAP_SIZE_RANGE = "(" + MIN_MAP_SIZE + "-" + MAX_MAP_SIZE + ")";
+        map = new Map();
 
         int mapSize;
         while (true) {
