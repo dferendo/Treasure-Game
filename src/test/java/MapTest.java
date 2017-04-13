@@ -83,7 +83,7 @@ public class MapTest {
 
     @Test
     public void generate_checkThereExistsOneTreasure() throws SizeOfMapWasNotSet, PositionIsOutOfRange {
-        int size = 10, numberOfPlayers = 3, treasureCount = 0;
+        int size = 10, numberOfPlayers = 3, treasureCount = 0, totalSize = 0;
         if (mapInstance.setMapSize(size, size, numberOfPlayers)) {
             mapInstance.generate();
 
@@ -92,10 +92,13 @@ public class MapTest {
                     if (mapInstance.getTileType(x, y) == Map.TILE_TYPE.TREASURE) {
                         treasureCount++;
                     }
+                    totalSize++;
                 }
             }
 
             Assert.assertTrue("There is suppose to be only 1 treasure.", treasureCount == 1);
+            Assert.assertTrue("There should be n x n Tiles", totalSize ==
+                    mapInstance.getMapSize() * mapInstance.getMapSize());
         } else {
             fail("Map size was suppose to be set.");
         }
@@ -103,7 +106,7 @@ public class MapTest {
 
     @Test
     public void generate_checkThereAre10PercentWaterTiles() throws SizeOfMapWasNotSet, PositionIsOutOfRange {
-        int size = 10, numberOfPlayers = 3, waterTiles = 0;
+        int size = 10, numberOfPlayers = 3, waterTiles = 0, totalSize = 0;
         if (mapInstance.setMapSize(size, size, numberOfPlayers)) {
             mapInstance.generate();
 
@@ -112,11 +115,14 @@ public class MapTest {
                     if (mapInstance.getTileType(x, y) == Map.TILE_TYPE.WATER) {
                         waterTiles++;
                     }
+                    totalSize++;
                 }
             }
 
             Assert.assertTrue("There is suppose to be around 10% water tiles.",
                     waterTiles == (int) Math.ceil((double) (size * size) / 10));
+            Assert.assertTrue("There should be n x n Tiles", totalSize ==
+                    mapInstance.getMapSize() * mapInstance.getMapSize());
         } else {
             fail("Map size was suppose to be set.");
         }
