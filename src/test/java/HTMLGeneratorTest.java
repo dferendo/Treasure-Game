@@ -1,6 +1,8 @@
 import exceptions.PositionIsOutOfRange;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,13 +18,13 @@ public class HTMLGeneratorTest {
     private File file = new File("src/test/resources/html-test-template/SoftEngineer.html");
     private Player player;
     private Map map;
-    private int size = 10;
+    private int size = 10, playerNumber = 3;
 
     @Before
     public void setUp() throws Exception {
         int numberOfPlayers = 3;
         map = new Map();
-        player = new Player(1);
+        player = new Player(playerNumber);
         File HTMLTemplateLocation = new File("src/main/resources/html-template/SoftEngineer.html");
 
         map.setMapSize(size, size, numberOfPlayers);
@@ -39,15 +41,43 @@ public class HTMLGeneratorTest {
 
     @Test(expected = IOException.class)
     public void HTMLGenerator_fileTemplateNotFound_correctPosition() throws Exception {
-        player.setPosition(new Position(0, 0));
+        map.setInitialPlayerPosition(player);
         htmlGeneratorInstance = new HTMLGenerator(new File("ThisFileDoesNotExist"), map, player);
     }
 
     @Test
     public void HTMLGenerator_fileTemplateFound_badPosition() throws IOException, PositionIsOutOfRange {
-        player.setPosition(new Position(2, 2));
+        map.setInitialPlayerPosition(player);
         htmlGeneratorInstance = new HTMLGenerator(file, map, player);
     }
 
-    // TODO ask how to test randomness.
+    @Test
+    public void HTMLGenerator_checkIfPlayerIsInitiallyOnGrassTileAndOtherTilesAreUndiscovered()
+            throws IOException, PositionIsOutOfRange {
+        map.setInitialPlayerPosition(player);
+        htmlGeneratorInstance = new HTMLGenerator(file, map, player);
+        // The file generated will be available after constructor
+        String html = FileUtils.readFileToString(file);
+
+        // Since the player only has the initial starting Position, the player cannot be on the treasure tile.
+        // (If the player can be on the treasure tile it will have different string).
+        Assert.assertTrue(StringUtils.countMatches(html,
+                htmlGeneratorInstance.GRASS_CELL_WITH_PLAYER) == 1);
+        Assert.assertTrue(StringUtils.countMatches(html,
+                htmlGeneratorInstance.IDLE_CELL) == (map.getMapSize() * map.getMapSize()) - 1);
+    }
+
+    @Test
+    public void HTMLGenerator_checkThatThereIsTheCaptionWithThePlayerName()
+            throws IOException, PositionIsOutOfRange {
+        map.setInitialPlayerPosition(player);
+        htmlGeneratorInstance = new HTMLGenerator(file, map, player);
+        // The file generated will be available after constructor
+        String html = FileUtils.readFileToString(file);
+
+        Assert.assertTrue(StringUtils.countMatches(html,
+                "<caption class=\"playerNumber\">Player " + player.getID() + "</caption>\n")
+                == 1);
+    }
+
 }
