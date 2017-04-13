@@ -39,9 +39,6 @@ public class Game {
         setNumPlayers();
         setMapSize();
 
-        // Clear input
-        scanner.nextLine();
-
         // Attempt to generate map
         try {
             map.generate();
@@ -187,7 +184,8 @@ public class Game {
             System.out.println("The input was not a valid integer!");
             scanner.next();
         }
-        return scanner.nextInt();
+        // nextLine() instead of nextInt() so that the '\n' gets read
+        return Integer.parseInt(scanner.nextLine());
     }
 
     private Player.MOVE_DIRECTION getValidDirection() {
