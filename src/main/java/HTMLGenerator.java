@@ -13,25 +13,25 @@ public class HTMLGenerator {
     private final String TAB_FOR_CELL = TAB_FOR_ROW + "\t";
     private final String TAB_FOR_IMAGE = TAB_FOR_CELL + "\t";
 
-    private final String GRASS_CELL_WITH_PLAYER =
+    final String GRASS_CELL_WITH_PLAYER =
             TAB_FOR_CELL +
                     "<td class=\"grassCell\">\n" +
                     TAB_FOR_IMAGE + "<img class=\"playerIcon\" src=\"../images/ic_person_pin_black_24px.svg\">\n" +
                     TAB_FOR_CELL + "</td>\n";
-    private final String IDLE_CELL = TAB_FOR_CELL + "<td class=\"notDiscoveredCell\"></td>\n";
-    private final String GRASS_CELL = TAB_FOR_CELL + "<td class=\"grassCell\"></td>\n";
-    private final String WATER_CELL_WITH_PLAYER =
+    final String IDLE_CELL = TAB_FOR_CELL + "<td class=\"notDiscoveredCell\"></td>\n";
+    final String GRASS_CELL = TAB_FOR_CELL + "<td class=\"grassCell\"></td>\n";
+    final String WATER_CELL_WITH_PLAYER =
             TAB_FOR_CELL +
             "<td class=\"waterCell\">\n" +
                     TAB_FOR_IMAGE + "<img class=\"playerIcon\" src=\"../images/ic_person_pin_black_24px.svg\">\n" +
                     TAB_FOR_CELL + "</td>\n";
-    private final String WATER_CELL = TAB_FOR_CELL + "<td class=\"waterCell\"></td>\n";
-    private final String TREASURE_CELL_WITH_PLAYER =
+    final String WATER_CELL = TAB_FOR_CELL + "<td class=\"waterCell\"></td>\n";
+    final String TREASURE_CELL_WITH_PLAYER =
             TAB_FOR_CELL +
             "<td class=\"treasureCell\">\n" +
                     TAB_FOR_IMAGE + "<img class=\"playerIcon\" src=\"../images/ic_person_pin_black_24px.svg\">\n" +
                     TAB_FOR_CELL + "</td>\n";
-    private final String TREASURE_CELL = TAB_FOR_CELL + "<td class=\"treasureCell\"></td>\n";
+    final String TREASURE_CELL = TAB_FOR_CELL + "<td class=\"treasureCell\"></td>\n";
 
     HTMLGenerator(final File fileLocation, final Map map, final Player player) throws IOException, PositionIsOutOfRange {
         writeOnFile(fileLocation, createTable(map, player));
