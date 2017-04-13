@@ -117,7 +117,7 @@ public class PlayerTest {
         Assert.assertTrue(player.getPosition().equals(new Position(startX, startY)));
     }
 
-    private void generateMap(int mapSize) {
+    private void generateMap(final int mapSize) {
         int numberOfPlayers = 3;
         // Map is needed to set the size of the map used by was visited.
         Map map = new Map();

@@ -41,4 +41,9 @@ public class PositionTest {
     public void equals_nullPosition() {
         Assert.assertFalse(position.equals(null));
     }
+
+    @Test
+    public void equals_nonPositionObject() {
+        Assert.assertFalse(position.equals(new Object()));
+    }
 }

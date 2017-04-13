@@ -17,7 +17,7 @@ public class Map {
     private static int size;
     private TILE_TYPE[][] map;
 
-    public boolean setMapSize(int x, int y, int numberOfPlayers) {
+    public boolean setMapSize(final int x, final int y, final int numberOfPlayers) {
         int MIN_MAP_SIZE_FOR_2_TO_4_PLAYERS = 5;
         int MIN_MAP_SIZE_FOR_5_TO_8_PLAYERS = 8;
         int MAX_MAP_SIZE = 50;
@@ -82,7 +82,7 @@ public class Map {
 
     }
 
-    public TILE_TYPE getTileType(int x, int y) throws PositionIsOutOfRange {
+    public TILE_TYPE getTileType(final int x, final int y) throws PositionIsOutOfRange {
         // X and y was agreed that it will start from 0.
         if ((x < 0 || x >= size) || (y < 0 || y >= size)) {
             throw new PositionIsOutOfRange(x, y);
@@ -90,7 +90,7 @@ public class Map {
         return map[x][y];
     }
 
-    public void setInitialPlayerPosition(Player player) throws PositionIsOutOfRange {
+    public void setInitialPlayerPosition(final Player player) throws PositionIsOutOfRange {
         int x, y;
         Random rand = new Random();
 
