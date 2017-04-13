@@ -1,3 +1,4 @@
+import exceptions.InitialPlayerPositionWasNotSet;
 import exceptions.PositionIsOutOfRange;
 import org.junit.Assert;
 import org.junit.Assume;
@@ -15,7 +16,6 @@ public class PlayerTest {
     @Before
     public void init() {
         player = new Player(id);
-        Assume.assumeTrue(player.setPosition(new Position(startX, startY)));
     }
 
     @Test
@@ -23,14 +23,21 @@ public class PlayerTest {
         Assert.assertFalse(player.setPosition(null));
     }
 
+    @Test(expected = InitialPlayerPositionWasNotSet.class)
+    public void getPosition_valueBeforeSettingInitialPositionIsNull() {
+        player.getPosition();
+    }
+
     @Test
     public void getPosition_setterValueMatchesGetterValue() {
+        setStartPosition();
         Assert.assertTrue(player.getPosition().getX() == startX);
         Assert.assertTrue(player.getPosition().getY() == startY);
     }
 
     @Test
     public void move_moveUpCausesChangeInYButNoChangeInX() {
+        setStartPosition();
         player.move(Player.MOVE_DIRECTION.UP);
         Assert.assertTrue(player.getPosition().getX() == startX);
         Assert.assertTrue(player.getPosition().getY() == startY - 1);
@@ -38,6 +45,7 @@ public class PlayerTest {
 
     @Test
     public void move_moveDownCausesChangeInYButNoChangeInX() {
+        setStartPosition();
         player.move(Player.MOVE_DIRECTION.DOWN);
         Assert.assertTrue(player.getPosition().getX() == startX);
         Assert.assertTrue(player.getPosition().getY() == startY + 1);
@@ -45,6 +53,7 @@ public class PlayerTest {
 
     @Test
     public void move_moveLeftCausesChangeInXButNoChangeInY() {
+        setStartPosition();
         player.move(Player.MOVE_DIRECTION.LEFT);
         Assert.assertTrue(player.getPosition().getX() == startX - 1);
         Assert.assertTrue(player.getPosition().getY() == startY);
@@ -52,6 +61,7 @@ public class PlayerTest {
 
     @Test
     public void move_moveRightCausesChangeInXButNoChangeInY() {
+        setStartPosition();
         player.move(Player.MOVE_DIRECTION.RIGHT);
         Assert.assertTrue(player.getPosition().getX() == startX + 1);
         Assert.assertTrue(player.getPosition().getY() == startY);
@@ -64,6 +74,7 @@ public class PlayerTest {
 
     @Test
     public void wasVisited_startPositionShouldBeVisited() throws PositionIsOutOfRange {
+        setStartPosition();
         int mapSize = 20;
 
         generateMap(mapSize);
@@ -72,30 +83,34 @@ public class PlayerTest {
 
     @Test
     public void wasVisited_nonStartPositionShouldNotBeVisited() throws PositionIsOutOfRange {
+        setStartPosition();
         int mapSize = 20;
 
         generateMap(mapSize);
         Assert.assertFalse(player.wasVisited(startX + 1, startY + 1));
     }
 
-    @Test (expected = PositionIsOutOfRange.class)
+    @Test(expected = PositionIsOutOfRange.class)
     public void wasVisited_negativeCoordinates() throws PositionIsOutOfRange {
+        setStartPosition();
         int mapSize = 20;
 
         generateMap(mapSize);
         player.wasVisited(-1, -1);
     }
 
-    @Test (expected = PositionIsOutOfRange.class)
+    @Test(expected = PositionIsOutOfRange.class)
     public void wasVisited_xPositionGreaterThanMapSize() throws PositionIsOutOfRange {
+        setStartPosition();
         int mapSize = 20;
 
         generateMap(mapSize);
         player.wasVisited(mapSize + 1, 1);
     }
 
-    @Test (expected = PositionIsOutOfRange.class)
+    @Test(expected = PositionIsOutOfRange.class)
     public void wasVisited_yPositionGreaterThanMapSize() throws PositionIsOutOfRange {
+        setStartPosition();
         int mapSize = 20;
 
         generateMap(mapSize);
@@ -104,14 +119,14 @@ public class PlayerTest {
 
     @Test
     public void backToStartPosition_positionAfterCallEqualToStartPosition() {
-
+        setStartPosition();
         player.backToStartPosition();
         Assert.assertTrue(player.getPosition().equals(new Position(startX, startY)));
     }
 
     @Test
     public void backToStartPosition_positionAfterCallUnequalToNonStartPosition() {
-
+        setStartPosition();
         Assume.assumeTrue(player.setPosition(new Position(startX + 1, startY + 1)));
         player.backToStartPosition();
         Assert.assertTrue(player.getPosition().equals(new Position(startX, startY)));
@@ -119,8 +134,13 @@ public class PlayerTest {
 
     private void generateMap(final int mapSize) {
         int numberOfPlayers = 3;
-        // Map is needed to set the size of the map used by was visited.
+
+        // Map is needed to set the size of the map used by wasVisited
         Map map = new Map();
-        map.setMapSize(mapSize, mapSize, numberOfPlayers);
+        Assume.assumeTrue(map.setMapSize(mapSize, mapSize, numberOfPlayers));
+    }
+
+    private void setStartPosition() {
+        Assume.assumeTrue(player.setPosition(new Position(startX, startY)));
     }
 }

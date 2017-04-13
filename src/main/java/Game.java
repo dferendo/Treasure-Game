@@ -1,12 +1,12 @@
+import exceptions.GameWasNotInitialized;
 import exceptions.PositionIsOutOfRange;
+import exceptions.SizeOfMapWasNotSet;
 import org.apache.commons.io.FileUtils;
 
-import java.awt.image.DirectColorModel;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -15,7 +15,6 @@ import java.util.Scanner;
  */
 public class Game {
 
-    private static Game game = new Game();
     private final Scanner scanner = new Scanner(System.in);
 
     private int turns = 1;
@@ -27,46 +26,42 @@ public class Game {
     private final String playersMapLocation = "src/main/resources/players-maps/";
     private final File GitIgnoreLocation = new File("src/main/resources/players-maps/.gitignore");
 
-    private Game() {}
-
-    public static Game getGameInstance() {
-        return game;
-    }
-
-    public void setup() {
-
-        map = new Map();
+    public void setup() throws SizeOfMapWasNotSet {
         setNumPlayers();
         setMapSize();
-
-        // Clear input
-        scanner.nextLine();
-
-        // Attempt to generate map
-        try {
-            map.generate();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
-
-        setPlayers();
     }
 
-    public void startGame() throws Exception {
+    private void preStart() throws GameWasNotInitialized, SizeOfMapWasNotSet, PositionIsOutOfRange {
 
-        // Throw errors setup was not called beforehand
-        if (players == null) {
-            throw new Exception("Players array was not initialized.");
-        } else if (map == null) {
-            throw new Exception("Map was not initialized.");
+        // Check if either map or players array were not initialized
+        if (map == null) {
+            throw new GameWasNotInitialized("Map");
+        } else if (players == null) {
+            throw new GameWasNotInitialized("Players array");
         }
 
+        // Generate map
+        map.generate();
+
+        // Initialize players and set their initial position
+        for (int i = 0; i < players.length; i++) {
+            players[i] = new Player(i+1);
+            map.setInitialPlayerPosition(players[i]);
+        }
+    }
+
+    public void startGame() throws GameWasNotInitialized, SizeOfMapWasNotSet, PositionIsOutOfRange {
+
+        // Some checks, map generation, and setting of players
+        preStart();
+
+        // Main game loop
         do {
             System.out.println("-----------------");
             System.out.println("Turn " + (turns++));
             System.out.println("-----------------");
 
+            // Generate files and ask users for direction to move
             generateHTMLFiles();
             for (final Player p : players) {
 
@@ -80,13 +75,14 @@ public class Game {
 
             System.out.println();
 
+            // Generate files and check where the players landed
             generateHTMLFiles();
             for (final Player p : players) {
                 final Position pos = p.getPosition();
 
                 switch (map.getTileType(pos.getX(), pos.getY())) {
                     case TREASURE:
-                        System.out.println("Player " + p.getID() + " landed on a treasure!");
+                        System.out.println("Player " + p.getID() + " landed on the treasure!");
                         winners.add(p);
                         break;
                     case GRASS:
@@ -100,14 +96,15 @@ public class Game {
             }
         } while (winners.size() == 0);
 
+        // At least one player landed on the treasure
         System.out.println("\nWINNERS");
         System.out.println("-------");
         for (Player p : winners) {
             System.out.println("Player " + p.getID());
         }
-        winners.clear();
 
         // End game
+        winners.clear();
         players = null;
         map = null;
     }
@@ -135,6 +132,7 @@ public class Game {
 
         final int MIN_MAP_SIZE = (players.length <= 4 ? 5 : 8), MAX_MAP_SIZE = 50;
         final String MAP_SIZE_RANGE = "(" + MIN_MAP_SIZE + "-" + MAX_MAP_SIZE + ")";
+        map = new Map();
 
         int mapSize;
         while (true) {
@@ -149,20 +147,8 @@ public class Game {
         }
     }
 
-    private void setPlayers() {
-
-        for (int i = 0; i < players.length; i++) {
-            players[i] = new Player(i+1);
-            try {
-                map.setInitialPlayerPosition(players[i]);
-            } catch(Exception e) {
-                e.printStackTrace();
-                return;
-            }
-        }
-    }
-
     private void generateHTMLFiles() {
+
         try {
             // .gitignore is still needed in the directory, thus re-write it after
             // cleaning the directory
@@ -187,7 +173,8 @@ public class Game {
             System.out.println("The input was not a valid integer!");
             scanner.next();
         }
-        return scanner.nextInt();
+        // nextLine() instead of nextInt() so that the '\n' gets read
+        return Integer.parseInt(scanner.nextLine());
     }
 
     private Player.MOVE_DIRECTION getValidDirection() {
@@ -220,26 +207,21 @@ public class Game {
         switch (dir) {
             case UP:
                 if (pos.getY() > 0) {
-                    player.setPosition(new Position(pos.getX(), pos.getY() - 1));
-                    return true;
+                    return player.setPosition(new Position(pos.getX(), pos.getY() - 1));
                 } break;
             case DOWN:
                 if (pos.getY() < map.getMapSize() - 1) {
-                    player.setPosition(new Position(pos.getX(), pos.getY() + 1));
-                    return true;
+                    return player.setPosition(new Position(pos.getX(), pos.getY() + 1));
                 } break;
             case LEFT:
                 if (pos.getX() > 0) {
-                    player.setPosition(new Position(pos.getX() - 1, pos.getY()));
-                    return true;
+                    return player.setPosition(new Position(pos.getX() - 1, pos.getY()));
                 } break;
             case RIGHT:
                 if (pos.getX() < map.getMapSize() - 1) {
-                    player.setPosition(new Position(pos.getX() + 1, pos.getY()));
-                    return true;
+                    return player.setPosition(new Position(pos.getX() + 1, pos.getY()));
                 } break;
         }
-
         System.out.println("Cannot go outside the map!");
         return false;
     }

@@ -4,7 +4,9 @@
 public class Main {
 
     public static void main(String args[]) throws Exception {
-        Game.getGameInstance().setup();
-        Game.getGameInstance().startGame();
+
+        final Game game = new Game();
+        game.setup();
+        game.startGame();
     }
 }
