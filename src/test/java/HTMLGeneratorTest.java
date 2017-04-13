@@ -9,6 +9,8 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 
+import static org.junit.Assert.fail;
+
 /**
  * @author Dylan Frendo.
  */
@@ -46,9 +48,24 @@ public class HTMLGeneratorTest {
     }
 
     @Test
-    public void HTMLGenerator_fileTemplateFound_badPosition() throws IOException, PositionIsOutOfRange {
+    public void HTMLGenerator_fileTemplateFoundAndCreated() throws IOException, PositionIsOutOfRange {
         map.setInitialPlayerPosition(player);
         htmlGeneratorInstance = new HTMLGenerator(file, map, player);
+        // Check if file exists.
+        Assert.assertTrue(file.exists());
+    }
+
+    @Test
+    public void HTMLGenerator_checkThatThereIsTheCaptionWithThePlayerName()
+            throws IOException, PositionIsOutOfRange {
+        map.setInitialPlayerPosition(player);
+        htmlGeneratorInstance = new HTMLGenerator(file, map, player);
+        // The file generated will be available after constructor
+        String html = FileUtils.readFileToString(file);
+
+        Assert.assertTrue(StringUtils.countMatches(html,
+                "<caption class=\"playerNumber\">Player " + player.getID() + "</caption>\n")
+                == 1);
     }
 
     @Test
@@ -68,16 +85,41 @@ public class HTMLGeneratorTest {
     }
 
     @Test
-    public void HTMLGenerator_checkThatThereIsTheCaptionWithThePlayerName()
-            throws IOException, PositionIsOutOfRange {
-        map.setInitialPlayerPosition(player);
+    public void HTMLGenerator_checkPlayerMovementMovesTheIcon() throws IOException, PositionIsOutOfRange {
+        int newX = 0, newY = 1;
+        Map.TILE_TYPE tile;
+        // Set 2 position of the player.
+        player.setPosition(new Position(0, 0));
+        player.setPosition(new Position(0, 1));
         htmlGeneratorInstance = new HTMLGenerator(file, map, player);
         // The file generated will be available after constructor
         String html = FileUtils.readFileToString(file);
 
+        // Two Unknown tiles are removed from being unknown regardless of tiles type.
         Assert.assertTrue(StringUtils.countMatches(html,
-                "<caption class=\"playerNumber\">Player " + player.getID() + "</caption>\n")
-                == 1);
+                htmlGeneratorInstance.IDLE_CELL) == (map.getMapSize() * map.getMapSize()) - 2);
+
+        // Regardless of the Tile Type, there is the initial tile which is Grass.
+        Assert.assertTrue(StringUtils.countMatches(html,
+                htmlGeneratorInstance.GRASS_CELL) == 1);
+        
+        tile = map.getTileType(newX, newY);
+
+        if (tile == Map.TILE_TYPE.GRASS) {
+            // Assert that there is 1 green tile with the player on it.
+            Assert.assertTrue(StringUtils.countMatches(html,
+                    htmlGeneratorInstance.GRASS_CELL_WITH_PLAYER) == 1);
+        } else if (tile == Map.TILE_TYPE.WATER) {
+            // Assert that there is 1 water tile with the player on it.
+            Assert.assertTrue(StringUtils.countMatches(html,
+                    htmlGeneratorInstance.WATER_CELL_WITH_PLAYER) == 1);
+        } else if (tile == Map.TILE_TYPE.TREASURE) {
+            // Assert that there is 1 treasure tile with the player on it.
+            Assert.assertTrue(StringUtils.countMatches(html,
+                    htmlGeneratorInstance.TREASURE_CELL_WITH_PLAYER) == 1);
+        } else {
+            fail("Enum was not found.");
+        }
     }
 
 }
