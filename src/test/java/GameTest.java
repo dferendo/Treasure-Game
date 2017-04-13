@@ -39,46 +39,44 @@ public class GameTest {
 
     @Test
     public void setup_validNumberOfPlayersAndMapSize_smallMap() throws SizeOfMapWasNotSet {
-        game = new Game(toInputStream("2\n5\n")); // 2 players and map size of 5
-        game.setup();
+        setInputStreamAndTryGameSetup("2\n5\n"); // 2 players and map size of 5
     }
 
     @Test
     public void setup_validNumberOfPlayersAndMapSize_mediumMap() throws SizeOfMapWasNotSet {
-        game = new Game(toInputStream("5\n8\n")); // 5 players and map size of 8
-        game.setup();
+        setInputStreamAndTryGameSetup("5\n8\n"); // 5 players and map size of 8
     }
 
     @Test
     public void setup_validNumberOfPlayersAndMapSize_largeMap() throws SizeOfMapWasNotSet {
-        game = new Game(toInputStream("8\n50\n")); // 8 players and map size of 50
-        game.setup();
+        setInputStreamAndTryGameSetup("8\n50\n"); // 8 players and map size of 50
     }
 
     @Test
     public void setup_invalidNumberOfPlayersFollowedByValidValues() throws SizeOfMapWasNotSet {
         // invalid (players: -1, 100, abc), followed by 2 players and map size of 5
-        game = new Game(toInputStream("-1\n100\nabc\n2\n5\n"));
-        game.setup();
+        setInputStreamAndTryGameSetup("-1\n100\nabc\n2\n5\n");
     }
 
     @Test
     public void setup_validNumberOfPlayersAndInvalidMapSizeFollowedByValidValue() throws SizeOfMapWasNotSet {
         // 2 players, invalid (map sizes: -1, 100, abc), and a valid map size of 5
-        game = new Game(toInputStream("2\n-1\n100\nabc\n5\n"));
-        game.setup();
+        setInputStreamAndTryGameSetup("2\n-1\n100\nabc\n5\n");
     }
 
     @Test
     public void setup_smallMapForMoreThanFourPlayers() throws SizeOfMapWasNotSet, IOException {
         // 5 players, invalid (map size: 5), and a valid map size of 8
-        game = new Game(toInputStream("5\n5\n8\n"));
-        game.setup();
+        setInputStreamAndTryGameSetup("5\n5\n8\n");
     }
 
-    private InputStream toInputStream(final String input) {
-        customIn = new ByteArrayInputStream(input.getBytes());
-        return customIn;
+    private void setInputStreamAndTryGameSetup(final String input) {
+        game = new Game(new ByteArrayInputStream(input.getBytes()));
+        try {
+            game.setup();
+        } catch (GameWasNotInitialized e) {
+            fail("Game was not initialized.");
+        }
     }
 
     @After

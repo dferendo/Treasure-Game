@@ -34,7 +34,7 @@ public class Game {
         scanner = new Scanner(in);
     }
 
-    public void setup() throws SizeOfMapWasNotSet {
+    public void setup() throws GameWasNotInitialized {
         setNumPlayers();
         setMapSize();
     }
@@ -122,10 +122,9 @@ public class Game {
         final int MIN_PLAYERS = 2, MAX_PLAYERS = 8;
         final String NUM_PLAYERS_RANGE = "(" + MIN_PLAYERS + "-" + MAX_PLAYERS + ")";
 
-        int numPlayers;
         while (true) {
             System.out.println("How many players will be playing? " + NUM_PLAYERS_RANGE);
-            numPlayers = getValidInt();
+            final int numPlayers = getValidInt();
 
             if (numPlayers < MIN_PLAYERS || numPlayers > MAX_PLAYERS) {
                 System.out.println("The input value was out of the range " + NUM_PLAYERS_RANGE + ".");
@@ -136,16 +135,20 @@ public class Game {
         }
     }
 
-    private void setMapSize () {
+    private void setMapSize () throws GameWasNotInitialized {
 
         final int MIN_MAP_SIZE = (players.length <= 4 ? 5 : 8), MAX_MAP_SIZE = 50;
         final String MAP_SIZE_RANGE = "(" + MIN_MAP_SIZE + "-" + MAX_MAP_SIZE + ")";
         map = new Map();
 
-        int mapSize;
+        // Check if players array was initialized
+        if (players == null) {
+            throw new GameWasNotInitialized("Players array");
+        }
+
         while (true) {
             System.out.println("What will be the size of the map? " + MAP_SIZE_RANGE);
-            mapSize = getValidInt();
+            final int mapSize = getValidInt();
 
             if (!map.setMapSize(mapSize, mapSize, players.length)) {
                 System.out.println("The input value was out of the range " + MAP_SIZE_RANGE + ".");
