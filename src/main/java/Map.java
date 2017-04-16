@@ -137,10 +137,16 @@ public class Map {
      *
      * @param player: Player to set the initial Position.
      * @throws PositionIsOutOfRange: The x, y coordinates generated are incorrect.
+     * @throws SizeOfMapWasNotSet: Size of map was not beforehand.
      */
-    public void setInitialPlayerPosition(final Player player) throws PositionIsOutOfRange {
+    public void setInitialPlayerPosition(final Player player) throws PositionIsOutOfRange, SizeOfMapWasNotSet {
         int x, y;
-        Random rand = new Random();
+        Random rand;
+
+        if (size == 0) {
+            throw new SizeOfMapWasNotSet();
+        }
+        rand = new Random();
 
         while (true) {
             x = rand.nextInt(size);
