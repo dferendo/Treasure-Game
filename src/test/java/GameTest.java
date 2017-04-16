@@ -2,6 +2,7 @@ import exceptions.GameWasNotInitialized;
 import exceptions.PositionIsOutOfRange;
 import exceptions.SizeOfMapWasNotSet;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -24,8 +25,11 @@ public class GameTest {
     // Set in setStartPositions(...) method
     private Position cstStartPos[] = null; // custom start positions
 
+    // Directions with newline since they will be read from the input stream as a line
     private final String UP = "U\n", DN = "D\n", LT = "L\n", RT = "R\n";
-    private final int FAIL_IF_TREASURE = 1, FAIL_IF_NO_TREASURE = 2;
+
+    // For clarity when passing the argument to the startGame() method
+    private final boolean FAIL_IF_TREASURE = true, FAIL_IF_NO_TREASURE = false;
 
     @Test(expected = GameWasNotInitialized.class)
     public void startGame_startBeforeSetupCausesException() throws GameWasNotInitialized {
@@ -86,35 +90,35 @@ public class GameTest {
     }
 
     @Test
-    public void move_topLeftLimit() throws GameWasNotInitialized, PositionIsOutOfRange, SizeOfMapWasNotSet {
+    public void move_intoTopLeftCorner() throws GameWasNotInitialized, PositionIsOutOfRange, SizeOfMapWasNotSet {
         setInputStreamAndTryGameSetup("2\n20\n" + UP + LT); // Sets p=2, map=20, and UP,LT
-        move_twoMovesInCorner(new Position(0, 0));
+        twoMovesInCorner(new Position(0, 0));
         assertP1andP2Pos(cstStartPos[0], cstStartPos[1]); // assert that positions did not change
     }
 
     @Test
-    public void move_topRightLimit() throws GameWasNotInitialized, PositionIsOutOfRange, SizeOfMapWasNotSet {
+    public void move_intoTopRightCorner() throws GameWasNotInitialized, PositionIsOutOfRange, SizeOfMapWasNotSet {
         setInputStreamAndTryGameSetup("2\n20\n" + UP + RT); // Sets p=2, map=20, and UP,RT
-        move_twoMovesInCorner(new Position(19, 0));
+        twoMovesInCorner(new Position(19, 0));
         assertP1andP2Pos(cstStartPos[0], cstStartPos[1]); // assert that positions did not change
     }
 
     @Test
-    public void move_bottomLeftLimit() throws GameWasNotInitialized, PositionIsOutOfRange, SizeOfMapWasNotSet {
+    public void move_intoBottomLeftCorner() throws GameWasNotInitialized, PositionIsOutOfRange, SizeOfMapWasNotSet {
         setInputStreamAndTryGameSetup("2\n20\n" + DN + LT); // Sets p=2, map=20, and DN,LT
-        move_twoMovesInCorner(new Position(0, 19));
+        twoMovesInCorner(new Position(0, 19));
         assertP1andP2Pos(cstStartPos[0], cstStartPos[1]); // assert that positions did not change
     }
 
     @Test
-    public void move_bottomRightLimit() throws GameWasNotInitialized, PositionIsOutOfRange, SizeOfMapWasNotSet {
+    public void move_intoBottomRightCorner() throws GameWasNotInitialized, PositionIsOutOfRange, SizeOfMapWasNotSet {
         setInputStreamAndTryGameSetup("2\n20\n" + DN + RT); // Sets p=2, map=20, and DN,RT
-        move_twoMovesInCorner(new Position(19, 19));
+        twoMovesInCorner(new Position(19, 19));
         assertP1andP2Pos(cstStartPos[0], cstStartPos[1]); // assert that positions did not change
     }
 
     @Test
-    public void move_moveOntoTreasureFromLeft() throws GameWasNotInitialized, PositionIsOutOfRange, SizeOfMapWasNotSet {
+    public void move_ontoTreasureFromLeft() throws GameWasNotInitialized, PositionIsOutOfRange, SizeOfMapWasNotSet {
         setInputStreamAndTryGameSetup("2\n20\n" + RT + RT);                     // Sets pl=2, map=20, and moves=R,R
         final Position tile = findTileWithGrassOnLeft(Map.TILE_TYPE.TREASURE);  // Find grass tile to left of treasure
         setStartPositions(new Position(tile.getX() - 1, tile.getY()));          // Move players to left of treasure
@@ -123,7 +127,7 @@ public class GameTest {
     }
 
     @Test
-    public void move_moveOntoWaterFromLeft() throws GameWasNotInitialized, PositionIsOutOfRange, SizeOfMapWasNotSet {
+    public void move_ontoWaterFromLeft() throws GameWasNotInitialized, PositionIsOutOfRange, SizeOfMapWasNotSet {
         setInputStreamAndTryGameSetup("2\n20\n" + RT + RT);                 // Sets pl=2, map=20, and moves=R,R
         final Position tile = findTileWithGrassOnLeft(Map.TILE_TYPE.WATER); // Find grass tile to left of water
         setStartPositions(new Position(tile.getX() - 1, tile.getY()));      // Move players to left of water
@@ -132,7 +136,7 @@ public class GameTest {
     }
 
     @Test
-    public void move_moveOntoGrassFromLeft() throws GameWasNotInitialized, PositionIsOutOfRange, SizeOfMapWasNotSet {
+    public void move_ontoGrassFromLeft() throws GameWasNotInitialized, PositionIsOutOfRange, SizeOfMapWasNotSet {
         setInputStreamAndTryGameSetup("2\n20\n" + RT + RT);                 // Sets pl=2, map=20, and moves=R,R
         final Position tile = findTileWithGrassOnLeft(Map.TILE_TYPE.GRASS); // Find grass tile to left of grass
         setStartPositions(new Position(tile.getX() - 1, tile.getY()));      // Move players to left of grass
@@ -141,7 +145,7 @@ public class GameTest {
     }
 
     @Test
-    public void move_moveUpDownLeftRight() throws GameWasNotInitialized, PositionIsOutOfRange, SizeOfMapWasNotSet {
+    public void move_upDownLeftRight() throws GameWasNotInitialized, PositionIsOutOfRange, SizeOfMapWasNotSet {
         setInputStreamAndTryGameSetup("2\n20\n" + UP + LT + DN + RT);   // Sets pl=2, map=20, p1=up+dn, p2=lt+rt
         final Position tile = findGrassWithGrassOnLeftAndUp();          // Find grass tile with grass on left and up
         setStartPositions(new Position(tile.getX(), tile.getY()));      // Move players to grass tile
@@ -157,23 +161,38 @@ public class GameTest {
         Assert.assertTrue(Game.MOVE_DIRECTION.valueOf("DOWN") == Game.MOVE_DIRECTION.DOWN);
     }
 
-    // Perform two moves in a corner to try and break bound
-    private void move_twoMovesInCorner(final Position corner)
+    /**
+     * Helper Method #1.
+     *
+     * Performs two moves in a position expected to be a corner in the map. Also sets the start
+     * start positions of the players to the corner and starts the game. An appropriate input
+     * stream is expected to have been set before calling this method.
+     */
+    private void twoMovesInCorner(final Position corner)
             throws GameWasNotInitialized, PositionIsOutOfRange, SizeOfMapWasNotSet {
 
-        // Corner has to be grass
+        Assume.assumeTrue(corner.getX() == 0 || corner.getX() == map.getMapSize() - 1);
+        Assume.assumeTrue(corner.getY() == 0 || corner.getY() == map.getMapSize() - 1);
+
+        // Loop until corner is grass
         do {
             map.generate();
         } while (map.getTileType(corner.getX(), corner.getY()) != Map.TILE_TYPE.GRASS);
 
-        setStartPositions(corner); // Move players into corner
+        setStartPositions(corner);
         startGame(FAIL_IF_TREASURE);
     }
 
-    // Loop until there is a grass tile to the left of tile
+    /**
+     * Helper Method #2.
+     *
+     * Loop until there is a grass tile to the left of the tile to be found and returns the
+     * position of the tile, not the grass tile.
+     */
     private Position findTileWithGrassOnLeft(final Map.TILE_TYPE tileToFind)
             throws PositionIsOutOfRange, SizeOfMapWasNotSet {
 
+        // Loop and regenerate map if a tile of the specified type was not found
         do {
             // Find tile (skip first column since grass on left is needed)
             for (int x = 1; x < map.getMapSize(); x++) {
@@ -191,9 +210,15 @@ public class GameTest {
         } while (true);
     }
 
-    // Loop until grass with grass on left and up is found
+    /**
+     * Helper Method #3.
+     *
+     * Loop until a grass tile with grass tiles to the left and up from it is found. The position
+     * of the reference grass tile is returned.
+     */
     private Position findGrassWithGrassOnLeftAndUp() throws PositionIsOutOfRange, SizeOfMapWasNotSet {
 
+        // Loop and regenerate map if a grass tile satisfying the conditions was not found
         do {
             // Find grass (skip first column and row since grass on left and up is needed)
             for (int x = 1; x < map.getMapSize(); x++) {
@@ -212,6 +237,11 @@ public class GameTest {
         } while (true);
     }
 
+    /**
+     * Helper Method #4.
+     *
+     * Sets the start positions of all the players to the specified position.
+     */
     private void setStartPositions(final Position newPosition) {
 
         cstStartPos = new Position[players.length];
@@ -221,6 +251,11 @@ public class GameTest {
         }
     }
 
+    /**
+     * Helper Method #5.
+     *
+     * Asserts that the positions of players 1 and 2 are equal to the specified positions.
+     */
     private void assertP1andP2Pos(final Position p1Pos, final Position p2Pos) {
 
         Assert.assertTrue(players != null && players.length >= 2);
@@ -228,7 +263,14 @@ public class GameTest {
         Assert.assertTrue(players[1].getPosition().equals(p2Pos));
     }
 
-    private void startGame(final int failInstruction) throws GameWasNotInitialized, PositionIsOutOfRange {
+    /**
+     * Helper Method #6.
+     *
+     * Start game and fail according to the failInstruction (i.e. if treasure found or if
+     * not found). Game throws a NoSuchElementException when it has exhausted the input,
+     * which indicates that none of the players had reached the treasure by that point.
+     */
+    private void startGame(final boolean failInstruction) throws GameWasNotInitialized, PositionIsOutOfRange {
 
         try {
             game.startGame();
@@ -244,6 +286,11 @@ public class GameTest {
         }
     }
 
+    /**
+     * Helper Method #7.
+     *
+     * Set the input stream to be used to simulate the user input and attempt to set up the game.
+     */
     private void setInputStreamAndTryGameSetup(final String input) {
 
         game = new Game(new ByteArrayInputStream(input.getBytes()));
