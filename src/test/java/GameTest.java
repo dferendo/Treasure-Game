@@ -166,25 +166,20 @@ public class GameTest {
     private Position findTileWithGrassOnLeft(final Map.TILE_TYPE tileToFind)
             throws PositionIsOutOfRange, SizeOfMapWasNotSet {
 
-        Position pos;
         do {
-            // Find tile
-            pos = null;
+            // Find tile (skip first column since grass on left is needed)
             for (int x = 1; x < map.getMapSize(); x++) {
                 for (int y = 0; y < map.getMapSize(); y++) {
                     if (map.getTileType(x, y) == tileToFind) {
-                        pos = new Position(x, y);
+
+                        // Check that there is grass to the left
+                        if (map.getTileType(x - 1, y) == Map.TILE_TYPE.GRASS) {
+                            return new Position(x, y); // required tile found
+                        }
                     }
                 }
             }
-            Assert.assertTrue(pos != null);
-
-            // Check that there is grass to the left
-            if (map.getTileType(pos.getX() - 1, pos.getY()) == Map.TILE_TYPE.GRASS) {
-                return pos; // grass to the left of tile found
-            } else {
-                map.generate(); // re-generate the map
-            }
+            map.generate(); // re-generate the map
         } while (true);
     }
 
@@ -192,13 +187,13 @@ public class GameTest {
     private Position findGrassWithGrassOnLeftAndUp() throws PositionIsOutOfRange, SizeOfMapWasNotSet {
 
         do {
+            // Find grass (skip first column and row since grass on left and up is needed)
             for (int x = 1; x < map.getMapSize(); x++) {
                 for (int y = 1; y < map.getMapSize(); y++) {
                     if (map.getTileType(x, y) == Map.TILE_TYPE.GRASS) {
 
-                        // Check that not out of bounds and that there is grass to the left and up
-                        if (x - 1 >= 0 && y - 1 >= 0
-                                && map.getTileType(x - 1, y) == Map.TILE_TYPE.GRASS
+                        // Check that there is grass to the left and up
+                        if (map.getTileType(x - 1, y) == Map.TILE_TYPE.GRASS
                                 && map.getTileType(x, y - 1) == Map.TILE_TYPE.GRASS) {
                             return new Position(x, y); // required grass tile found
                         }
