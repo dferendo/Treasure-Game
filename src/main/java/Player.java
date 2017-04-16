@@ -53,39 +53,6 @@ public class Player {
     }
 
     /**
-     * Causes the player to move in the direction specified. Based on the direction, a
-     * single coordinate will be incremented or decremented and the setPosition(...)
-     * function is called with the new position.
-     *
-     * @param direction Direction to move towards.
-     */
-    public void move(final MOVE_DIRECTION direction) {
-
-        // One of these will be changed below
-        int newX = position.getX();
-        int newY = position.getY();
-
-        // Change a coordinate depending on direction
-        switch (direction) {
-            case UP:
-                newY--;
-                break;
-            case DOWN:
-                newY++;
-                break;
-            case LEFT:
-                newX--;
-                break;
-            case RIGHT:
-                newX++;
-                break;
-        }
-
-        // Set position based on new coordinates
-        setPosition(new Position(newX, newY));
-    }
-
-    /**
      * Sets the current position of the player to the exact specified position, irrelevant
      * to where the player currently is. Besides setting the position, the new position is
      * added to the list of visited positions.

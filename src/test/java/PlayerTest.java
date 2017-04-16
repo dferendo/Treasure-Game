@@ -36,38 +36,6 @@ public class PlayerTest {
     }
 
     @Test
-    public void move_moveUpCausesChangeInYButNoChangeInX() {
-        setStartPosition();
-        player.move(Player.MOVE_DIRECTION.UP);
-        Assert.assertTrue(player.getPosition().getX() == startX);
-        Assert.assertTrue(player.getPosition().getY() == startY - 1);
-    }
-
-    @Test
-    public void move_moveDownCausesChangeInYButNoChangeInX() {
-        setStartPosition();
-        player.move(Player.MOVE_DIRECTION.DOWN);
-        Assert.assertTrue(player.getPosition().getX() == startX);
-        Assert.assertTrue(player.getPosition().getY() == startY + 1);
-    }
-
-    @Test
-    public void move_moveLeftCausesChangeInXButNoChangeInY() {
-        setStartPosition();
-        player.move(Player.MOVE_DIRECTION.LEFT);
-        Assert.assertTrue(player.getPosition().getX() == startX - 1);
-        Assert.assertTrue(player.getPosition().getY() == startY);
-    }
-
-    @Test
-    public void move_moveRightCausesChangeInXButNoChangeInY() {
-        setStartPosition();
-        player.move(Player.MOVE_DIRECTION.RIGHT);
-        Assert.assertTrue(player.getPosition().getX() == startX + 1);
-        Assert.assertTrue(player.getPosition().getY() == startY);
-    }
-
-    @Test
     public void getId_constructorValueMatchesGetterValue() {
         Assert.assertTrue(player.getID() == id);
     }
