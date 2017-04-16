@@ -118,7 +118,7 @@ public class GameTest {
         setInputStreamAndTryGameSetup("2\n20\n" + RT + RT);                     // Sets pl=2, map=20, and moves=R,R
         final Position tile = findTileWithGrassOnLeft(Map.TILE_TYPE.TREASURE);  // Find grass tile to left of treasure
         setStartPositions(new Position(tile.getX() - 1, tile.getY()));          // Move players to left of treasure
-        startGame(FAIL_IF_NO_TREASURE);                                   // Start game (fail if no treasure)
+        startGame(FAIL_IF_NO_TREASURE);                                         // Start game (fail if no treasure)
         assertP1andP2Pos(tile, tile);                                           // assert that players now on treasure
     }
 
@@ -127,7 +127,7 @@ public class GameTest {
         setInputStreamAndTryGameSetup("2\n20\n" + RT + RT);                 // Sets pl=2, map=20, and moves=R,R
         final Position tile = findTileWithGrassOnLeft(Map.TILE_TYPE.WATER); // Find grass tile to left of water
         setStartPositions(new Position(tile.getX() - 1, tile.getY()));      // Move players to left of water
-        startGame(FAIL_IF_TREASURE);                                  // Start game (fail if treasure reached)
+        startGame(FAIL_IF_TREASURE);                                        // Start game (fail if treasure reached)
         assertP1andP2Pos(defStartPos[0], defStartPos[1]);                   // assert that players returned to start
     }
 
@@ -136,7 +136,7 @@ public class GameTest {
         setInputStreamAndTryGameSetup("2\n20\n" + RT + RT);                 // Sets pl=2, map=20, and moves=R,R
         final Position tile = findTileWithGrassOnLeft(Map.TILE_TYPE.GRASS); // Find grass tile to left of grass
         setStartPositions(new Position(tile.getX() - 1, tile.getY()));      // Move players to left of grass
-        startGame(FAIL_IF_TREASURE);                                  // Start game (fail if treasure reached)
+        startGame(FAIL_IF_TREASURE);                                        // Start game (fail if treasure reached)
         assertP1andP2Pos(tile, tile);                                       // assert that players now on grass
     }
 
@@ -145,7 +145,7 @@ public class GameTest {
         setInputStreamAndTryGameSetup("2\n20\n" + UP + LT + DN + RT);   // Sets pl=2, map=20, p1=up+dn, p2=lt+rt
         final Position tile = findGrassWithGrassOnLeftAndUp();          // Find grass tile with grass on left and up
         setStartPositions(new Position(tile.getX(), tile.getY()));      // Move players to grass tile
-        startGame(FAIL_IF_TREASURE);                              // Start game (fail if treasure reached)
+        startGame(FAIL_IF_TREASURE);                                    // Start game (fail if treasure reached)
         assertP1andP2Pos(cstStartPos[0], cstStartPos[1]);               // assert that players returned to start
     }
 
