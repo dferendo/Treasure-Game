@@ -89,6 +89,10 @@ public class HTMLGeneratorTest {
         int newX = 0, newY = 1;
         // Set 2 position of the player.
         map.setInitialPlayerPosition(player);
+        // This is a condition so that the new position is not the same as the initial position
+        if (player.getPosition().getX() == newX && player.getPosition().getY() == newY) {
+            newX = 1;
+        }
         player.setPosition(new Position(newX, newY));
         htmlGeneratorInstance = new HTMLGenerator(file, map, player);
         // The file generated will be available after constructor
@@ -104,6 +108,10 @@ public class HTMLGeneratorTest {
         int newX = 0, newY = 1;
         // Set 2 position of the player.
         map.setInitialPlayerPosition(player);
+        // This is a condition so that the new position is not the same as the initial position
+        if (player.getPosition().getX() == newX && player.getPosition().getY() == newY) {
+            newX = 1;
+        }
         player.setPosition(new Position(newX, newY));
         htmlGeneratorInstance = new HTMLGenerator(file, map, player);
         // The file generated will be available after constructor
