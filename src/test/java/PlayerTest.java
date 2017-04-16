@@ -132,6 +132,14 @@ public class PlayerTest {
         Assert.assertTrue(player.getPosition().equals(new Position(startX, startY)));
     }
 
+    @Test
+    public void enum_Testing() {
+        Assert.assertTrue(Player.MOVE_DIRECTION.valueOf("RIGHT") == Player.MOVE_DIRECTION.RIGHT);
+        Assert.assertTrue(Player.MOVE_DIRECTION.valueOf("UP") == Player.MOVE_DIRECTION.UP);
+        Assert.assertTrue(Player.MOVE_DIRECTION.valueOf("LEFT") == Player.MOVE_DIRECTION.LEFT);
+        Assert.assertTrue(Player.MOVE_DIRECTION.valueOf("DOWN") == Player.MOVE_DIRECTION.DOWN);
+    }
+
     private void generateMap(final int mapSize) {
         int numberOfPlayers = 3;
 
