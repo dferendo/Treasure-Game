@@ -13,6 +13,8 @@ import java.io.IOException;
 import static org.junit.Assert.fail;
 
 /**
+ * Tests used to test the implementation of HTMLGenerator.
+ *
  * @author Dylan Frendo.
  */
 public class HTMLGeneratorTest {

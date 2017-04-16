@@ -8,6 +8,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
+ * Tests used to test the implementation of Map.
+ *
  * @author Dylan Frendo.
  */
 public class MapTest {
@@ -28,9 +30,9 @@ public class MapTest {
 
     @Test
     public void setMapSize_sizeWasAlreadySet() {
-        int x = 5, y = 5, players = 4, mapSize2 = 8, players2 = 4;
+        int x = 5, y = 5, players = 4;
         if (mapInstance.setMapSize(x, y, players)) {
-            Assert.assertTrue("Size of map was already set.", !mapInstance.setMapSize(x, y, players2));
+            Assert.assertTrue("Size of map was already set.", !mapInstance.setMapSize(x, y, players));
         } else {
             fail("setMapSize was not set before hand.");
         }
