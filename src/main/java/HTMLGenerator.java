@@ -5,14 +5,23 @@ import java.io.File;
 import java.io.IOException;
 
 /**
+ * Generate HTML code for the specific map and outputs it in resources/players-maps.
+ *
  * @author Dylan Frendo.
  */
 public class HTMLGenerator {
 
+    /**
+     * These strings are used for indentation.
+     */
     private final String TAB_FOR_ROW = "\t\t\t";
     private final String TAB_FOR_CELL = TAB_FOR_ROW + "\t";
     private final String TAB_FOR_IMAGE = TAB_FOR_CELL + "\t";
 
+    /**
+     * These Strings are used to generated the type of the cell and the image
+     * for the player.
+     */
     final String GRASS_CELL_WITH_PLAYER =
             TAB_FOR_CELL +
                     "<td class=\"grassCell\">\n" +
@@ -33,7 +42,15 @@ public class HTMLGenerator {
                     TAB_FOR_CELL + "</td>\n";
     final String TREASURE_CELL = TAB_FOR_CELL + "<td class=\"treasureCell\"></td>\n";
 
-    HTMLGenerator(final File fileLocation, final Map map, final Player player) throws IOException, PositionIsOutOfRange {
+    /**
+     *
+     * @param fileLocation
+     * @param map
+     * @param player
+     * @throws IOException: Inputted file Location was not found.
+     * @throws PositionIsOutOfRange: Position checked by the
+     */
+    HTMLGenerator(final File fileLocation, final Map map, final Player player) throws IOException {
         writeOnFile(fileLocation, createTable(map, player));
     }
 
@@ -43,7 +60,7 @@ public class HTMLGenerator {
         FileUtils.writeStringToFile(fileLocation, htmlTemplate);
     }
 
-    private String createTable(final Map map, final Player player) throws PositionIsOutOfRange {
+    private String createTable(final Map map, final Player player) {
         final int mapSize = map.getMapSize();
         final StringBuilder table = new StringBuilder();
         table.append(createCaption(player));
@@ -54,12 +71,18 @@ public class HTMLGenerator {
             for (int j = 0; j < mapSize; j++) {
                 final int x = player.getPosition().getX();
                 final int y = player.getPosition().getY();
-                if (x == j && y == i) {
-                    table.append(determineCellType(map.getTileType(j, i), true));
-                } else if (player.wasVisited(j, i)) {
-                    table.append(determineCellType(map.getTileType(j, i), false));
-                } else {
-                    table.append(IDLE_CELL);
+
+                try {
+                    if (x == j && y == i) {
+                        table.append(determineCellType(map.getTileType(j, i), true));
+                    } else if (player.wasVisited(j, i)) {
+                        table.append(determineCellType(map.getTileType(j, i), false));
+                    } else {
+                        table.append(IDLE_CELL);
+                    }
+                } catch (PositionIsOutOfRange positionIsOutOfRange) {
+                    // Create Table loop is incorrect.
+                    positionIsOutOfRange.getMessage();
                 }
             }
             table.append(TAB_FOR_ROW);

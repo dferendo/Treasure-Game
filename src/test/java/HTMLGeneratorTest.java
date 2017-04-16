@@ -1,4 +1,5 @@
 import exceptions.PositionIsOutOfRange;
+import exceptions.SizeOfMapWasNotSet;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
@@ -23,7 +24,7 @@ public class HTMLGeneratorTest {
     private int size = 10, playerNumber = 3;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() throws IOException, SizeOfMapWasNotSet {
         int numberOfPlayers = 3;
         map = new Map();
         player = new Player(playerNumber);
@@ -35,14 +36,14 @@ public class HTMLGeneratorTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() throws IOException {
         if (!file.delete()) {
-            throw new Exception("Failed to delete test file");
+            throw new IOException("Failed to delete test file.");
         }
     }
 
     @Test(expected = IOException.class)
-    public void HTMLGenerator_fileTemplateNotFound_correctPosition() throws Exception {
+    public void HTMLGenerator_fileTemplateNotFound_correctPosition() throws IOException, PositionIsOutOfRange {
         map.setInitialPlayerPosition(player);
         htmlGeneratorInstance = new HTMLGenerator(new File("ThisFileDoesNotExist"), map, player);
     }

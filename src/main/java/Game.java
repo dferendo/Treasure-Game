@@ -159,23 +159,26 @@ public class Game {
         }
     }
 
+    /**
+     * Generates the HTML Files to all players with respect to their current map.
+     */
     private void generateHTMLFiles() {
+        String gitIgnore;
+        File playerFile;
 
         try {
             // .gitignore is still needed in the directory, thus re-write it after
             // cleaning the directory
-            String gitIgnore = FileUtils.readFileToString(GitIgnoreLocation);
+            gitIgnore = FileUtils.readFileToString(GitIgnoreLocation);
             FileUtils.cleanDirectory(new File(playersMapLocation));
             FileUtils.writeStringToFile(GitIgnoreLocation, gitIgnore);
             for (final Player player : players) {
-                File playerFile = new File(playersMapLocation + "map_player_" + player.getID() + ".html");
+                playerFile = new File(playersMapLocation + "map_player_" + player.getID() + ".html");
                 FileUtils.copyFile(HTMLTemplateLocation, playerFile);
                 new HTMLGenerator(playerFile, map, player);
             }
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (PositionIsOutOfRange positionIsOutOfRange) {
-            positionIsOutOfRange.printStackTrace();
+            e.getMessage();
         }
     }
 
