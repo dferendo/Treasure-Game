@@ -8,6 +8,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
+ * Tests used to test the implementation of Map.
+ *
  * @author Dylan Frendo.
  */
 public class MapTest {
@@ -28,9 +30,9 @@ public class MapTest {
 
     @Test
     public void setMapSize_sizeWasAlreadySet() {
-        int x = 5, y = 5, players = 4, mapSize2 = 8, players2 = 4;
+        int x = 5, y = 5, players = 4;
         if (mapInstance.setMapSize(x, y, players)) {
-            Assert.assertTrue("Size of map was already set.", !mapInstance.setMapSize(x, y, players2));
+            Assert.assertTrue("Size of map was already set.", !mapInstance.setMapSize(x, y, players));
         } else {
             fail("setMapSize was not set before hand.");
         }
@@ -178,7 +180,7 @@ public class MapTest {
     }
 
     @Test
-    public void setInitialPlayerPosition_checkIfTileIsGrassTile() throws PositionIsOutOfRange {
+    public void setInitialPlayerPosition_checkIfTileIsGrassTile() throws PositionIsOutOfRange, SizeOfMapWasNotSet {
         int size = 10, playerID = 1;
         Player player = new Player(playerID);
 
@@ -187,6 +189,14 @@ public class MapTest {
         mapInstance.setInitialPlayerPosition(player);
         Assert.assertTrue(mapInstance.getTileType(player.getPosition().getX(),
                 player.getPosition().getY()) == Map.TILE_TYPE.GRASS);
+    }
+
+    @Test(expected = SizeOfMapWasNotSet.class)
+    public void setInitialPlayerPosition_sizeWasNotSet() throws PositionIsOutOfRange, SizeOfMapWasNotSet {
+        int playerID = 1;
+        Player player = new Player(playerID);
+
+        mapInstance.setInitialPlayerPosition(player);
     }
 
     @Test
