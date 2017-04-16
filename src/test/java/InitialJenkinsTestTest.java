@@ -28,9 +28,21 @@ public class InitialJenkinsTestTest {
     }
 
     @Test
+    public void maximum_secondArgumentIsMax() {
+        final int x = 10, y = 20;
+        Assert.assertTrue(initialJenkinsTest.maximum(x, y) == y);
+    }
+
+    @Test
     public void minimum_firstArgumentIsMin() {
         final int x = 10, y = 20;
         Assert.assertTrue(initialJenkinsTest.minimum(x, y) == x);
+    }
+
+    @Test
+    public void minimum_secondArgumentIsMin() {
+        final int x = 20, y = 10;
+        Assert.assertTrue(initialJenkinsTest.minimum(x, y) == y);
     }
 
     @Test
