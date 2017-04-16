@@ -149,6 +149,14 @@ public class GameTest {
         assertP1andP2Pos(cstStartPos[0], cstStartPos[1]);               // assert that players returned to start
     }
 
+    @Test
+    public void enum_Testing() {
+        Assert.assertTrue(Game.MOVE_DIRECTION.valueOf("RIGHT") == Game.MOVE_DIRECTION.RIGHT);
+        Assert.assertTrue(Game.MOVE_DIRECTION.valueOf("UP") == Game.MOVE_DIRECTION.UP);
+        Assert.assertTrue(Game.MOVE_DIRECTION.valueOf("LEFT") == Game.MOVE_DIRECTION.LEFT);
+        Assert.assertTrue(Game.MOVE_DIRECTION.valueOf("DOWN") == Game.MOVE_DIRECTION.DOWN);
+    }
+
     // Perform two moves in a corner to try and break bound
     private void move_twoMovesInCorner(final Position corner)
             throws GameWasNotInitialized, PositionIsOutOfRange, SizeOfMapWasNotSet {

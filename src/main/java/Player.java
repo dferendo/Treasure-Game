@@ -15,16 +15,6 @@ import java.util.List;
 public class Player {
 
     /**
-     * Defines four values used as movement directions.
-     */
-    public enum MOVE_DIRECTION {
-        UP,
-        DOWN,
-        LEFT,
-        RIGHT
-    }
-
-    /**
      * Player ID, current position, and list of visited positions. The list is kept so
      * the the game can check which tiles to keep uncovered for the player.
      */

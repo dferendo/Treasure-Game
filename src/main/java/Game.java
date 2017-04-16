@@ -41,6 +41,16 @@ public class Game {
     private List<Player> winners = new ArrayList<Player>();
 
     /**
+     * Defines four values used as movement directions.
+     */
+    public enum MOVE_DIRECTION {
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT
+    }
+
+    /**
      * Constructor for the game which sets the input stream to the standard input.
      */
     public Game() {
@@ -118,7 +128,7 @@ public class Game {
             for (final Player p : players) {
 
                 System.out.println("It's Player " + p.getID() + "'s turn.");
-                Player.MOVE_DIRECTION dir;
+                MOVE_DIRECTION dir;
                 do {
                     System.out.println("Insert a direction to move: (U)p, (D)own, (L)eft, or (R)ight");
                     dir = getValidDirection();
@@ -263,7 +273,7 @@ public class Game {
      *
      * @return The valid direction using the MOVE_DIRECTION enum.
      */
-    private Player.MOVE_DIRECTION getValidDirection() {
+    private MOVE_DIRECTION getValidDirection() {
 
         final String ERROR_MESSAGE = "The input was not a valid direction! Valid directions: U, D, L, R.";
 
@@ -275,13 +285,13 @@ public class Game {
             } else {
                 switch (Character.toUpperCase(input.charAt(0))) {
                     case 'U':
-                        return Player.MOVE_DIRECTION.UP;
+                        return MOVE_DIRECTION.UP;
                     case 'D':
-                        return Player.MOVE_DIRECTION.DOWN;
+                        return MOVE_DIRECTION.DOWN;
                     case 'L':
-                        return Player.MOVE_DIRECTION.LEFT;
+                        return MOVE_DIRECTION.LEFT;
                     case 'R':
-                        return Player.MOVE_DIRECTION.RIGHT;
+                        return MOVE_DIRECTION.RIGHT;
                     default:
                         System.out.println(ERROR_MESSAGE);
                 }
@@ -299,7 +309,7 @@ public class Game {
      * @return False if a movement in the specified direction makes the player go out of
      * the map bounds, or otherwise the return value of the setPosition(...) method.
      */
-    private boolean verifyDirectionAndMove(final Player player, final Player.MOVE_DIRECTION dir) {
+    private boolean verifyDirectionAndMove(final Player player, final MOVE_DIRECTION dir) {
 
         final Position pos = player.getPosition();
         switch (dir) {
