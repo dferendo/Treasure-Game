@@ -36,38 +36,6 @@ public class PlayerTest {
     }
 
     @Test
-    public void move_moveUpCausesChangeInYButNoChangeInX() {
-        setStartPosition();
-        player.move(Player.MOVE_DIRECTION.UP);
-        Assert.assertTrue(player.getPosition().getX() == startX);
-        Assert.assertTrue(player.getPosition().getY() == startY - 1);
-    }
-
-    @Test
-    public void move_moveDownCausesChangeInYButNoChangeInX() {
-        setStartPosition();
-        player.move(Player.MOVE_DIRECTION.DOWN);
-        Assert.assertTrue(player.getPosition().getX() == startX);
-        Assert.assertTrue(player.getPosition().getY() == startY + 1);
-    }
-
-    @Test
-    public void move_moveLeftCausesChangeInXButNoChangeInY() {
-        setStartPosition();
-        player.move(Player.MOVE_DIRECTION.LEFT);
-        Assert.assertTrue(player.getPosition().getX() == startX - 1);
-        Assert.assertTrue(player.getPosition().getY() == startY);
-    }
-
-    @Test
-    public void move_moveRightCausesChangeInXButNoChangeInY() {
-        setStartPosition();
-        player.move(Player.MOVE_DIRECTION.RIGHT);
-        Assert.assertTrue(player.getPosition().getX() == startX + 1);
-        Assert.assertTrue(player.getPosition().getY() == startY);
-    }
-
-    @Test
     public void getId_constructorValueMatchesGetterValue() {
         Assert.assertTrue(player.getID() == id);
     }
@@ -130,14 +98,6 @@ public class PlayerTest {
         Assume.assumeTrue(player.setPosition(new Position(startX + 1, startY + 1)));
         player.backToStartPosition();
         Assert.assertTrue(player.getPosition().equals(new Position(startX, startY)));
-    }
-
-    @Test
-    public void enum_Testing() {
-        Assert.assertTrue(Player.MOVE_DIRECTION.valueOf("RIGHT") == Player.MOVE_DIRECTION.RIGHT);
-        Assert.assertTrue(Player.MOVE_DIRECTION.valueOf("UP") == Player.MOVE_DIRECTION.UP);
-        Assert.assertTrue(Player.MOVE_DIRECTION.valueOf("LEFT") == Player.MOVE_DIRECTION.LEFT);
-        Assert.assertTrue(Player.MOVE_DIRECTION.valueOf("DOWN") == Player.MOVE_DIRECTION.DOWN);
     }
 
     private void generateMap(final int mapSize) {
