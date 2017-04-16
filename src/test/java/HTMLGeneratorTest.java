@@ -43,13 +43,13 @@ public class HTMLGeneratorTest {
     }
 
     @Test(expected = IOException.class)
-    public void HTMLGenerator_fileTemplateNotFound_correctPosition() throws IOException, PositionIsOutOfRange {
+    public void HTMLGenerator_fileTemplateNotFound_correctPosition() throws IOException, PositionIsOutOfRange, SizeOfMapWasNotSet {
         map.setInitialPlayerPosition(player);
         htmlGeneratorInstance = new HTMLGenerator(new File("ThisFileDoesNotExist"), map, player);
     }
 
     @Test
-    public void HTMLGenerator_fileTemplateFoundAndCreated() throws IOException, PositionIsOutOfRange {
+    public void HTMLGenerator_fileTemplateFoundAndCreated() throws IOException, PositionIsOutOfRange, SizeOfMapWasNotSet {
         map.setInitialPlayerPosition(player);
         htmlGeneratorInstance = new HTMLGenerator(file, map, player);
         // Check if file exists.
@@ -58,7 +58,7 @@ public class HTMLGeneratorTest {
 
     @Test
     public void HTMLGenerator_checkThatThereIsTheCaptionWithThePlayerName()
-            throws IOException, PositionIsOutOfRange {
+            throws IOException, PositionIsOutOfRange, SizeOfMapWasNotSet {
         map.setInitialPlayerPosition(player);
         htmlGeneratorInstance = new HTMLGenerator(file, map, player);
         // The file generated will be available after constructor
@@ -71,7 +71,7 @@ public class HTMLGeneratorTest {
 
     @Test
     public void HTMLGenerator_checkIfPlayerIsInitiallyOnGrassTileAndOtherTilesAreUndiscovered()
-            throws IOException, PositionIsOutOfRange {
+            throws IOException, PositionIsOutOfRange, SizeOfMapWasNotSet {
         map.setInitialPlayerPosition(player);
         htmlGeneratorInstance = new HTMLGenerator(file, map, player);
         // The file generated will be available after constructor
@@ -86,7 +86,7 @@ public class HTMLGeneratorTest {
     }
 
     @Test
-    public void HTMLGenerator_checkPlayerMovementRemovesUnDiscoveredCell() throws IOException, PositionIsOutOfRange {
+    public void HTMLGenerator_checkPlayerMovementRemovesUnDiscoveredCell() throws IOException, PositionIsOutOfRange, SizeOfMapWasNotSet {
         int newX = 0, newY = 1;
         // Set 2 position of the player.
         map.setInitialPlayerPosition(player);
@@ -105,7 +105,7 @@ public class HTMLGeneratorTest {
     }
 
     @Test
-    public void HTMLGenerator_checkPlayerMovementHas1GreenTile() throws IOException, PositionIsOutOfRange {
+    public void HTMLGenerator_checkPlayerMovementHas1GreenTile() throws IOException, PositionIsOutOfRange, SizeOfMapWasNotSet {
         int newX = 0, newY = 1;
         // Set 2 position of the player.
         map.setInitialPlayerPosition(player);
@@ -125,7 +125,7 @@ public class HTMLGeneratorTest {
 
     @Test
     public void HTMLGenerator_checkPlayerMovementMovesToNextTile_nextTileIsGreen()
-            throws IOException, PositionIsOutOfRange {
+            throws IOException, PositionIsOutOfRange, SizeOfMapWasNotSet {
         // Set 2 position of the player.
         map.setInitialPlayerPosition(player);
         // Find position of Type.
@@ -145,7 +145,7 @@ public class HTMLGeneratorTest {
 
     @Test
     public void HTMLGenerator_checkPlayerMovementMovesToNextTile_nextTileIsTreasure()
-            throws IOException, PositionIsOutOfRange {
+            throws IOException, PositionIsOutOfRange, SizeOfMapWasNotSet {
         // Set 2 position of the player.
         map.setInitialPlayerPosition(player);
         // Find position of Type.
@@ -165,7 +165,7 @@ public class HTMLGeneratorTest {
 
     @Test
     public void HTMLGenerator_checkPlayerMovementMovesToNextTile_nextTileIsWaterTile()
-            throws IOException, PositionIsOutOfRange {
+            throws IOException, PositionIsOutOfRange, SizeOfMapWasNotSet {
         // Set 2 position of the player.
         map.setInitialPlayerPosition(player);
         // Find position of Type.
@@ -185,7 +185,7 @@ public class HTMLGeneratorTest {
 
     @Test
     public void HTMLGenerator_checkPlayerMovementMovesToNextTile_thereIsAWaterTileAfterMovingAwayFromTheWaterTile()
-            throws IOException, PositionIsOutOfRange {
+            throws IOException, PositionIsOutOfRange, SizeOfMapWasNotSet {
         // Set 2 position of the player.
         map.setInitialPlayerPosition(player);
         // The player will go to the starting point to guarantee
@@ -204,7 +204,7 @@ public class HTMLGeneratorTest {
 
     @Test
     public void HTMLGenerator_checkPlayerMovementMovesToNextTile_thereIsAWaterTreasureTileAfterMovingAwayFromTheTreasureTile()
-            throws IOException, PositionIsOutOfRange {
+            throws IOException, PositionIsOutOfRange, SizeOfMapWasNotSet {
         // Set 2 position of the player.
         map.setInitialPlayerPosition(player);
         // The player will go to the starting point to guarantee

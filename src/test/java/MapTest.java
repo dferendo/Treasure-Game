@@ -178,7 +178,7 @@ public class MapTest {
     }
 
     @Test
-    public void setInitialPlayerPosition_checkIfTileIsGrassTile() throws PositionIsOutOfRange {
+    public void setInitialPlayerPosition_checkIfTileIsGrassTile() throws PositionIsOutOfRange, SizeOfMapWasNotSet {
         int size = 10, playerID = 1;
         Player player = new Player(playerID);
 
@@ -187,6 +187,14 @@ public class MapTest {
         mapInstance.setInitialPlayerPosition(player);
         Assert.assertTrue(mapInstance.getTileType(player.getPosition().getX(),
                 player.getPosition().getY()) == Map.TILE_TYPE.GRASS);
+    }
+
+    @Test(expected = SizeOfMapWasNotSet.class)
+    public void setInitialPlayerPosition_sizeWasNotSet() throws PositionIsOutOfRange, SizeOfMapWasNotSet {
+        int playerID = 1;
+        Player player = new Player(playerID);
+
+        mapInstance.setInitialPlayerPosition(player);
     }
 
     @Test
