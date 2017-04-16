@@ -11,29 +11,67 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
+ * Represents a single game consisting of a turns counter, a list of players, a map, and a
+ * list of winners. The list of winners is only populated when the game ends, which is at
+ * the immediate point when at least one player reaches the treasure.
+ *
  * @author Miguel Dingli
  * @author Dylan Frendo
  */
 public class Game {
 
+    /**
+     * Locations of files and a directory.
+     */
     private final File HTMLTemplateLocation = new File("src/main/resources/html-template/SoftEngineer.html");
     private final String playersMapLocation = "src/main/resources/players-maps/";
     private final File GitIgnoreLocation = new File("src/main/resources/players-maps/.gitignore");
+
+    /**
+     * Scanner used during the game to read from the input stream specified in the constructor.
+     */
     private final Scanner scanner;
 
+    /**
+     * Current turn, list of players, the map, and a list of winners.
+     */
     private int turns = 1;
     private Player[] players = null;
     private Map map = null;
     private List<Player> winners = new ArrayList<Player>();
 
+    /**
+     * Constructor for the game which sets the input stream to the standard input.
+     */
     public Game() {
         this(System.in);
     }
 
+    /**
+     * Constructor for the game which allows for a custom input stream to be used
+     * by the game Scanner instead of standard input. This is mostly intended to
+     * be used to be able to simulate user input in the tests.
+     *
+     * @param in The custom input stream to be read.
+     */
     public Game(final InputStream in) {
         scanner = new Scanner(in);
     }
 
+    /**
+     * Sets up various aspects of the game. This method must be called before the startGame()
+     * method so that the game is set up before starting it. Set up includes setting of the
+     * number of players (and hence the players array), the map size (and hence the map object),
+     * generation of the map, and initializing and moving the players to their start positions.
+     * Exceptions are simply thrown since they should not occur because of this method.
+     *
+     * @throws GameWasNotInitialized Thrown by setMapSize() if the number of player was not set
+     * since the minimum size of the map depends on the number of players.
+     * @throws SizeOfMapWasNotSet Thrown by map.generate() and map.setInitialPlayerPosition(...)
+     * if the size of the map was not set since these operations depend on the map size.
+     * @throws PositionIsOutOfRange Thrown by map.setInitialPlayerPosition(...) if the position
+     * specified violates the map bounds.
+     */
     public void setup() throws GameWasNotInitialized, SizeOfMapWasNotSet, PositionIsOutOfRange {
 
         // Set number of players and map size
@@ -50,6 +88,14 @@ public class Game {
         }
     }
 
+    /**
+     * Starts the main game loop consisting of a loop to get the movement directions from the
+     * input stream, a loop to indicate where the players landed. The main game loop terminates
+     * once at least one player reaches the treasure. The list of winners is then output.
+     *
+     * @throws GameWasNotInitialized If either the map or players array are null.
+     * @throws PositionIsOutOfRange Thrown by some functions that take a position as argument.
+     */
     public void startGame() throws GameWasNotInitialized, PositionIsOutOfRange {
 
         // Check if either map or players array were not initialized
@@ -118,11 +164,17 @@ public class Game {
         map = null;
     }
 
+    /**
+     * Helper method to set the number of players in the game. This also initializes the players
+     * array as an empty array which will be populated in the setup() method.
+     */
     private void setNumPlayers() {
 
+        // Minimum and maximum players, and a range in string form
         final int MIN_PLAYERS = 2, MAX_PLAYERS = 8;
         final String NUM_PLAYERS_RANGE = "(" + MIN_PLAYERS + "-" + MAX_PLAYERS + ")";
 
+        // Loop until a valid number of players is obtained
         while (true) {
             System.out.println("How many players will be playing? " + NUM_PLAYERS_RANGE);
             final int numPlayers = getValidInt();
@@ -136,17 +188,25 @@ public class Game {
         }
     }
 
+    /**
+     * Helper method to set the size of the map.
+     *
+     * @throws GameWasNotInitialized Thrown if the players array is null.
+     */
     private void setMapSize() throws GameWasNotInitialized {
-
-        final int MIN_MAP_SIZE = (players.length <= 4 ? 5 : 8), MAX_MAP_SIZE = 50;
-        final String MAP_SIZE_RANGE = "(" + MIN_MAP_SIZE + "-" + MAX_MAP_SIZE + ")";
-        map = new Map();
 
         // Check if players array was initialized
         if (players == null) {
             throw new GameWasNotInitialized("Players array");
         }
 
+        // Minimum (based on players) and maximum map size and a range in string form
+        final int MIN_MAP_SIZE = (players.length <= 4 ? 5 : 8), MAX_MAP_SIZE = 50;
+        final String MAP_SIZE_RANGE = "(" + MIN_MAP_SIZE + "-" + MAX_MAP_SIZE + ")";
+
+        map = new Map();
+
+        // Loop until a valid map size is obtained
         while (true) {
             System.out.println("What will be the size of the map? " + MAP_SIZE_RANGE);
             final int mapSize = getValidInt();
@@ -163,6 +223,7 @@ public class Game {
      * Generates the HTML Files to all players with respect to their current map.
      */
     private void generateHTMLFiles() {
+
         String gitIgnore;
         File playerFile;
 
@@ -182,6 +243,11 @@ public class Game {
         }
     }
 
+    /**
+     * Helper method that loops until the input is a valid integer.
+     *
+     * @return The valid integer obtained from the input stream.
+     */
     private int getValidInt() {
 
         while (!scanner.hasNextInt()) {
@@ -192,15 +258,22 @@ public class Game {
         return Integer.parseInt(scanner.nextLine().trim());
     }
 
+    /**
+     * Helper method that loops until a valid direction is obtained.
+     *
+     * @return The valid direction using the MOVE_DIRECTION enum.
+     */
     private Player.MOVE_DIRECTION getValidDirection() {
 
         final String ERROR_MESSAGE = "The input was not a valid direction! Valid directions: U, D, L, R.";
+
+        // Loop until a valid direction is obtained
         do {
             final String input = scanner.nextLine();
             if (input.length() != 1) {
                 System.out.println(ERROR_MESSAGE);
             } else {
-                switch (input.charAt(0)) {
+                switch (Character.toUpperCase(input.charAt(0))) {
                     case 'U':
                         return Player.MOVE_DIRECTION.UP;
                     case 'D':
@@ -216,6 +289,16 @@ public class Game {
         } while (true);
     }
 
+    /**
+     * Verifies that the player can move in the specified direction and if so calls the
+     * appropriate method to move the player. Otherwise indicates that the player cannot
+     * go outside of the map.
+     *
+     * @param player
+     * @param dir
+     * @return False if a movement in the specified direction makes the player go out of
+     * the map bounds, or otherwise the return value of the setPosition(...) method.
+     */
     private boolean verifyDirectionAndMove(final Player player, final Player.MOVE_DIRECTION dir) {
 
         final Position pos = player.getPosition();
@@ -245,10 +328,20 @@ public class Game {
         return false;
     }
 
+    /**
+     * Returns the players array.
+     *
+     * @return The players array.
+     */
     public Player[] getPlayers() {
         return players;
     }
 
+    /**
+     * Returns the map.
+     *
+     * @return The map.
+     */
     public Map getMap() {
         return map;
     }
