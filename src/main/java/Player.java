@@ -91,7 +91,7 @@ public class Player {
         if (x < 0 || y < 0 || x >= Map.getSize() || y >= Map.getSize()) {
             throw new PositionIsOutOfRange(x, y);
         } else {
-            // Set the coordiantes as a position and compare to all visited positions
+            // Set the coordinates as a position and compare to all visited positions
             final Position toCheck = new Position(x, y);
             for (final Position position : visited) {
                 if (position.equals(toCheck)) {

@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 
 import static org.junit.Assert.fail;
 
@@ -28,7 +29,7 @@ public class HTMLGeneratorTest {
     @Before
     public void setUp() throws IOException, SizeOfMapWasNotSet {
         int numberOfPlayers = 3;
-        map = new Map();
+        map = Map.getInstance();
         player = new Player(playerNumber);
         File HTMLTemplateLocation = new File("src/main/resources/html-template/SoftEngineer.html");
 
@@ -38,10 +39,14 @@ public class HTMLGeneratorTest {
     }
 
     @After
-    public void tearDown() throws IOException {
+    public void tearDown() throws IOException, IllegalAccessException, NoSuchFieldException {
         if (!file.delete()) {
             throw new IOException("Failed to delete test file.");
         }
+        // Clear Map instance
+        Field instance = Map.class.getDeclaredField("instance");
+        instance.setAccessible(true);
+        instance.set(null, null);
     }
 
     @Test(expected = IOException.class)

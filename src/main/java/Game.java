@@ -214,7 +214,7 @@ public class Game {
         final int MIN_MAP_SIZE = (players.length <= 4 ? 5 : 8), MAX_MAP_SIZE = 50;
         final String MAP_SIZE_RANGE = "(" + MIN_MAP_SIZE + "-" + MAX_MAP_SIZE + ")";
 
-        map = new Map();
+        map = Map.getInstance();
 
         // Loop until a valid map size is obtained
         while (true) {

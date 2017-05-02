@@ -1,9 +1,8 @@
 import exceptions.InitialPlayerPositionWasNotSet;
 import exceptions.PositionIsOutOfRange;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
+
+import java.lang.reflect.Field;
 
 /**
  * @author Miguel Dingli
@@ -12,10 +11,19 @@ public class PlayerTest {
 
     private Player player;
     private final int startX = 5, startY = 10, id = 1;
+    Map map;
 
     @Before
     public void init() {
         player = new Player(id);
+    }
+
+    @After
+    public void tearDown() throws NoSuchFieldException, IllegalAccessException {
+        // Clear Map instance
+        Field instance = Map.class.getDeclaredField("instance");
+        instance.setAccessible(true);
+        instance.set(null, null);
     }
 
     @Test
@@ -104,7 +112,7 @@ public class PlayerTest {
         int numberOfPlayers = 3;
 
         // Map is needed to set the size of the map used by wasVisited
-        Map map = new Map();
+        Map map = Map.getInstance();
         Assume.assumeTrue(map.setMapSize(mapSize, mapSize, numberOfPlayers));
     }
 

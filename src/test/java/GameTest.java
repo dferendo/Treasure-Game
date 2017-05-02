@@ -1,12 +1,14 @@
 import exceptions.GameWasNotInitialized;
 import exceptions.PositionIsOutOfRange;
 import exceptions.SizeOfMapWasNotSet;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.NoSuchElementException;
 
 import static junit.framework.TestCase.fail;
@@ -30,6 +32,14 @@ public class GameTest {
 
     // For clarity when passing the argument to the startGame() method
     private final boolean FAIL_IF_TREASURE = true, FAIL_IF_NO_TREASURE = false;
+
+    @After
+    public void tearDown() throws NoSuchFieldException, IllegalAccessException {
+        // Clear Map instance
+        Field instance = Map.class.getDeclaredField("instance");
+        instance.setAccessible(true);
+        instance.set(null, null);
+    }
 
     @Test(expected = GameWasNotInitialized.class)
     public void startGame_startBeforeSetupCausesException() throws GameWasNotInitialized {

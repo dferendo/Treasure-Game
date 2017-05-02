@@ -1,9 +1,8 @@
 import exceptions.PositionIsOutOfRange;
 import exceptions.SizeOfMapWasNotSet;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
+
+import java.lang.reflect.Field;
 
 import static org.junit.Assert.*;
 
@@ -18,7 +17,15 @@ public class MapTest {
 
     @Before
     public void setUp() {
-        mapInstance = new Map();
+        mapInstance = Map.getInstance();
+    }
+
+    @After
+    public void tearDown() throws NoSuchFieldException, IllegalAccessException {
+        // Clear Map instance
+        Field instance = Map.class.getDeclaredField("instance");
+        instance.setAccessible(true);
+        instance.set(null, null);
     }
 
     @Test

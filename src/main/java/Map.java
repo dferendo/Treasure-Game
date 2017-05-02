@@ -11,6 +11,8 @@ import java.util.Random;
  */
 public class Map {
 
+    private static Map instance = null;
+
     /**
      * GRASS: Players are allowed to walk on Grass tiles.
      * WATER: If a player moves to a water tile, the player resets to the
@@ -26,7 +28,7 @@ public class Map {
     private static int size;
     private TILE_TYPE[][] map;
 
-    public Map() {
+    private Map() {
         size = 0;
     }
 
@@ -157,6 +159,13 @@ public class Map {
                 break;
             }
         }
+    }
+
+    public static Map getInstance() {
+        if (instance == null) {
+            instance = new Map();
+        }
+        return instance;
     }
 
     public static int getSize() {
