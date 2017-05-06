@@ -14,7 +14,7 @@ public class PlayerTest {
     Map map;
 
     @Before
-    public void init() {
+    public void setUp() {
         player = new Player(id);
     }
 
