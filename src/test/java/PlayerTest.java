@@ -49,6 +49,22 @@ public class PlayerTest {
     }
 
     @Test
+    public void getTeam_constructorValueMatchesGetterValue() {
+
+        final int teamID = 10;
+        final Team team = new Team(teamID);
+        player = new Player(id, team);
+        Assert.assertTrue(player.getTeam().getID() == teamID);
+    }
+
+    @Test
+    public void getTeam_noTeamMeansThatGetterReturnsNull() {
+
+        player = new Player(id);
+        Assert.assertTrue(player.getTeam() == null);
+    }
+
+    @Test
     public void wasVisited_startPositionShouldBeVisited() throws PositionIsOutOfRange {
         setStartPosition();
         int mapSize = 20;

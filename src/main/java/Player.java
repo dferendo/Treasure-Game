@@ -21,6 +21,7 @@ public class Player {
     private int ID;
     private Position position = null;
     private List<Position> visited;
+    private Team team = null;
 
     /**
      * Constructor that only requires the player ID as an argument. It sets the ID
@@ -33,6 +34,12 @@ public class Player {
         this.visited = new ArrayList<Position>();
     }
 
+    public Player(final int ID, final Team team) {
+        this(ID);
+        this.team = team;
+        this.team.addPlayer(this);
+    }
+
     /**
      * Returns the player ID.
      *
@@ -40,6 +47,10 @@ public class Player {
      */
     public int getID() {
         return ID;
+    }
+
+    public Team getTeam() {
+        return team;
     }
 
     /**
