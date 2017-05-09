@@ -1,6 +1,8 @@
 import exceptions.PositionIsOutOfRange;
 import org.junit.*;
 
+import java.lang.reflect.Field;
+
 public class TeamTest {
 
     private Team team;
@@ -9,6 +11,14 @@ public class TeamTest {
     @Before
     public void setUp() {
         team = new Team(teamID);
+    }
+
+    @After
+    public void tearDown() throws NoSuchFieldException, IllegalAccessException {
+        // Clear Map instance
+        Field instance = Map.class.getDeclaredField("instance");
+        instance.setAccessible(true);
+        instance.set(null, null);
     }
 
     @Test
