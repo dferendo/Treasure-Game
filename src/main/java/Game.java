@@ -37,6 +37,7 @@ public class Game {
      */
     private int turns = 1;
     private Player[] players = null;
+    private Team[] teams = null;
     private Map map = null;
     private List<Player> winners = new ArrayList<Player>();
 
@@ -84,16 +85,38 @@ public class Game {
      */
     public void setup() throws GameWasNotInitialized, SizeOfMapWasNotSet, PositionIsOutOfRange {
 
-        // Set number of players and map size
+        // Set number of teams and number of players
+        setCollaborativeMode();
         setNumPlayers();
-        setMapSize();
 
-        // Generate map
+        // Reduce teams if more players than teams
+        if (teams != null && teams.length > players.length) {
+            System.out.println("The number of teams was reduced to " + players.length + ".");
+            teams = new Team[players.length];
+        }
+
+        // Set map size and generate map
+        setMapSize();
         map.generate();
 
-        // Initialize players and set their initial position
+        // Initialize teams
+        if (teams != null) {
+            for (int i = 0; i < teams.length; i++) {
+                teams[i] = new Team(i + 1);
+            }
+        }
+
+        // Initialize players
         for (int i = 0; i < players.length; i++) {
-            players[i] = new Player(i + 1);
+            if (teams == null) {
+                players[i] = new Player(i + 1);
+            } else {
+                players[i] = new Player(i + 1, teams[i % teams.length]);
+            }
+        }
+
+        // Set player initial positions
+        for (int i = 0; i < players.length; i++) {
             map.setInitialPlayerPosition(players[i]);
         }
     }
@@ -173,6 +196,40 @@ public class Game {
         winners.clear();
         players = null;
         map = null;
+    }
+
+    private void setCollaborativeMode() {
+
+        // Minimum and maximum teams, and a range in string form
+        final int MIN_TEAMS = 2, MAX_TEAMS = 8;
+        final String NUM_TEAMS_RANGE = "(" + MIN_TEAMS + "-" + MAX_TEAMS + ")";
+
+        // Loop until valid yes/no answer is obtained
+        while (true) {
+            System.out.println("Play in collaborative mode? 0=No, 1=Yes");
+            final int collMode = getValidInt();
+
+            if (collMode == 0) {
+                return;
+            } else if (collMode == 1) {
+                break;
+            } else {
+                System.out.println("The input value was not 0 or 1.");
+            }
+        }
+
+        // Loop until a valid number of teams is obtained
+        while (true) {
+            System.out.println("How many teams are required? " + NUM_TEAMS_RANGE);
+            final int numTeams = getValidInt();
+
+            if (numTeams < MIN_TEAMS || numTeams > MAX_TEAMS) {
+                System.out.println("The input value was out of the range " + NUM_TEAMS_RANGE + ".");
+            } else {
+                teams = new Team[numTeams];
+                break;
+            }
+        }
     }
 
     /**
