@@ -68,9 +68,14 @@ public class Player {
         } else {
             position = p;
             visited.add(position);
+            if (team != null) {
+                team.send(position, this);
+            }
             return true;
         }
     }
+
+    public boolean addPosition(final Position p) { return true; }
 
     /**
      * Returns the current position of the player.

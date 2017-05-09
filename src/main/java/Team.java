@@ -21,4 +21,6 @@ public class Team {
     public List<Player> getPlayerList() {
         return playerList;
     }
+
+    public void send(final Position position, final Player player) {}
 }
