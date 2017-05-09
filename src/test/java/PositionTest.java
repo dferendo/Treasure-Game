@@ -11,7 +11,7 @@ public class PositionTest {
     private final int x = 5, y = 10;
 
     @Before
-    public void init() {
+    public void setUp() {
         position = new Position(x, y);
     }
 

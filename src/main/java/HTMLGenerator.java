@@ -117,7 +117,8 @@ public class HTMLGenerator {
      * @return String containing the caption.
      */
     private String createCaption(final Player player) {
-        return "<caption class=\"playerNumber\">Player " + player.getID() + "</caption>\n";
+        final String team = player.getTeam() == null ? "" : " (Team " + player.getTeam().getID() + ")";
+        return "<caption class=\"playerNumber\">Player " + player.getID() + team + "</caption>\n";
     }
 
     /**

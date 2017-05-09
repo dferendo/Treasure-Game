@@ -14,7 +14,7 @@ public class PlayerTest {
     Map map;
 
     @Before
-    public void init() {
+    public void setUp() {
         player = new Player(id);
     }
 
@@ -29,6 +29,10 @@ public class PlayerTest {
     @Test
     public void setPosition_nullArgument() {
         Assert.assertFalse(player.setPosition(null));
+    }
+    @Test
+    public void addPosition_nullArgument() {
+        Assert.assertFalse(player.addPosition(null));
     }
 
     @Test(expected = InitialPlayerPositionWasNotSet.class)
@@ -49,12 +53,38 @@ public class PlayerTest {
     }
 
     @Test
+    public void getTeam_constructorValueMatchesGetterValue() {
+
+        final int teamID = 10;
+        final Team team = new Team(teamID);
+        player = new Player(id, team);
+        Assert.assertTrue(player.getTeam().getID() == teamID);
+    }
+
+    @Test
+    public void getTeam_noTeamMeansThatGetterReturnsNull() {
+
+        player = new Player(id);
+        Assert.assertTrue(player.getTeam() == null);
+    }
+
+    @Test
     public void wasVisited_startPositionShouldBeVisited() throws PositionIsOutOfRange {
         setStartPosition();
         int mapSize = 20;
 
         generateMap(mapSize);
         Assert.assertTrue(player.wasVisited(startX, startY));
+    }
+
+    @Test
+    public void wasVisited_addedPositionShouldBeVisited() throws PositionIsOutOfRange {
+        setStartPosition();
+        int mapSize = 20;
+        Position posToAdd = new Position(5, 10);
+
+        generateMap(mapSize);
+        Assert.assertTrue(player.wasVisited(posToAdd.getX(), posToAdd.getY()));
     }
 
     @Test
