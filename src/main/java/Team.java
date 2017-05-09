@@ -22,5 +22,12 @@ public class Team {
         return playerList;
     }
 
-    public void send(final Position position, final Player player) {}
+    public void send(final Position position, final Player player) {
+
+        for (final Player p : playerList) {
+            if (p.getID() != player.getID()) {
+                p.addPosition(position);
+            }
+        }
+    }
 }

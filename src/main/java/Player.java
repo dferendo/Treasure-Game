@@ -75,7 +75,15 @@ public class Player {
         }
     }
 
-    public boolean addPosition(final Position p) { return true; }
+    public boolean addPosition(final Position p) {
+
+        if (p == null) {
+            return false;
+        } else {
+            visited.add(p);
+            return true;
+        }
+    }
 
     /**
      * Returns the current position of the player.
