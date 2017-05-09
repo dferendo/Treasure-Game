@@ -165,7 +165,8 @@ public class Game {
         System.out.println("\nWINNERS");
         System.out.println("-------");
         for (Player p : winners) {
-            System.out.println("Player " + p.getID());
+            final String team = p.getTeam() == null ? "" : " (Team " + p.getTeam().getID() + ")";
+            System.out.println("Player " + p.getID() + team);
         }
 
         // End game
@@ -244,7 +245,8 @@ public class Game {
             FileUtils.cleanDirectory(new File(playersMapLocation));
             FileUtils.writeStringToFile(GitIgnoreLocation, gitIgnore);
             for (final Player player : players) {
-                playerFile = new File(playersMapLocation + "map_player_" + player.getID() + ".html");
+                final String team = player.getTeam() == null ? "" : "_team_" + player.getTeam().getID();
+                playerFile = new File(playersMapLocation + "map" + team + "_player_" + player.getID() + ".html");
                 FileUtils.copyFile(HTMLTemplateLocation, playerFile);
                 new HTMLGenerator(playerFile, map, player);
             }
