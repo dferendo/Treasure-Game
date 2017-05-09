@@ -97,7 +97,13 @@ public class GameTest {
     @Test
     public void setup_yesTeams_twoInvalidInputFollowedByValidValues() throws SizeOfMapWasNotSet, IOException {
         // Invalid -1 and 100 followed by YES for collaborative and 2 teams, 2 players and map size of 5
-        setInputStreamAndTryGameSetup(YES + "-1\n100\n1\n2\n2\n5\n");
+        setInputStreamAndTryGameSetup("-1\n100\n" + YES + "2\n2\n5\n");
+    }
+
+    @Test
+    public void setup_yesTeams_invalidNumberOfTeamsFollowedByValidValues() throws SizeOfMapWasNotSet, IOException {
+        // YES for teams, followed by invalid -1 and 100 teams, followed by valid 2 teams, 2 players, and map size of 5
+        setInputStreamAndTryGameSetup(YES + "-1\n100\n2\n2\n5\n");
     }
 
     @Test
