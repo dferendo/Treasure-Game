@@ -6,7 +6,7 @@ import java.lang.reflect.Field;
 public class TeamTest {
 
     private Team team;
-    private int teamID;
+    private int teamID = 123;
 
     @Before
     public void setUp() {
