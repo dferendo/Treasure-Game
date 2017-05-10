@@ -1,3 +1,4 @@
+import exceptions.MapWasAlreadyInitialized;
 import exceptions.PositionIsOutOfRange;
 import exceptions.SizeOfMapWasNotSet;
 import org.junit.*;
@@ -14,12 +15,11 @@ import static org.junit.Assert.*;
 public class MapTest {
 
     private Map mapInstance;
-    private MapCreator.MAP_TYPE DEFAULT_MAP_TYPE = MapCreator.MAP_TYPE.SAFE_MAP;
 
     @Before
-    public void setUp() {
-        MapCreator mapCreator = new MapCreator();
-        mapInstance = mapCreator.createMap(DEFAULT_MAP_TYPE);
+    public void setUp() throws MapWasAlreadyInitialized {
+        // Can be anything or can use mocking
+        mapInstance = new SafeMap();
     }
 
     @After

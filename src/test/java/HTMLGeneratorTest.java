@@ -1,3 +1,4 @@
+import exceptions.MapWasAlreadyInitialized;
 import exceptions.PositionIsOutOfRange;
 import exceptions.SizeOfMapWasNotSet;
 import org.apache.commons.io.FileUtils;
@@ -21,17 +22,16 @@ import static org.junit.Assert.fail;
 public class HTMLGeneratorTest {
 
     private HTMLGenerator htmlGeneratorInstance;
-    private MapCreator.MAP_TYPE DEFAULT_MAP_TYPE = MapCreator.MAP_TYPE.SAFE_MAP;
     private File file = new File("src/test/resources/html-test-template/SoftEngineer.html");
     private Player player;
     private Map map;
     private int size = 10, playerNumber = 3;
 
     @Before
-    public void setUp() throws IOException, SizeOfMapWasNotSet {
+    public void setUp() throws IOException, SizeOfMapWasNotSet, MapWasAlreadyInitialized {
         int numberOfPlayers = 3;
-        MapCreator mapCreator = new MapCreator();
-        map = mapCreator.createMap(DEFAULT_MAP_TYPE);
+        // Can be anything or can use mocking
+        map = new SafeMap();
         player = new Player(playerNumber);
         File HTMLTemplateLocation = new File("src/main/resources/html-template/SoftEngineer.html");
 

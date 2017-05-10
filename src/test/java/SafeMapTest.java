@@ -16,12 +16,11 @@ import static org.junit.Assert.*;
 public class SafeMapTest {
 
     private Map mapInstance;
-    private MapCreator.MAP_TYPE mapType = MapCreator.MAP_TYPE.SAFE_MAP;
 
     @Before
-    public void setUp() {
-        MapCreator mapCreator = new MapCreator();
-        mapInstance = mapCreator.createMap(mapType);
+    public void setUp() throws MapWasAlreadyInitialized {
+        // Can be anything or can use mocking
+        mapInstance = new SafeMap();
     }
 
     @After
@@ -34,7 +33,7 @@ public class SafeMapTest {
 
     @Test(expected = MapWasAlreadyInitialized.class)
     public void safeMap_initialiseAMapWithOutCreatorThatAlreadyExists() throws MapWasAlreadyInitialized {
-        SafeMap safeMap = new SafeMap();
+        new SafeMap();
     }
 
     @Test(expected = SizeOfMapWasNotSet.class)

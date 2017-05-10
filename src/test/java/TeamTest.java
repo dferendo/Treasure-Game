@@ -1,3 +1,4 @@
+import exceptions.MapWasAlreadyInitialized;
 import exceptions.PositionIsOutOfRange;
 import org.junit.*;
 
@@ -7,12 +8,10 @@ public class TeamTest {
 
     private Team team;
     private int teamID = 123;
-    private MapCreator mapCreator;
     private MapCreator.MAP_TYPE DEFAULT_MAP_TYPE = MapCreator.MAP_TYPE.SAFE_MAP;
 
     @Before
     public void setUp() {
-        mapCreator = new MapCreator();
         team = new Team(teamID);
     }
 
@@ -37,7 +36,7 @@ public class TeamTest {
     }
 
     @Test
-    public void send_positionActuallyAddedToPlayersVisitedList() throws PositionIsOutOfRange {
+    public void send_positionActuallyAddedToPlayersVisitedList() throws PositionIsOutOfRange, MapWasAlreadyInitialized {
 
         final Position pos[] = {
                 new Position(10, 20),
@@ -76,11 +75,12 @@ public class TeamTest {
         return players;
     }
 
-    private void generateMap(final int mapSize) {
+    private void generateMap(final int mapSize) throws MapWasAlreadyInitialized {
         int numberOfPlayers = 3;
 
         // Map is needed to set the size of the map used by wasVisited
-        Map map = mapCreator.createMap(DEFAULT_MAP_TYPE);
+        // Can be anything or can use mocking
+        Map map = new SafeMap();
         Assume.assumeTrue(map.setMapSize(mapSize, mapSize, numberOfPlayers));
     }
 }
