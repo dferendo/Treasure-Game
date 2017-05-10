@@ -122,6 +122,16 @@ public abstract class Map {
      */
     abstract void generate() throws SizeOfMapWasNotSet;
 
+    /**
+     * Set instance is used by the children of Map so that only one instance of map
+     * can be used. When a child is initialise, setInstance should be called to
+     * check if there was an instance beforehand. If there was an instance beforehand,
+     * the new instance is ignored otherwise creates a new instance.
+     *
+     * @param mapInstance: The new instance.
+     * @throws MapWasAlreadyInitialized: Of there was an instance beforehand, the new instance
+     * is ignored since Map is a singleton.
+     */
     public static void setInstance(Map mapInstance) throws MapWasAlreadyInitialized {
         if (instance != null) {
             throw new MapWasAlreadyInitialized();

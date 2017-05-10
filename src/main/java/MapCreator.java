@@ -2,18 +2,34 @@ import exceptions.GameWasNotInitialized;
 import exceptions.MapWasAlreadyInitialized;
 import exceptions.SizeOfMapWasNotSet;
 
-import java.util.Scanner;
-
 /**
  * @author Dylan Frendo.
  */
 public class MapCreator {
 
+    /**
+     * Map types available.
+     * SAFE_MAP: contains a map with 10% water tiles.
+     * HAZARDOUS_MAP: contains a map between 25%-35% water tiles.
+     */
     public enum MAP_TYPE {
         SAFE_MAP,
         HAZARDOUS_MAP
     }
 
+    /**
+     * Creates the map depending on the passed map type. If Map already has an instance,
+     * the instance is returned.
+     *
+     * @param type: The map type of the game.
+     * @param game: Required game variables needed to set up the map.
+     * @return An new instance of a map if there was not an instance before or the
+     * already existing instance if there was an instance.
+     * @throws GameWasNotInitialized Thrown by setMapSize() if the number of player was not set
+     * since the minimum size of the map depends on the number of players.
+     * @throws SizeOfMapWasNotSet Thrown by map.generate() if the size of the map was
+     * not set since these operations depend on the map size.
+     */
     public Map createMap(MAP_TYPE type, Game game) throws SizeOfMapWasNotSet, GameWasNotInitialized {
         Map map;
 

@@ -4,10 +4,19 @@ import exceptions.SizeOfMapWasNotSet;
 import java.util.Random;
 
 /**
+ * Generates a Map that contains 25-35% Water tiles.
+ *
  * @author Dylan Frendo.
  */
 public class SafeMap extends Map {
 
+    /**
+     * The constructor to create a new instance. If there was an instance
+     * beforehand, an exception will be thrown and the new instance is ignored.
+     *
+     * @throws MapWasAlreadyInitialized: There was an instance beforehand,
+     * ignore the new instance.
+     */
     public SafeMap() throws MapWasAlreadyInitialized {
         // Check if there is already an instance, if there is throw the error
         // Since multiple instances are not allowed.
