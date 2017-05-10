@@ -1,3 +1,4 @@
+import exceptions.MapWasAlreadyInitialized;
 import exceptions.PositionIsOutOfRange;
 import exceptions.SizeOfMapWasNotSet;
 
@@ -9,7 +10,7 @@ import java.util.Random;
  *
  * @author Dylan Frendo.
  */
-public class Map {
+public abstract class Map {
 
     private static Map instance = null;
 
@@ -25,12 +26,8 @@ public class Map {
         TREASURE
     }
 
-    private static int size;
-    private TILE_TYPE[][] map;
-
-    private Map() {
-        size = 0;
-    }
+    static int size;
+    TILE_TYPE[][] map;
 
     /**
      * Set the size of the Map. The size of the map can only be set once. The minimum
@@ -70,51 +67,6 @@ public class Map {
         } else {
             return false;
         }
-    }
-
-    /**
-     * Fill the map with the specified size of the map with random tiles.
-     * There is only one Treasure Tile and around 10% (rounded to the
-     * next Integer) water Tiles in the map. The rest are Green Tiles.
-     *
-     * @throws SizeOfMapWasNotSet: Method generate was called before setting the size of the map.
-     */
-    public void generate() throws SizeOfMapWasNotSet {
-        int x, y, counter = 0, totalAmountOfWaterTiles;
-        Random rand;
-
-        if (size == 0) {
-            throw new SizeOfMapWasNotSet();
-        }
-        map = new TILE_TYPE[size][size];
-        rand = new Random();
-
-        // Fill the whole map with Grass Tile.
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                map[i][j] = TILE_TYPE.GRASS;
-            }
-        }
-        // Generate random points, size is exclusive but 0 is inclusive.
-        x = rand.nextInt(size);
-        y = rand.nextInt(size);
-
-        // Generate random tile location.
-        map[x][y] = TILE_TYPE.TREASURE;
-
-        // There will be only around 10% water Tiles (rounded to the next Integer)
-        totalAmountOfWaterTiles = (int) Math.ceil((double) (size * size) / 10);
-        while (counter++ < totalAmountOfWaterTiles) {
-            x = rand.nextInt(size);
-            y = rand.nextInt(size);
-            // If the location is already water or treasure, it does not count as a new water Tile.
-            if (map[x][y] == TILE_TYPE.TREASURE || map[x][y] == TILE_TYPE.WATER) {
-                counter--;
-                continue;
-            }
-            map[x][y] = TILE_TYPE.WATER;
-        }
-
     }
 
     /**
@@ -161,10 +113,23 @@ public class Map {
         }
     }
 
-    public static Map getInstance() {
-        if (instance == null) {
-            instance = new Map();
+    /**
+     * Fill the map with the specified size of the map with random tiles.
+     * There is only one Treasure Tile and around 10% (rounded to the
+     * next Integer) water Tiles in the map. The rest are Green Tiles.
+     *
+     * @throws SizeOfMapWasNotSet: Method generate was called before setting the size of the map.
+     */
+    abstract void generate() throws SizeOfMapWasNotSet;
+
+    public static void setInstance(Map mapInstance) throws MapWasAlreadyInitialized {
+        if (instance != null) {
+            throw new MapWasAlreadyInitialized();
         }
+        instance = mapInstance;
+    }
+
+    public static Map getInstance() {
         return instance;
     }
 
