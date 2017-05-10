@@ -94,58 +94,6 @@ public class MapTest {
         Assert.assertFalse("More players are given then allowed.", mapInstance.setMapSize(x, y, players));
     }
 
-    @Test(expected = SizeOfMapWasNotSet.class)
-    public void generate_sizeWasNotSetBeforeHand() throws SizeOfMapWasNotSet {
-        mapInstance.generate();
-    }
-
-    @Test
-    public void generate_checkThereExistsOneTreasure() throws SizeOfMapWasNotSet, PositionIsOutOfRange {
-        int size = 10, numberOfPlayers = 3, treasureCount = 0, totalSize = 0;
-        if (mapInstance.setMapSize(size, size, numberOfPlayers)) {
-            mapInstance.generate();
-
-            for (int x = 0; x < mapInstance.getMapSize(); x++) {
-                for (int y = 0; y < mapInstance.getMapSize(); y++) {
-                    if (mapInstance.getTileType(x, y) == Map.TILE_TYPE.TREASURE) {
-                        treasureCount++;
-                    }
-                    totalSize++;
-                }
-            }
-
-            Assert.assertTrue("There is suppose to be only 1 treasure.", treasureCount == 1);
-            Assert.assertTrue("There should be n x n Tiles", totalSize ==
-                    mapInstance.getMapSize() * mapInstance.getMapSize());
-        } else {
-            fail("Map size was suppose to be set.");
-        }
-    }
-
-    @Test
-    public void generate_checkThereAre10PercentWaterTiles() throws SizeOfMapWasNotSet, PositionIsOutOfRange {
-        int size = 10, numberOfPlayers = 3, waterTiles = 0, totalSize = 0;
-        if (mapInstance.setMapSize(size, size, numberOfPlayers)) {
-            mapInstance.generate();
-
-            for (int x = 0; x < mapInstance.getMapSize(); x++) {
-                for (int y = 0; y < mapInstance.getMapSize(); y++) {
-                    if (mapInstance.getTileType(x, y) == Map.TILE_TYPE.WATER) {
-                        waterTiles++;
-                    }
-                    totalSize++;
-                }
-            }
-
-            Assert.assertTrue("There is suppose to be around 10% water tiles.",
-                    waterTiles == (int) Math.ceil((double) (size * size) / 10));
-            Assert.assertTrue("There should be n x n Tiles", totalSize ==
-                    mapInstance.getMapSize() * mapInstance.getMapSize());
-        } else {
-            fail("Map size was suppose to be set.");
-        }
-    }
-
     @Test(expected = PositionIsOutOfRange.class)
     public void getTileType_xIsLessThan0YIsCorrect() throws PositionIsOutOfRange {
         int size = 10, x = -1, y = 2;
