@@ -14,10 +14,12 @@ import static org.junit.Assert.*;
 public class MapTest {
 
     private Map mapInstance;
+    private MapCreator.MAP_TYPE DEFAULT_MAP_TYPE = MapCreator.MAP_TYPE.SAFE_MAP;
 
     @Before
     public void setUp() {
-        mapInstance = Map.getInstance();
+        MapCreator mapCreator = new MapCreator();
+        mapInstance = mapCreator.createMap(DEFAULT_MAP_TYPE);
     }
 
     @After
