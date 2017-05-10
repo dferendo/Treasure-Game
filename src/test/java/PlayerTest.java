@@ -11,10 +11,12 @@ public class PlayerTest {
 
     private Player player;
     private final int startX = 5, startY = 10, id = 1;
-    Map map;
+    private MapCreator mapCreator;
+    private MapCreator.MAP_TYPE DEFAULT_MAP_TYPE = MapCreator.MAP_TYPE.SAFE_MAP;
 
     @Before
     public void setUp() {
+        mapCreator = new MapCreator();
         player = new Player(id);
     }
 
@@ -142,7 +144,7 @@ public class PlayerTest {
         int numberOfPlayers = 3;
 
         // Map is needed to set the size of the map used by wasVisited
-        Map map = Map.getInstance();
+        Map map = mapCreator.createMap(DEFAULT_MAP_TYPE);
         Assume.assumeTrue(map.setMapSize(mapSize, mapSize, numberOfPlayers));
     }
 

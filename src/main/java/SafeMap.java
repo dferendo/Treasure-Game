@@ -9,10 +9,10 @@ import java.util.Random;
 public class SafeMap extends Map {
 
     public SafeMap() throws MapWasAlreadyInitialized {
-        // When called, only 1 instance can exists. If set instance does
-        // not throw an exception, that indicates that the method was
-        // the first to be initialised
+        // Check if there is already an instance, if there is throw the error
+        // Since multiple instances are not allowed.
         setInstance(this);
+        size = 0;
     }
 
     @Override
