@@ -84,7 +84,8 @@ public class Game {
      * specified violates the map bounds.
      */
     public void setup() throws GameWasNotInitialized, SizeOfMapWasNotSet, PositionIsOutOfRange {
-
+        MapCreator mapCreator;
+        MapCreator.MAP_TYPE mapType;
         // Set number of teams and number of players
         setCollaborativeMode();
         setNumPlayers();
@@ -95,9 +96,10 @@ public class Game {
             teams = new Team[players.length];
         }
 
-        // TODO: Ask for map type.
-        MapCreator mapCreator = new MapCreator();
-        map = mapCreator.createMap(MapCreator.MAP_TYPE.SAFE_MAP);
+        mapType = setMapType();
+
+        mapCreator = new MapCreator();
+        map = mapCreator.createMap(mapType);
         // TODO: put set size u generate in a creator?
         // Set map size and generate map
         setMapSize();
@@ -256,6 +258,26 @@ public class Game {
             } else {
                 players = new Player[numPlayers];
                 break;
+            }
+        }
+    }
+
+    /**
+     * Helper used to determine the type of the map.
+     */
+    private MapCreator.MAP_TYPE setMapType() {
+        int input;
+
+        while (true) {
+            System.out.println("Type of the map? 0 - Safe, 1 - Hazardous");
+            input = getValidInt();
+
+            if (input == 0) {
+                return MapCreator.MAP_TYPE.SAFE_MAP;
+            } else if (input == 1) {
+                return MapCreator.MAP_TYPE.HAZARDOUS_MAP;
+            } else {
+                System.out.println("The input number was invalid.");
             }
         }
     }
