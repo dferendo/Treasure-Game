@@ -7,9 +7,12 @@ public class TeamTest {
 
     private Team team;
     private int teamID = 123;
+    private MapCreator mapCreator;
+    private MapCreator.MAP_TYPE DEFAULT_MAP_TYPE = MapCreator.MAP_TYPE.SAFE_MAP;
 
     @Before
     public void setUp() {
+        mapCreator = new MapCreator();
         team = new Team(teamID);
     }
 
@@ -77,7 +80,7 @@ public class TeamTest {
         int numberOfPlayers = 3;
 
         // Map is needed to set the size of the map used by wasVisited
-        Map map = Map.getInstance();
+        Map map = mapCreator.createMap(DEFAULT_MAP_TYPE);
         Assume.assumeTrue(map.setMapSize(mapSize, mapSize, numberOfPlayers));
     }
 }
