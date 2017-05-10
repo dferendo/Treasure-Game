@@ -42,10 +42,11 @@ public class SafeMap extends Map {
         map[x][y] = TILE_TYPE.TREASURE;
 
         // There will be only around 10% water Tiles (rounded to the next Integer)
-        totalAmountOfWaterTiles = (int) Math.ceil((double) (size * size) / MAX_WATER_TILE);
+        totalAmountOfWaterTiles = (int) Math.ceil((double) (size * size) / 100) * MAX_WATER_TILE;
+
         while (counter++ < totalAmountOfWaterTiles) {
-            x = rand.nextInt(size);
             y = rand.nextInt(size);
+            x = rand.nextInt(size);
             // If the location is already water or treasure, it does not count as a new water Tile.
             if (map[x][y] == TILE_TYPE.TREASURE || map[x][y] == TILE_TYPE.WATER) {
                 counter--;

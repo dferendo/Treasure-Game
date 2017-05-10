@@ -38,13 +38,13 @@ public class HazardousMap extends Map {
         // Generate random points, size is exclusive but 0 is inclusive.
         x = rand.nextInt(size);
         y = rand.nextInt(size);
-        waterTileAmount = rand.nextInt(MAX_WATER_TILE) + MIN_WATER_TILE;
+        waterTileAmount = rand.nextInt((MAX_WATER_TILE - MIN_WATER_TILE) + 1) + MIN_WATER_TILE;
 
         // Generate random tile location.
         map[x][y] = TILE_TYPE.TREASURE;
 
-        // There will be only around 10% water Tiles (rounded to the next Integer)
-        totalAmountOfWaterTiles = (int) Math.ceil((double) (size * size) / waterTileAmount);
+        // There will around 25% to 35% water Tiles (rounded to the next Integer)
+        totalAmountOfWaterTiles = (int) Math.ceil((double) (size * size) / 100) * waterTileAmount;
         while (counter++ < totalAmountOfWaterTiles) {
             x = rand.nextInt(size);
             y = rand.nextInt(size);
