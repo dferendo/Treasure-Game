@@ -80,7 +80,7 @@ public class SafeMapTest {
                 }
             }
 
-            waterTilePercentage = (int) Math.ceil((double) (size * size) / 100) * waterTiles;
+            waterTilePercentage = (int) Math.ceil(((double) (size * size) / 100) * waterTiles);
 
             Assert.assertTrue("There is suppose to be around 10% water tiles.",
                     waterTilePercentage == 10);

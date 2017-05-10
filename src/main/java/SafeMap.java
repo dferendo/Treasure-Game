@@ -42,7 +42,7 @@ public class SafeMap extends Map {
         map[x][y] = TILE_TYPE.TREASURE;
 
         // There will be only around 10% water Tiles (rounded to the next Integer)
-        totalAmountOfWaterTiles = (int) Math.ceil((double) (size * size) / 100) * MAX_WATER_TILE;
+        totalAmountOfWaterTiles = (int) Math.ceil(((double) (size * size) / 100) * MAX_WATER_TILE);
 
         while (counter++ < totalAmountOfWaterTiles) {
             y = rand.nextInt(size);

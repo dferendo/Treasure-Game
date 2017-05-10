@@ -97,7 +97,7 @@ public class Game {
 
         // TODO: Ask for map type.
         MapCreator mapCreator = new MapCreator();
-        map = mapCreator.createMap(MapCreator.MAP_TYPE.HAZARDOUS_MAP);
+        map = mapCreator.createMap(MapCreator.MAP_TYPE.SAFE_MAP);
         // TODO: put set size u generate in a creator?
         // Set map size and generate map
         setMapSize();

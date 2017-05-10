@@ -44,7 +44,7 @@ public class HazardousMap extends Map {
         map[x][y] = TILE_TYPE.TREASURE;
 
         // There will around 25% to 35% water Tiles (rounded to the next Integer)
-        totalAmountOfWaterTiles = (int) Math.ceil((double) (size * size) / 100) * waterTileAmount;
+        totalAmountOfWaterTiles = (int) Math.ceil(((double) (size * size) / 100) * waterTileAmount);
         while (counter++ < totalAmountOfWaterTiles) {
             x = rand.nextInt(size);
             y = rand.nextInt(size);

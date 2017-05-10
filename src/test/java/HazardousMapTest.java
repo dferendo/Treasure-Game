@@ -79,7 +79,7 @@ public class HazardousMapTest {
                 }
             }
 
-            waterTilePercentage = (int) Math.ceil((double) (size * size) / 100) * waterTiles;
+            waterTilePercentage = (int) Math.ceil(((double) (size * size) / 100) * waterTiles);
 
             Assert.assertTrue("There is suppose to be around 25% to 35% water tiles.",
                     waterTilePercentage >= 25 && waterTilePercentage <= 35);
