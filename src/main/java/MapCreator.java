@@ -22,10 +22,9 @@ public class MapCreator {
             }
 
         } catch (MapWasAlreadyInitialized mapWasAlreadyInitialized) {
-            mapWasAlreadyInitialized.printStackTrace();
+            // If Map already exists, return the instance of that map.
+            return Map.getInstance();
         }
-        // If Map already exists, return the instance of that map.
-        return Map.getInstance();
     }
 
 }
