@@ -21,6 +21,7 @@ import static org.junit.Assert.fail;
 public class HTMLGeneratorTest {
 
     private HTMLGenerator htmlGeneratorInstance;
+    private MapCreator.MAP_TYPE DEFAULT_MAP_TYPE = MapCreator.MAP_TYPE.SAFE_MAP;
     private File file = new File("src/test/resources/html-test-template/SoftEngineer.html");
     private Player player;
     private Map map;
@@ -29,7 +30,8 @@ public class HTMLGeneratorTest {
     @Before
     public void setUp() throws IOException, SizeOfMapWasNotSet {
         int numberOfPlayers = 3;
-        map = Map.getInstance();
+        MapCreator mapCreator = new MapCreator();
+        map = mapCreator.createMap(DEFAULT_MAP_TYPE);
         player = new Player(playerNumber);
         File HTMLTemplateLocation = new File("src/main/resources/html-template/SoftEngineer.html");
 
