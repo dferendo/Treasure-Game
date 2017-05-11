@@ -1,3 +1,4 @@
+import exceptions.MapWasAlreadyInitialized;
 import exceptions.PositionIsOutOfRange;
 import exceptions.SizeOfMapWasNotSet;
 import org.apache.commons.io.FileUtils;
@@ -27,9 +28,10 @@ public class HTMLGeneratorTest {
     private int size = 10, playerNumber = 3;
 
     @Before
-    public void setUp() throws IOException, SizeOfMapWasNotSet {
+    public void setUp() throws IOException, SizeOfMapWasNotSet, MapWasAlreadyInitialized {
         int numberOfPlayers = 3;
-        map = Map.getInstance();
+        // Can be anything or can use mocking
+        map = new SafeMap();
         player = new Player(playerNumber);
         File HTMLTemplateLocation = new File("src/main/resources/html-template/SoftEngineer.html");
 

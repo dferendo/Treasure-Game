@@ -1,4 +1,5 @@
 import exceptions.InitialPlayerPositionWasNotSet;
+import exceptions.MapWasAlreadyInitialized;
 import exceptions.PositionIsOutOfRange;
 import org.junit.*;
 
@@ -11,7 +12,6 @@ public class PlayerTest {
 
     private Player player;
     private final int startX = 5, startY = 10, id = 1;
-    Map map;
 
     @Before
     public void setUp() {
@@ -69,7 +69,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void wasVisited_startPositionShouldBeVisited() throws PositionIsOutOfRange {
+    public void wasVisited_startPositionShouldBeVisited() throws PositionIsOutOfRange, MapWasAlreadyInitialized {
         setStartPosition();
         int mapSize = 20;
 
@@ -78,7 +78,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void wasVisited_addedPositionShouldBeVisited() throws PositionIsOutOfRange {
+    public void wasVisited_addedPositionShouldBeVisited() throws PositionIsOutOfRange, MapWasAlreadyInitialized {
         setStartPosition();
         int mapSize = 20;
         Position posToAdd = new Position(5, 10);
@@ -88,7 +88,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void wasVisited_nonStartPositionShouldNotBeVisited() throws PositionIsOutOfRange {
+    public void wasVisited_nonStartPositionShouldNotBeVisited() throws PositionIsOutOfRange, MapWasAlreadyInitialized {
         setStartPosition();
         int mapSize = 20;
 
@@ -97,7 +97,7 @@ public class PlayerTest {
     }
 
     @Test(expected = PositionIsOutOfRange.class)
-    public void wasVisited_negativeCoordinates() throws PositionIsOutOfRange {
+    public void wasVisited_negativeCoordinates() throws PositionIsOutOfRange, MapWasAlreadyInitialized {
         setStartPosition();
         int mapSize = 20;
 
@@ -106,7 +106,7 @@ public class PlayerTest {
     }
 
     @Test(expected = PositionIsOutOfRange.class)
-    public void wasVisited_xPositionGreaterThanMapSize() throws PositionIsOutOfRange {
+    public void wasVisited_xPositionGreaterThanMapSize() throws PositionIsOutOfRange, MapWasAlreadyInitialized {
         setStartPosition();
         int mapSize = 20;
 
@@ -115,7 +115,7 @@ public class PlayerTest {
     }
 
     @Test(expected = PositionIsOutOfRange.class)
-    public void wasVisited_yPositionGreaterThanMapSize() throws PositionIsOutOfRange {
+    public void wasVisited_yPositionGreaterThanMapSize() throws PositionIsOutOfRange, MapWasAlreadyInitialized {
         setStartPosition();
         int mapSize = 20;
 
@@ -138,11 +138,11 @@ public class PlayerTest {
         Assert.assertTrue(player.getPosition().equals(new Position(startX, startY)));
     }
 
-    private void generateMap(final int mapSize) {
+    private void generateMap(final int mapSize) throws MapWasAlreadyInitialized {
         int numberOfPlayers = 3;
 
         // Map is needed to set the size of the map used by wasVisited
-        Map map = Map.getInstance();
+        Map map = new SafeMap();
         Assume.assumeTrue(map.setMapSize(mapSize, mapSize, numberOfPlayers));
     }
 

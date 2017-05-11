@@ -84,7 +84,8 @@ public class Game {
      * specified violates the map bounds.
      */
     public void setup() throws GameWasNotInitialized, SizeOfMapWasNotSet, PositionIsOutOfRange {
-
+        MapCreator mapCreator;
+        MapCreator.MAP_TYPE mapType;
         // Set number of teams and number of players
         setCollaborativeMode();
         setNumPlayers();
@@ -95,9 +96,10 @@ public class Game {
             teams = new Team[players.length];
         }
 
-        // Set map size and generate map
-        setMapSize();
-        map.generate();
+        mapType = setMapType();
+
+        mapCreator = new MapCreator();
+        map = mapCreator.createMap(mapType, this);
 
         // Initialize teams
         if (teams != null) {
@@ -257,32 +259,21 @@ public class Game {
     }
 
     /**
-     * Helper method to set the size of the map.
-     *
-     * @throws GameWasNotInitialized Thrown if the players array is null.
+     * Helper used to determine the type of the map.
      */
-    private void setMapSize() throws GameWasNotInitialized {
+    private MapCreator.MAP_TYPE setMapType() {
+        int input;
 
-        // Check if players array was initialized
-        if (players == null) {
-            throw new GameWasNotInitialized("Players array");
-        }
-
-        // Minimum (based on players) and maximum map size and a range in string form
-        final int MIN_MAP_SIZE = (players.length <= 4 ? 5 : 8), MAX_MAP_SIZE = 50;
-        final String MAP_SIZE_RANGE = "(" + MIN_MAP_SIZE + "-" + MAX_MAP_SIZE + ")";
-
-        map = Map.getInstance();
-
-        // Loop until a valid map size is obtained
         while (true) {
-            System.out.println("What will be the size of the map? " + MAP_SIZE_RANGE);
-            final int mapSize = getValidInt();
+            System.out.println("Type of the map? 0 - Safe, 1 - Hazardous");
+            input = getValidInt();
 
-            if (!map.setMapSize(mapSize, mapSize, players.length)) {
-                System.out.println("The input value was out of the range " + MAP_SIZE_RANGE + ".");
+            if (input == 0) {
+                return MapCreator.MAP_TYPE.SAFE_MAP;
+            } else if (input == 1) {
+                return MapCreator.MAP_TYPE.HAZARDOUS_MAP;
             } else {
-                break;
+                System.out.println("The input number was invalid.");
             }
         }
     }
@@ -317,7 +308,7 @@ public class Game {
      *
      * @return The valid integer obtained from the input stream.
      */
-    private int getValidInt() {
+    protected int getValidInt() {
 
         while (!scanner.hasNextInt()) {
             System.out.println("The input was not a valid integer!");
