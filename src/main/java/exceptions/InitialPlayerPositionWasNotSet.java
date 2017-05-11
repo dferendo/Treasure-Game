@@ -1,6 +1,8 @@
 package exceptions;
 
 /**
+ * The player's initial position was not set.
+ *
  * @author Miguel Dingli
  */
 public class InitialPlayerPositionWasNotSet extends RuntimeException {

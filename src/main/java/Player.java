@@ -1,4 +1,5 @@
 import exceptions.InitialPlayerPositionWasNotSet;
+import exceptions.PlayerDidNotHaveAnyPositionsYet;
 import exceptions.PositionIsOutOfRange;
 
 import java.util.ArrayList;
@@ -34,6 +35,13 @@ public class Player {
         this.visited = new ArrayList<Position>();
     }
 
+    /**
+     * Constructor that also requires the team as an argument, besides the ID. It
+     * calls the other constructor, sets the team, and adds the player to it.
+     *
+     * @param ID Player ID.
+     * @param team Team that player will be placed in.
+     */
     public Player(final int ID, final Team team) {
         this(ID);
         this.team = team;
@@ -49,8 +57,27 @@ public class Player {
         return ID;
     }
 
+    /**
+     * Returns the player's team (null if no team).
+     *
+     * @return Team.
+     */
     public Team getTeam() {
         return team;
+    }
+
+    /**
+     * Sets the player's initial position to the last position added to the player's list of
+     * visited positions. This is used in the collaborative mode since the first position in
+     * the player's visited list is otherwise not guaranteed to be the initial position.
+     */
+    public void resetInitialPosition() throws PlayerDidNotHaveAnyPositionsYet {
+
+        if (visited.size() == 0) {
+            throw new PlayerDidNotHaveAnyPositionsYet();
+        } else {
+            visited.add(0, visited.remove(visited.size() - 1));
+        }
     }
 
     /**
@@ -75,6 +102,13 @@ public class Player {
         }
     }
 
+    /**
+     * Adds a position to the player's visited list without moving the position of the player.
+     * This is used by the team when it distributes a new position explored by a team member.
+     *
+     * @param p The position to be added.
+     * @return True if the position is successfully added or false if the position is null.
+     */
     public boolean addPosition(final Position p) {
 
         if (p == null) {

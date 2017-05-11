@@ -71,9 +71,10 @@ public class Game {
 
     /**
      * Sets up various aspects of the game. This method must be called before the startGame()
-     * method so that the game is set up before starting it. Set up includes setting of the
-     * number of players (and hence the players array), the map size (and hence the map object),
-     * generation of the map, and initializing and moving the players to their start positions.
+     * method so that the game is set up before starting it. Set up includes choosing whether
+     * the game will be collaborative, setting number of players (and hence the players array),
+     * the map type and map creator (and hence the map object), initialization of the teams
+     * (if applicable) and initialization and moving of the players to their start positions.
      * Exceptions are simply thrown since they should not occur because of this method.
      *
      * @throws GameWasNotInitialized Thrown by setMapSize() if the number of player was not set
@@ -86,6 +87,7 @@ public class Game {
     public void setup() throws GameWasNotInitialized, SizeOfMapWasNotSet, PositionIsOutOfRange {
         MapCreator mapCreator;
         MapCreator.MAP_TYPE mapType;
+
         // Set number of teams and number of players
         setCollaborativeMode();
         setNumPlayers();
@@ -96,8 +98,8 @@ public class Game {
             teams = new Team[players.length];
         }
 
+        // Set up map
         mapType = setMapType();
-
         mapCreator = new MapCreator();
         map = mapCreator.createMap(mapType, this);
 
@@ -120,6 +122,7 @@ public class Game {
         // Set player initial positions
         for (int i = 0; i < players.length; i++) {
             map.setInitialPlayerPosition(players[i]);
+            players[i].resetInitialPosition();
         }
     }
 
