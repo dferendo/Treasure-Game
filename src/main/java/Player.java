@@ -1,4 +1,5 @@
 import exceptions.InitialPlayerPositionWasNotSet;
+import exceptions.PlayerDidNotHaveAnyPositionsYet;
 import exceptions.PositionIsOutOfRange;
 
 import java.util.ArrayList;
@@ -63,6 +64,20 @@ public class Player {
      */
     public Team getTeam() {
         return team;
+    }
+
+    /**
+     * Sets the player's initial position to the last position added to the player's list of
+     * visited positions. This is used in the collaborative mode since the first position in
+     * the player's visited list is otherwise not guaranteed to be the initial position.
+     */
+    public void resetInitialPosition() throws PlayerDidNotHaveAnyPositionsYet {
+
+        if (visited.size() == 0) {
+            throw new PlayerDidNotHaveAnyPositionsYet();
+        } else {
+            visited.add(0, visited.remove(visited.size() - 1));
+        }
     }
 
     /**

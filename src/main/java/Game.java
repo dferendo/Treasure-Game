@@ -122,6 +122,7 @@ public class Game {
         // Set player initial positions
         for (int i = 0; i < players.length; i++) {
             map.setInitialPlayerPosition(players[i]);
+            players[i].resetInitialPosition();
         }
     }
 
