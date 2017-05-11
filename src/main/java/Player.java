@@ -34,6 +34,13 @@ public class Player {
         this.visited = new ArrayList<Position>();
     }
 
+    /**
+     * Constructor that also requires the team as an argument, besides the ID. It
+     * calls the other constructor, sets the team, and adds the player to it.
+     *
+     * @param ID Player ID.
+     * @param team Team that player will be placed in.
+     */
     public Player(final int ID, final Team team) {
         this(ID);
         this.team = team;
@@ -49,6 +56,11 @@ public class Player {
         return ID;
     }
 
+    /**
+     * Returns the player's team (null if no team).
+     *
+     * @return Team.
+     */
     public Team getTeam() {
         return team;
     }
@@ -75,6 +87,13 @@ public class Player {
         }
     }
 
+    /**
+     * Adds a position to the player's visited list without moving the position of the player.
+     * This is used by the team when it distributes a new position explored by a team member.
+     *
+     * @param p The position to be added.
+     * @return True if the position is successfully added or false if the position is null.
+     */
     public boolean addPosition(final Position p) {
 
         if (p == null) {
