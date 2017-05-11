@@ -15,6 +15,11 @@ import java.util.NoSuchElementException;
 import static junit.framework.TestCase.fail;
 
 /**
+ * General game tests . Most tests in this class make use of an input stream to
+ * simulate the input of the user. This requires each test that will make use of
+ * the stream to include particular inputs that are expected by the game. These
+ * are the following, where order is important:
+ *
  * @author Miguel Dingli
  */
 public class GameTest {
@@ -31,8 +36,11 @@ public class GameTest {
     // Directions with newline (since read from input stream as line)
     private final String UP = "U\n", DN = "D\n", LT = "L\n", RT = "R\n";
 
-    // Response to collaborative gamemode with newline (since read from input stream as line)
+    // Response to collaborative game mode with newline (since read from input stream as line)
     private final String NO = "0\n", YES = "1\n";
+
+    // Response to map type with newline (since read from input steam as line)
+    private final String SAFE = "0\n", HAZD = "1\n";
 
     // For clarity when passing the argument to the startGame() method
     private final boolean FAIL_IF_TREASURE = true, FAIL_IF_NO_TREASURE = false;
@@ -62,152 +70,160 @@ public class GameTest {
     @Test
     public void setup_validNumberOfPlayersAndMapSize_smallMap() throws SizeOfMapWasNotSet {
         // 2 players, map type safe and map size of 5
-        setInputStreamAndTryGameSetup(NO + "2\n0\n5\n");
+        setInputStreamAndTryGameSetup(NO + "2\n" + SAFE + "5\n");
     }
 
     @Test
     public void setup_validNumberOfPlayersMapTypeSafeAndValidMapSize() throws SizeOfMapWasNotSet {
         // 5 players, map type safe and map size of 8
-        setInputStreamAndTryGameSetup(NO + "5\n0\n8\n");
+        setInputStreamAndTryGameSetup(NO + "5\n" + SAFE + "8\n");
         Assert.assertThat(map, CoreMatchers.instanceOf(SafeMap.class));
     }
 
     @Test
     public void setup_validNumberOfPlayersMapTypeHazardousAndValidMapSize() throws SizeOfMapWasNotSet {
-        // 5 players, map type safe and map size of 8
-        setInputStreamAndTryGameSetup(NO + "5\n1\n8\n");
+        // 5 players, map type hazardous and map size of 8
+        setInputStreamAndTryGameSetup(NO + "5\n" + HAZD + "8\n");
         Assert.assertThat(map, CoreMatchers.instanceOf(HazardousMap.class));
     }
 
     @Test
     public void setup_validNumberOfPlayersInvalidMapTypeValidMapTypeAndValidMapSize() throws SizeOfMapWasNotSet {
         // 5 players, map type safe and map size of 8
-        setInputStreamAndTryGameSetup(NO + "5\nabd\n-1\n1\n8\n");
+        setInputStreamAndTryGameSetup(NO + "5\nabd\n-1\n" + HAZD + "8\n");
         Assert.assertThat(map, CoreMatchers.instanceOf(HazardousMap.class));
     }
 
     @Test
     public void setup_validNumberOfPlayersAndMapSize_mediumMap() throws SizeOfMapWasNotSet {
         // 5 players, map type safe and map size of 8
-        setInputStreamAndTryGameSetup(NO + "5\n0\n8\n");
+        setInputStreamAndTryGameSetup(NO + "5\n" + SAFE + "8\n");
     }
 
     @Test
     public void setup_validNumberOfPlayersAndMapSize_largeMap() throws SizeOfMapWasNotSet {
         // 8 players, map type safe,  map size of 50
-        setInputStreamAndTryGameSetup(NO + "8\n0\n50\n");
+        setInputStreamAndTryGameSetup(NO + "8\n" + SAFE + "50\n");
     }
 
     @Test
     public void setup_invalidNumberOfPlayersFollowedByValidValues() throws SizeOfMapWasNotSet {
         // invalid (players: -1, 100, abc), followed by 2 players, map type safe and map size of 5
-        setInputStreamAndTryGameSetup(NO + "-1\n100\nabc\n2\n0\n5\n");
+        setInputStreamAndTryGameSetup(NO + "-1\n100\nabc\n2\n" + SAFE + "5\n");
     }
 
     @Test
     public void setup_validNumberOfPlayersAndInvalidMapSizeFollowedByValidValue() throws SizeOfMapWasNotSet {
         // 2 players, invalid (map sizes: -1, 100, abc), map type safe and a valid map size of 5
-        setInputStreamAndTryGameSetup(NO + "2\n-1\n100\nabc\n0\n5\n");
+        setInputStreamAndTryGameSetup(NO + "2\n-1\n100\nabc\n" + SAFE + "5\n");
     }
 
     @Test
     public void setup_smallMapForMoreThanFourPlayers() throws SizeOfMapWasNotSet, IOException {
         // 5 players, invalid (map size: 5), map type safe, and a valid map size of 8
-        setInputStreamAndTryGameSetup(NO + "5\n5\n0\n8\n");
+        setInputStreamAndTryGameSetup(NO + "5\n5\n" + SAFE + "8\n");
     }
 
     @Test
     public void setup_yesTeams_twoInvalidInputFollowedByValidValues() throws SizeOfMapWasNotSet, IOException {
         // Invalid -1 and 100 followed by YES for collaborative and 2 teams, 2 players, map type safe and map size of 5
-        setInputStreamAndTryGameSetup("-1\n100\n" + YES + "2\n2\n0\n5\n");
+        setInputStreamAndTryGameSetup("-1\n100\n" + YES + "2\n2\n" + SAFE + "5\n");
     }
 
     @Test
     public void setup_yesTeams_invalidNumberOfTeamsFollowedByValidValues() throws SizeOfMapWasNotSet, IOException {
-        // YES for teams, followed by invalid -1 and 100 teams, followed by valid 2 teams, 2 players, map type safe
-        // and map size of 5
-        setInputStreamAndTryGameSetup(YES + "-1\n100\n2\n2\n0\n5\n");
+        // YES for teams, followed by invalid -1 and 100 teams, 2 teams, 2 players, map type safe and map size of 5
+        setInputStreamAndTryGameSetup(YES + "-1\n100\n2\n2\n" + SAFE + "5\n");
     }
 
     @Test
     public void move_invalidDirection() throws GameWasNotInitialized, PositionIsOutOfRange, SizeOfMapWasNotSet {
         // Sets p=2, map type = 0, map=20, and two invalid moves (invalid character and invalid length)
-        setInputStreamAndTryGameSetup(NO + "2\n0\n20\nX\nXYZ\n");
+        setInputStreamAndTryGameSetup(NO + "2\n" + SAFE + "20\nX\nXYZ\n");
         startGame(FAIL_IF_TREASURE);
         assertP1andP2Pos(defStartPos[0], defStartPos[1]); // assert that positions did not change
     }
 
     @Test
     public void move_intoTopLeftCorner() throws GameWasNotInitialized, PositionIsOutOfRange, SizeOfMapWasNotSet {
-        setInputStreamAndTryGameSetup(NO + "2\n0\n20\n" + UP + LT); // Players=2, Type=0, Map=20, and UP,LT
+        // Players = 2, Type = 0, Map size = 20, and Moves = UP and LT
+        setInputStreamAndTryGameSetup(NO + "2\n" + SAFE + "20\n" + UP + LT);
         twoMovesInCorner(new Position(0, 0));
         assertP1andP2Pos(cstStartPos[0], cstStartPos[1]); // assert that positions did not change
     }
 
     @Test
     public void move_intoTopRightCorner() throws GameWasNotInitialized, PositionIsOutOfRange, SizeOfMapWasNotSet {
-        setInputStreamAndTryGameSetup(NO + "2\n0\n20\n" + UP + RT); // Players=2, Type=0, Map=20, and UP,RT
+        // Players = 2, Type = 0, Map size = 20, and Moves = UP and RT
+        setInputStreamAndTryGameSetup(NO + "2\n" + SAFE + "20\n" + UP + RT);
         twoMovesInCorner(new Position(19, 0));
         assertP1andP2Pos(cstStartPos[0], cstStartPos[1]); // assert that positions did not change
     }
 
     @Test
     public void move_intoBottomLeftCorner() throws GameWasNotInitialized, PositionIsOutOfRange, SizeOfMapWasNotSet {
-        setInputStreamAndTryGameSetup(NO + "2\n0\n20\n" + DN + LT); // Players=2, Type=0, Map=20, and DN,LT
+        // Players = 2, Type = 0, Map size = 20, and Moves = DN and LT
+        setInputStreamAndTryGameSetup(NO + "2\n" + SAFE + "20\n" + DN + LT);
         twoMovesInCorner(new Position(0, 19));
         assertP1andP2Pos(cstStartPos[0], cstStartPos[1]); // assert that positions did not change
     }
 
     @Test
     public void move_intoBottomRightCorner() throws GameWasNotInitialized, PositionIsOutOfRange, SizeOfMapWasNotSet {
-        setInputStreamAndTryGameSetup(NO + "2\n0\n20\n" + DN + RT); // Players=2, Type=0, Map=20, and DN,RT
+        // Players = 2, Type = 0, Map size = 20, and Moves = DN and RT
+        setInputStreamAndTryGameSetup(NO + "2\n" + SAFE + "20\n" + DN + RT);
         twoMovesInCorner(new Position(19, 19));
         assertP1andP2Pos(cstStartPos[0], cstStartPos[1]); // assert that positions did not change
     }
 
     @Test
     public void move_ontoTreasureFromLeft() throws GameWasNotInitialized, PositionIsOutOfRange, SizeOfMapWasNotSet {
-        setInputStreamAndTryGameSetup(NO + "2\n0\n20\n" + RT + RT);                // Players=2, Type=0, Map=20, and moves=R,R
-        final Position tile = findTileWithGrassOnLeft(Map.TILE_TYPE.TREASURE);  // Find grass tile to left of treasure
-        setStartPositions(new Position(tile.getX() - 1, tile.getY()));          // Move players to left of treasure
-        startGame(FAIL_IF_NO_TREASURE);                                         // Start game (fail if no treasure)
-        assertP1andP2Pos(tile, tile);                                           // assert that players now on treasure
+        // Players = 2, Type = 0, Map size = 20, and Moves = RT and RT
+        setInputStreamAndTryGameSetup(NO + "2\n" + SAFE + "20\n" + RT + RT);
+        final Position tile = findTileWithGrassOnLeft(Map.TILE_TYPE.TREASURE); // Find grass tile to left of treasure
+        setStartPositions(new Position(tile.getX() - 1, tile.getY()));         // Move players to left of treasure
+        startGame(FAIL_IF_NO_TREASURE);                                        // Start game (fail if no treasure)
+        assertP1andP2Pos(tile, tile);                                          // assert that players now on treasure
     }
 
     @Test
     public void move_ontoWaterFromLeft() throws GameWasNotInitialized, PositionIsOutOfRange, SizeOfMapWasNotSet {
-        setInputStreamAndTryGameSetup(NO + "2\n0\n20\n" + RT + RT);            // Players=2, Type=0, Map=20, and moves=R,R
-        final Position tile = findTileWithGrassOnLeft(Map.TILE_TYPE.WATER); // Find grass tile to left of water
-        setStartPositions(new Position(tile.getX() - 1, tile.getY()));      // Move players to left of water
-        startGame(FAIL_IF_TREASURE);                                        // Start game (fail if treasure reached)
-        assertP1andP2Pos(defStartPos[0], defStartPos[1]);                   // assert that players returned to start
+        // Players = 2, Type = 0, Map size = 20, and Moves = RT and RT
+        setInputStreamAndTryGameSetup(NO + "2\n" + SAFE + "20\n" + RT + RT);
+        final Position tile = findTileWithGrassOnLeft(Map.TILE_TYPE.WATER);  // Find grass tile to left of water
+        setStartPositions(new Position(tile.getX() - 1, tile.getY()));       // Move players to left of water
+        startGame(FAIL_IF_TREASURE);                                         // Start game (fail if treasure reached)
+        assertP1andP2Pos(defStartPos[0], defStartPos[1]);                    // assert that players returned to start
     }
 
     @Test
     public void move_ontoGrassFromLeft() throws GameWasNotInitialized, PositionIsOutOfRange, SizeOfMapWasNotSet {
-        setInputStreamAndTryGameSetup(NO + "2\n0\n20\n" + RT + RT);            // Players=2, Type=0, Map=20, and moves=R,R
-        final Position tile = findTileWithGrassOnLeft(Map.TILE_TYPE.GRASS); // Find grass tile to left of grass
-        setStartPositions(new Position(tile.getX() - 1, tile.getY()));      // Move players to left of grass
-        startGame(FAIL_IF_TREASURE);                                        // Start game (fail if treasure reached)
-        assertP1andP2Pos(tile, tile);                                       // assert that players now on grass
+        // Players = 2, Type = 0, Map size = 20, and Moves = RT and RT
+        setInputStreamAndTryGameSetup(NO + "2\n" + SAFE + "20\n" + RT + RT);
+        final Position tile = findTileWithGrassOnLeft(Map.TILE_TYPE.GRASS);  // Find grass tile to left of grass
+        setStartPositions(new Position(tile.getX() - 1, tile.getY()));       // Move players to left of grass
+        startGame(FAIL_IF_TREASURE);                                         // Start game (fail if treasure reached)
+        assertP1andP2Pos(tile, tile);                                        // assert that players now on grass
     }
 
     @Test
     public void move_noTeams_upDownLeftRight() throws GameWasNotInitialized, PositionIsOutOfRange, SizeOfMapWasNotSet {
-        setInputStreamAndTryGameSetup(NO + "2\n0\n20\n" + UP + LT + DN + RT);  // Players=2, Type=0, Map=20, P1=up+dn, P2=lt+rt
-        final Position tile = findGrassWithGrassOnLeftAndUp();              // Find grass tile with grass on left and up
-        setStartPositions(new Position(tile.getX(), tile.getY()));          // Move players to grass tile
-        startGame(FAIL_IF_TREASURE);                                        // Start game (fail if treasure reached)
-        assertP1andP2Pos(cstStartPos[0], cstStartPos[1]);                   // assert that players returned to start
+        // Players = 2, Type = 0, Map size = 20, and Player 1 = UP and DN, and Player 2 = LT and RT
+        setInputStreamAndTryGameSetup(NO + "2\n" + SAFE + "20\n" + UP + LT + DN + RT);
+        final Position tile = findGrassWithGrassOnLeftAndUp();      // Find grass tile with grass on left and up
+        setStartPositions(new Position(tile.getX(), tile.getY()));  // Move players to grass tile
+        startGame(FAIL_IF_TREASURE);                                // Start game (fail if treasure reached)
+        assertP1andP2Pos(cstStartPos[0], cstStartPos[1]);           // assert that players returned to start
     }
 
     @Test
     public void move_yesTeams_upDownLeftRight() throws GameWasNotInitialized, PositionIsOutOfRange, SizeOfMapWasNotSet {
-        setInputStreamAndTryGameSetup(YES + "7\n2\n0\n20\n" + UP + LT + DN + RT); // Teams=7, Pl=2, Type=0, map=20, p1=u+d, p2=l+r
-        final Position tile = findGrassWithGrassOnLeftAndUp();                 // Find grass tile w/ grass left and up
-        setStartPositions(new Position(tile.getX(), tile.getY()));             // Move players to grass tile
-        startGame(FAIL_IF_TREASURE);                                           // Start game (fail if treasure reached)
-        assertP1andP2Pos(cstStartPos[0], cstStartPos[1]);                      // assert that players returned to start
+        // Teams=7, Players = 2, Type = 0, Map size = 20, and Player 1 = UP and DN, Player 2 = LT and RT
+        setInputStreamAndTryGameSetup(YES + "7\n2\n" + SAFE + "20\n" + UP + LT + DN + RT);
+        final Position tile = findGrassWithGrassOnLeftAndUp();      // Find grass tile w/ grass left and up
+        setStartPositions(new Position(tile.getX(), tile.getY()));  // Move players to grass tile
+        startGame(FAIL_IF_TREASURE);                                // Start game (fail if treasure reached)
+        assertP1andP2Pos(cstStartPos[0], cstStartPos[1]);           // assert that players returned to start
     }
 
     @Test
@@ -220,7 +236,7 @@ public class GameTest {
 
     /**
      * Helper Method #1.
-     *
+     * <p>
      * Performs two moves in a position expected to be a corner in the map. Also sets the start
      * start positions of the players to the corner and starts the game. An appropriate input
      * stream is expected to have been set before calling this method.
@@ -242,7 +258,7 @@ public class GameTest {
 
     /**
      * Helper Method #2.
-     *
+     * <p>
      * Loop until there is a grass tile to the left of the tile to be found and returns the
      * position of the tile, not the grass tile.
      */
@@ -269,7 +285,7 @@ public class GameTest {
 
     /**
      * Helper Method #3.
-     *
+     * <p>
      * Loop until a grass tile with grass tiles to the left and up from it is found. The position
      * of the reference grass tile is returned.
      */
@@ -296,7 +312,7 @@ public class GameTest {
 
     /**
      * Helper Method #4.
-     *
+     * <p>
      * Sets the start positions of all the players to the specified position.
      */
     private void setStartPositions(final Position newPosition) {
@@ -310,7 +326,7 @@ public class GameTest {
 
     /**
      * Helper Method #5.
-     *
+     * <p>
      * Asserts that the positions of players 1 and 2 are equal to the specified positions.
      */
     private void assertP1andP2Pos(final Position p1Pos, final Position p2Pos) {
@@ -322,7 +338,7 @@ public class GameTest {
 
     /**
      * Helper Method #6.
-     *
+     * <p>
      * Start game and fail according to the failInstruction (i.e. if treasure found or if
      * not found). Game throws a NoSuchElementException when it has exhausted the input,
      * which indicates that none of the players had reached the treasure by that point.
@@ -345,7 +361,7 @@ public class GameTest {
 
     /**
      * Helper Method #7.
-     *
+     * <p>
      * Set the input stream to be used to simulate the user input and attempt to set up the game.
      */
     private void setInputStreamAndTryGameSetup(final String input) {
