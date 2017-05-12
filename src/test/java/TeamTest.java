@@ -31,7 +31,10 @@ public class TeamTest {
     @Test
     public void addPlayer_playersActuallyAddedToPlayersList() {
 
-        final Player players[] = fillTeamWithPlayers();
+        final Player players[] = {
+                new Player(0, team),
+                new Player(1, team)
+        };
         Assert.assertArrayEquals(players, team.getPlayerList().toArray());
     }
 
@@ -42,7 +45,10 @@ public class TeamTest {
                 new Position(10, 20),
                 new Position(15, 25)
         };
-        final Player players[] = fillTeamWithPlayers();
+        final Player players[] = {
+                new Player(0, team),
+                new Player(1, team)
+        };
 
         // Generate map
         generateMap(30);
@@ -56,23 +62,6 @@ public class TeamTest {
         // Check that the players have each others' positions
         Assert.assertTrue(players[0].wasVisited(pos[1].getX(), pos[1].getY()));
         Assert.assertTrue(players[1].wasVisited(pos[0].getX(), pos[0].getY()));
-    }
-
-    public Player[] fillTeamWithPlayers() {
-
-        // Initialize players
-        final Player players[] = {
-                new Player(0),
-                new Player(1)
-        };
-
-        // Add players to team
-        for (Player p : players) {
-            team.addPlayer(p);
-        }
-
-        // Return the array
-        return players;
     }
 
     private void generateMap(final int mapSize) throws MapWasAlreadyInitialized {
