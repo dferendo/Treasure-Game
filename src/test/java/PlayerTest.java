@@ -1,9 +1,12 @@
 import exceptions.InitialPlayerPositionWasNotSet;
 import exceptions.MapWasAlreadyInitialized;
+import exceptions.PlayerDidNotHaveAnyPositionsYet;
 import exceptions.PositionIsOutOfRange;
 import org.junit.*;
 
 import java.lang.reflect.Field;
+
+import static org.junit.Assert.fail;
 
 /**
  * @author Miguel Dingli
@@ -27,6 +30,61 @@ public class PlayerTest {
     }
 
     @Test
+    public void getId_constructorValueMatchesGetterValue() {
+        Assert.assertTrue(player.getID() == id);
+    }
+
+    @Test
+    public void getTeam_constructorValueMatchesGetterValue() {
+
+        final int teamID = 10;
+        final Team team = new Team(teamID);
+        player = new Player(id, team);
+        Assert.assertTrue(player.getTeam().getID() == teamID);
+    }
+
+    @Test(expected = PlayerDidNotHaveAnyPositionsYet.class)
+    public void resetInitialPosition_playerMustHaveAtLeastOnePosition() {
+
+        player.resetInitialPosition();
+        fail("Reset allowed for a player with no positions.");
+    }
+
+    @Test
+    public void resetInitialPosition_initialPositionChangesAfterReset() {
+
+        final Position firstStartPos = new Position(startX, startY);
+        final Position secondStartPos = new Position(startX - 1, startY - 1);
+        final Position arbitraryPos = new Position(startX - 2, startY - 2);
+
+        // By the end of this part, visited list = [firstStartPos]
+        setStartPosition();
+        Assume.assumeTrue(player.getPosition().equals(firstStartPos));
+
+        // By the end of this part, visited list = [firstStartPos, secondStartPos]
+        player.setPosition(secondStartPos);
+        Assume.assumeTrue(player.getPosition().equals(secondStartPos));
+
+        // By the end of this part, visited list = [secondStartPos, firstStartPos]
+        player.resetInitialPosition();
+
+        // By the end of this part, visited list = [secondStartPos, firstStartPos, arbitraryPos]
+        player.setPosition(arbitraryPos);
+        Assume.assumeTrue(player.getPosition().equals(arbitraryPos));
+
+        // Player should be returned to secondStartPos
+        player.backToStartPosition();
+        Assert.assertTrue(player.getPosition().equals(secondStartPos));
+    }
+
+    @Test
+    public void getTeam_noTeamMeansThatGetterReturnsNull() {
+
+        player = new Player(id);
+        Assert.assertTrue(player.getTeam() == null);
+    }
+
+    @Test
     public void setPosition_nullArgument() {
         Assert.assertFalse(player.setPosition(null));
     }
@@ -45,27 +103,6 @@ public class PlayerTest {
         setStartPosition();
         Assert.assertTrue(player.getPosition().getX() == startX);
         Assert.assertTrue(player.getPosition().getY() == startY);
-    }
-
-    @Test
-    public void getId_constructorValueMatchesGetterValue() {
-        Assert.assertTrue(player.getID() == id);
-    }
-
-    @Test
-    public void getTeam_constructorValueMatchesGetterValue() {
-
-        final int teamID = 10;
-        final Team team = new Team(teamID);
-        player = new Player(id, team);
-        Assert.assertTrue(player.getTeam().getID() == teamID);
-    }
-
-    @Test
-    public void getTeam_noTeamMeansThatGetterReturnsNull() {
-
-        player = new Player(id);
-        Assert.assertTrue(player.getTeam() == null);
     }
 
     @Test
