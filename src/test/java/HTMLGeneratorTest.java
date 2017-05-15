@@ -22,10 +22,10 @@ import static org.junit.Assert.fail;
 public class HTMLGeneratorTest {
 
     private HTMLGenerator htmlGeneratorInstance;
-    private File file = new File("src/test/resources/html-test-template/SoftEngineer.html");
+    private final File file = new File("src/test/resources/html-test-template/SoftEngineer.html");
     private Player player;
     private Map map;
-    private int size = 10, playerNumber = 3;
+    private final int size = 10, playerNumber = 3;
 
     @Before
     public void setUp() throws IOException, SizeOfMapWasNotSet, MapWasAlreadyInitialized {

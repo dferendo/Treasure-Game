@@ -7,8 +7,7 @@ import java.lang.reflect.Field;
 public class TeamTest {
 
     private Team team;
-    private int teamID = 123;
-    private MapCreator.MAP_TYPE DEFAULT_MAP_TYPE = MapCreator.MAP_TYPE.SAFE_MAP;
+    private final int teamID = 123;
 
     @Before
     public void setUp() {

@@ -39,7 +39,7 @@ public class Game {
     private Player[] players = null;
     private Team[] teams = null;
     private Map map = null;
-    private List<Player> winners = new ArrayList<Player>();
+    private final List<Player> winners = new ArrayList<Player>();
 
     /**
      * Defines four values used as movement directions.
@@ -120,9 +120,9 @@ public class Game {
         }
 
         // Set player initial positions
-        for (int i = 0; i < players.length; i++) {
-            map.setInitialPlayerPosition(players[i]);
-            players[i].resetInitialPosition();
+        for (final Player p : players) {
+            map.setInitialPlayerPosition(p);
+            p.resetInitialPosition();
         }
     }
 
@@ -357,8 +357,8 @@ public class Game {
      * appropriate method to move the player. Otherwise indicates that the player cannot
      * go outside of the map.
      *
-     * @param player
-     * @param dir
+     * @param player Player to be moved.
+     * @param dir Direction in which player will move.
      * @return False if a movement in the specified direction makes the player go out of
      * the map bounds, or otherwise the return value of the setPosition(...) method.
      */

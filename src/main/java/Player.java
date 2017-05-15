@@ -19,9 +19,9 @@ public class Player {
      * Player ID, current position, and list of visited positions. The list is kept so
      * the the game can check which tiles to keep uncovered for the player.
      */
-    private int ID;
+    private final int ID;
     private Position position = null;
-    private List<Position> visited;
+    private final List<Position> visited;
     private Team team = null;
 
     /**
