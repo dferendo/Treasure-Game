@@ -4,7 +4,7 @@ import exceptions.SizeOfMapWasNotSet;
 import java.util.Random;
 
 /**
- * Generates a Map that contains 25-35% Water tiles.
+ * Generates a Map that contains 10% Water tiles.
  *
  * @author Dylan Frendo.
  */
