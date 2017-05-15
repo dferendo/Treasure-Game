@@ -317,7 +317,7 @@ public class Game {
             try {
                 // nextLine() instead of nextInt() so that the '\n' gets read
                 return Integer.parseInt(scanner.nextLine().trim());
-            } catch(NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 System.out.println("The input was not a valid integer!");
             }
         }

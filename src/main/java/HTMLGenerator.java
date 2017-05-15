@@ -101,7 +101,7 @@ public class HTMLGenerator {
                     }
                 } catch (PositionIsOutOfRange positionIsOutOfRange) {
                     // Create Table loop is incorrect.
-                    positionIsOutOfRange.getMessage();
+                    System.out.println(positionIsOutOfRange.getMessage());
                 }
             }
             table.append(TAB_FOR_ROW);
