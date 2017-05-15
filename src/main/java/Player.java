@@ -70,6 +70,8 @@ public class Player {
      * Sets the player's initial position to the last position added to the player's list of
      * visited positions. This is used in the collaborative mode since the first position in
      * the player's visited list is otherwise not guaranteed to be the initial position.
+     *
+     * @throws PlayerDidNotHaveAnyPositionsYet The Player did not have an initial position.
      */
     public void resetInitialPosition() throws PlayerDidNotHaveAnyPositionsYet {
 
