@@ -302,7 +302,7 @@ public class Game {
                 new HTMLGenerator(playerFile, map, player);
             }
         } catch (IOException e) {
-            e.getMessage();
+            System.out.print(e.getMessage());
         }
     }
 
