@@ -2,8 +2,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by dylan on 25/03/2017.
  * Code will be pushed 3 times to check if Jenkins pulls, compiles and tests the code
