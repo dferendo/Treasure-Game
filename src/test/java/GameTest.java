@@ -19,7 +19,7 @@ import static junit.framework.TestCase.fail;
  * simulate the input of the user. This requires each test that will make use of
  * the stream to include particular inputs that are expected by the game. These
  * are the following, where order is important:
- *
+ * <p>
  * Collaborative Mode,      ...0 (No) or 1 (Yes)
  * (Number of Teams),       ...2-8 (if collaborative mode)
  * Number of Players,       ...2-8
@@ -144,7 +144,7 @@ public class GameTest {
 
     @Test
     public void move_invalidDirection() throws GameWasNotInitialized, PositionIsOutOfRange, SizeOfMapWasNotSet {
-        // Sets p=2, map type = 0, map=20, and two invalid moves (invalid character and invalid length)
+        // Players = 2, Type = 0, Map size = 20, and two invalid moves (invalid character and invalid length)
         setInputStreamAndTryGameSetup(NO + "2\n" + SAFE + "20\nX\nXYZ\n");
         startGame(FAIL_IF_TREASURE);
         assertP1andP2Pos(defStartPos[0], defStartPos[1]); // assert that positions did not change
@@ -187,7 +187,17 @@ public class GameTest {
         // Players = 2, Type = 0, Map size = 20, and Moves = RT and RT
         setInputStreamAndTryGameSetup(NO + "2\n" + SAFE + "20\n" + RT + RT);
         final Position tile = findTileWithGrassOnLeft(Map.TILE_TYPE.TREASURE); // Find grass tile to left of treasure
-        setStartPositions(new Position(tile.getX() - 1, tile.getY()));         // Move players to left of treasure
+        setStartPositions(new Position(tile.getX() - 1, tile.getY()));      // Move players to left of treasure
+        startGame(FAIL_IF_NO_TREASURE);                                        // Start game (fail if no treasure)
+        assertP1andP2Pos(tile, tile);                                          // assert that players now on treasure
+    }
+
+    @Test
+    public void move_yesTeams_ontoTreasureFromLeft() throws GameWasNotInitialized, PositionIsOutOfRange, SizeOfMapWasNotSet {
+        // Players = 2, Teams = 2, Type = 0, Map size = 20, and Moves = RT and RT
+        setInputStreamAndTryGameSetup(YES + "2\n2\n" + SAFE + "20\n" + RT + RT);
+        final Position tile = findTileWithGrassOnLeft(Map.TILE_TYPE.TREASURE); // Find grass tile to left of treasure
+        setStartPositions(new Position(tile.getX() - 1, tile.getY()));      // Move players to left of treasure
         startGame(FAIL_IF_NO_TREASURE);                                        // Start game (fail if no treasure)
         assertP1andP2Pos(tile, tile);                                          // assert that players now on treasure
     }
@@ -197,7 +207,7 @@ public class GameTest {
         // Players = 2, Type = 0, Map size = 20, and Moves = RT and RT
         setInputStreamAndTryGameSetup(NO + "2\n" + SAFE + "20\n" + RT + RT);
         final Position tile = findTileWithGrassOnLeft(Map.TILE_TYPE.WATER);  // Find grass tile to left of water
-        setStartPositions(new Position(tile.getX() - 1, tile.getY()));       // Move players to left of water
+        setStartPositions(new Position(tile.getX() - 1, tile.getY()));    // Move players to left of water
         startGame(FAIL_IF_TREASURE);                                         // Start game (fail if treasure reached)
         assertP1andP2Pos(defStartPos[0], defStartPos[1]);                    // assert that players returned to start
     }
@@ -207,7 +217,7 @@ public class GameTest {
         // Players = 2, Type = 0, Map size = 20, and Moves = RT and RT
         setInputStreamAndTryGameSetup(NO + "2\n" + SAFE + "20\n" + RT + RT);
         final Position tile = findTileWithGrassOnLeft(Map.TILE_TYPE.GRASS);  // Find grass tile to left of grass
-        setStartPositions(new Position(tile.getX() - 1, tile.getY()));       // Move players to left of grass
+        setStartPositions(new Position(tile.getX() - 1, tile.getY()));    // Move players to left of grass
         startGame(FAIL_IF_TREASURE);                                         // Start game (fail if treasure reached)
         assertP1andP2Pos(tile, tile);                                        // assert that players now on grass
     }
