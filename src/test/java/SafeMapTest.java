@@ -47,8 +47,8 @@ public class SafeMapTest {
         if (mapInstance.setMapSize(size, size, numberOfPlayers)) {
             mapInstance.generate();
 
-            for (int x = 0; x < mapInstance.getMapSize(); x++) {
-                for (int y = 0; y < mapInstance.getMapSize(); y++) {
+            for (int x = 0; x < Map.getSize(); x++) {
+                for (int y = 0; y < Map.getSize(); y++) {
                     if (mapInstance.getTileType(x, y) == Map.TILE_TYPE.TREASURE) {
                         treasureCount++;
                     }
@@ -58,7 +58,7 @@ public class SafeMapTest {
 
             Assert.assertTrue("There is suppose to be only 1 treasure.", treasureCount == 1);
             Assert.assertTrue("There should be n x n Tiles", totalSize ==
-                    mapInstance.getMapSize() * mapInstance.getMapSize());
+                    Map.getSize() * Map.getSize());
         } else {
             fail("Map size was suppose to be set.");
         }
@@ -70,8 +70,8 @@ public class SafeMapTest {
         if (mapInstance.setMapSize(size, size, numberOfPlayers)) {
             mapInstance.generate();
 
-            for (int x = 0; x < mapInstance.getMapSize(); x++) {
-                for (int y = 0; y < mapInstance.getMapSize(); y++) {
+            for (int x = 0; x < Map.getSize(); x++) {
+                for (int y = 0; y < Map.getSize(); y++) {
                     if (mapInstance.getTileType(x, y) == Map.TILE_TYPE.WATER) {
                         waterTiles++;
                     }
@@ -84,7 +84,7 @@ public class SafeMapTest {
             Assert.assertTrue("There is suppose to be around 10% water tiles.",
                     waterTilePercentage == 10);
             Assert.assertTrue("There should be n x n Tiles", totalSize ==
-                    mapInstance.getMapSize() * mapInstance.getMapSize());
+                    Map.getSize() * Map.getSize());
         } else {
             fail("Map size was suppose to be set.");
         }

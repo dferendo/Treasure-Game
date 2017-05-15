@@ -91,7 +91,7 @@ public class HTMLGeneratorTest {
         Assert.assertTrue(StringUtils.countMatches(html,
                 htmlGeneratorInstance.GRASS_CELL_WITH_PLAYER) == 1);
         Assert.assertTrue(StringUtils.countMatches(html,
-                htmlGeneratorInstance.IDLE_CELL) == (map.getMapSize() * map.getMapSize()) - 1);
+                htmlGeneratorInstance.IDLE_CELL) == (Map.getSize() * Map.getSize()) - 1);
     }
 
     @Test
@@ -110,7 +110,7 @@ public class HTMLGeneratorTest {
 
         // Two Unknown tiles are removed from being unknown regardless of tiles type.
         Assert.assertTrue(StringUtils.countMatches(html,
-                htmlGeneratorInstance.IDLE_CELL) == (map.getMapSize() * map.getMapSize()) - 2);
+                htmlGeneratorInstance.IDLE_CELL) == (Map.getSize() * Map.getSize()) - 2);
     }
 
     @Test

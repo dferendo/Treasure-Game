@@ -146,8 +146,4 @@ public abstract class Map {
     public static int getSize() {
         return size;
     }
-
-    public int getMapSize() {
-        return size;
-    }
 }
