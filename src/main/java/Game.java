@@ -313,12 +313,16 @@ public class Game {
      */
     protected int getValidInt() {
 
-        while (!scanner.hasNextInt()) {
-            System.out.println("The input was not a valid integer!");
-            scanner.nextLine();
+        while (scanner.hasNextLine()) {
+            try {
+                // nextLine() instead of nextInt() so that the '\n' gets read
+                return Integer.parseInt(scanner.nextLine().trim());
+            } catch(NumberFormatException e) {
+                System.out.println("The input was not a valid integer!");
+            }
         }
-        // nextLine() instead of nextInt() so that the '\n' gets read
-        return Integer.parseInt(scanner.nextLine().trim());
+        System.out.println("Warning: hasNextLine() returned false.");
+        return 0;
     }
 
     /**
