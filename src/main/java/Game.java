@@ -302,7 +302,7 @@ public class Game {
                 new HTMLGenerator(playerFile, map, player);
             }
         } catch (IOException e) {
-            e.getMessage();
+            System.out.print(e.getMessage());
         }
     }
 
@@ -372,7 +372,7 @@ public class Game {
                 }
                 break;
             case DOWN:
-                if (pos.getY() < map.getMapSize() - 1) {
+                if (pos.getY() < Map.getSize() - 1) {
                     return player.setPosition(new Position(pos.getX(), pos.getY() + 1));
                 }
                 break;
@@ -382,7 +382,7 @@ public class Game {
                 }
                 break;
             case RIGHT:
-                if (pos.getX() < map.getMapSize() - 1) {
+                if (pos.getX() < Map.getSize() - 1) {
                     return player.setPosition(new Position(pos.getX() + 1, pos.getY()));
                 }
                 break;

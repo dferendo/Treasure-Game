@@ -250,8 +250,8 @@ public class GameTest {
     private void twoMovesInCorner(final Position corner)
             throws GameWasNotInitialized, PositionIsOutOfRange, SizeOfMapWasNotSet {
 
-        Assume.assumeTrue(corner.getX() == 0 || corner.getX() == map.getMapSize() - 1);
-        Assume.assumeTrue(corner.getY() == 0 || corner.getY() == map.getMapSize() - 1);
+        Assume.assumeTrue(corner.getX() == 0 || corner.getX() == Map.getSize() - 1);
+        Assume.assumeTrue(corner.getY() == 0 || corner.getY() == Map.getSize() - 1);
 
         // Loop until corner is grass
         do {
@@ -274,8 +274,8 @@ public class GameTest {
         // Loop and regenerate map if a tile of the specified type was not found
         do {
             // Find tile (skip first column since grass on left is needed)
-            for (int x = 1; x < map.getMapSize(); x++) {
-                for (int y = 0; y < map.getMapSize(); y++) {
+            for (int x = 1; x < Map.getSize(); x++) {
+                for (int y = 0; y < Map.getSize(); y++) {
                     if (map.getTileType(x, y) == tileToFind) {
 
                         // Check that there is grass to the left
@@ -300,8 +300,8 @@ public class GameTest {
         // Loop and regenerate map if a grass tile satisfying the conditions was not found
         do {
             // Find grass (skip first column and row since grass on left and up is needed)
-            for (int x = 1; x < map.getMapSize(); x++) {
-                for (int y = 1; y < map.getMapSize(); y++) {
+            for (int x = 1; x < Map.getSize(); x++) {
+                for (int y = 1; y < Map.getSize(); y++) {
                     if (map.getTileType(x, y) == Map.TILE_TYPE.GRASS) {
 
                         // Check that there is grass to the left and up

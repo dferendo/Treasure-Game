@@ -79,7 +79,7 @@ public class HTMLGenerator {
      * @return String containing the rows and their cells in HTML format.
      */
     private String createTable(final Map map, final Player player) {
-        final int mapSize = map.getMapSize();
+        final int mapSize = Map.getSize();
         int x, y;
         final StringBuilder table = new StringBuilder();
         table.append(createCaption(player));

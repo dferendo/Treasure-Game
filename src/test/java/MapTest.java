@@ -160,7 +160,7 @@ public class MapTest {
     public void getMapSize_getterValueMatchesSetterValue() {
         int size = 30, players = 8;
         Assume.assumeTrue(mapInstance.setMapSize(size, size, players));
-        Assert.assertTrue(mapInstance.getMapSize() == size);
+        Assert.assertTrue(Map.getSize() == size);
     }
 
     @Test
