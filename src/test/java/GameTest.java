@@ -20,6 +20,12 @@ import static junit.framework.TestCase.fail;
  * the stream to include particular inputs that are expected by the game. These
  * are the following, where order is important:
  *
+ * Collaborative Mode,      ...0 (No) or 1 (Yes)
+ * (Number of Teams),       ...2-8 (if collaborative mode)
+ * Number of Players,       ...2-8
+ * Map Type,                ...0 (Safe) or 1 (Hazardous)
+ * Map Size                 ...X-50 (depending on number of players)
+ *
  * @author Miguel Dingli
  */
 public class GameTest {
@@ -40,7 +46,7 @@ public class GameTest {
     private final String NO = "0\n", YES = "1\n";
 
     // Response to map type with newline (since read from input steam as line)
-    private final String SAFE = "0\n", HAZD = "1\n";
+    private final String SAFE = "0\n", HAZARD = "1\n";
 
     // For clarity when passing the argument to the startGame() method
     private final boolean FAIL_IF_TREASURE = true, FAIL_IF_NO_TREASURE = false;
@@ -69,70 +75,70 @@ public class GameTest {
 
     @Test
     public void setup_validNumberOfPlayersAndMapSize_smallMap() throws SizeOfMapWasNotSet {
-        // 2 players, map type safe and map size of 5
+        // Not collaborative, 2 players, map type safe and map size of 5
         setInputStreamAndTryGameSetup(NO + "2\n" + SAFE + "5\n");
     }
 
     @Test
     public void setup_validNumberOfPlayersMapTypeSafeAndValidMapSize() throws SizeOfMapWasNotSet {
-        // 5 players, map type safe and map size of 8
+        // Not collaborative, 5 players, map type safe and map size of 8
         setInputStreamAndTryGameSetup(NO + "5\n" + SAFE + "8\n");
         Assert.assertThat(map, CoreMatchers.instanceOf(SafeMap.class));
     }
 
     @Test
     public void setup_validNumberOfPlayersMapTypeHazardousAndValidMapSize() throws SizeOfMapWasNotSet {
-        // 5 players, map type hazardous and map size of 8
-        setInputStreamAndTryGameSetup(NO + "5\n" + HAZD + "8\n");
+        // Not collaborative, 5 players, map type hazardous and map size of 8
+        setInputStreamAndTryGameSetup(NO + "5\n" + HAZARD + "8\n");
         Assert.assertThat(map, CoreMatchers.instanceOf(HazardousMap.class));
     }
 
     @Test
     public void setup_validNumberOfPlayersInvalidMapTypeValidMapTypeAndValidMapSize() throws SizeOfMapWasNotSet {
-        // 5 players, map type safe and map size of 8
-        setInputStreamAndTryGameSetup(NO + "5\nabd\n-1\n" + HAZD + "8\n");
+        // Not collaborative, 5 players, invalid (map type: abd, -1), map type hazardous and map size of 8
+        setInputStreamAndTryGameSetup(NO + "5\nabd\n-1\n" + HAZARD + "8\n");
         Assert.assertThat(map, CoreMatchers.instanceOf(HazardousMap.class));
     }
 
     @Test
     public void setup_validNumberOfPlayersAndMapSize_mediumMap() throws SizeOfMapWasNotSet {
-        // 5 players, map type safe and map size of 8
+        // Not collaborative, 5 players, map type safe and map size of 8
         setInputStreamAndTryGameSetup(NO + "5\n" + SAFE + "8\n");
     }
 
     @Test
     public void setup_validNumberOfPlayersAndMapSize_largeMap() throws SizeOfMapWasNotSet {
-        // 8 players, map type safe,  map size of 50
+        // Not collaborative, 8 players, map type safe and map size of 50
         setInputStreamAndTryGameSetup(NO + "8\n" + SAFE + "50\n");
     }
 
     @Test
     public void setup_invalidNumberOfPlayersFollowedByValidValues() throws SizeOfMapWasNotSet {
-        // invalid (players: -1, 100, abc), followed by 2 players, map type safe and map size of 5
+        // Not collaborative, invalid (players: -1, 100, abc), 2 players, map type safe and map size of 5
         setInputStreamAndTryGameSetup(NO + "-1\n100\nabc\n2\n" + SAFE + "5\n");
     }
 
     @Test
     public void setup_validNumberOfPlayersAndInvalidMapSizeFollowedByValidValue() throws SizeOfMapWasNotSet {
-        // 2 players, invalid (map sizes: -1, 100, abc), map type safe and a valid map size of 5
+        // Not collaborative, 2 players, invalid (map sizes: -1, 100, abc), map type safe and a valid map size of 5
         setInputStreamAndTryGameSetup(NO + "2\n-1\n100\nabc\n" + SAFE + "5\n");
     }
 
     @Test
     public void setup_smallMapForMoreThanFourPlayers() throws SizeOfMapWasNotSet, IOException {
-        // 5 players, invalid (map size: 5), map type safe, and a valid map size of 8
+        // Not collaborative, 5 players, invalid (map size: 5), map type safe, and a valid map size of 8
         setInputStreamAndTryGameSetup(NO + "5\n5\n" + SAFE + "8\n");
     }
 
     @Test
     public void setup_yesTeams_twoInvalidInputFollowedByValidValues() throws SizeOfMapWasNotSet, IOException {
-        // Invalid -1 and 100 followed by YES for collaborative and 2 teams, 2 players, map type safe and map size of 5
+        // Invalid (collaborative: -1 and 100), Collaborative, 2 teams, 2 players, map type safe and map size of 5
         setInputStreamAndTryGameSetup("-1\n100\n" + YES + "2\n2\n" + SAFE + "5\n");
     }
 
     @Test
     public void setup_yesTeams_invalidNumberOfTeamsFollowedByValidValues() throws SizeOfMapWasNotSet, IOException {
-        // YES for teams, followed by invalid -1 and 100 teams, 2 teams, 2 players, map type safe and map size of 5
+        // Collaborative, invalid (teams: -1 and 100), 2 teams, 2 players, map type safe and map size of 5
         setInputStreamAndTryGameSetup(YES + "-1\n100\n2\n2\n" + SAFE + "5\n");
     }
 
