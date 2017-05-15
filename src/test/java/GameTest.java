@@ -120,14 +120,14 @@ public class GameTest {
 
     @Test
     public void setup_validNumberOfPlayersAndInvalidMapSizeFollowedByValidValue() throws SizeOfMapWasNotSet {
-        // Not collaborative, 2 players, invalid (map sizes: -1, 100, abc), map type safe and a valid map size of 5
-        setInputStreamAndTryGameSetup(NO + "2\n-1\n100\nabc\n" + SAFE + "5\n");
+        // Not collaborative, 2 players, map type safe, invalid (map sizes: -1, 100, abc) and a valid map size of 5
+        setInputStreamAndTryGameSetup(NO + "2\n" + SAFE + "-1\n100\nabc\n5\n");
     }
 
     @Test
     public void setup_smallMapForMoreThanFourPlayers() throws SizeOfMapWasNotSet, IOException {
-        // Not collaborative, 5 players, invalid (map size: 5), map type safe, and a valid map size of 8
-        setInputStreamAndTryGameSetup(NO + "5\n5\n" + SAFE + "8\n");
+        // Not collaborative, 5 players, map type safe, invalid (map size: 5) and a valid map size of 8
+        setInputStreamAndTryGameSetup(NO + "5\n" + SAFE + "5\n8\n");
     }
 
     @Test
