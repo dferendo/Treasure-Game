@@ -313,7 +313,7 @@ public class Game {
      */
     protected int getValidInt() {
 
-        while (scanner.hasNextLine()) {
+        while (true) {
             try {
                 // nextLine() instead of nextInt() so that the '\n' gets read
                 return Integer.parseInt(scanner.nextLine().trim());
@@ -321,8 +321,6 @@ public class Game {
                 System.out.println("The input was not a valid integer!");
             }
         }
-        System.out.println("Warning: hasNextLine() returned false.");
-        return 0;
     }
 
     /**
